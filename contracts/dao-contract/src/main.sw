@@ -248,7 +248,6 @@ impl DAO for Contract {
     fn execute_proposal(
         proposal_id: u64
     ) {
-        log("Start Execute");
         require(storage.status == 1, InvalidError::DAOIsNotActive);
 
         let proposal = if storage.proposals.len() - 1 < proposal_id {
@@ -256,13 +255,11 @@ impl DAO for Contract {
             } else {
                 storage.proposals.get(proposal_id)
             };
-    
-        log("Check proposal");
         if (Option::is_none(proposal)) {
             revert(0);
         }
         let mut unwrap_proposal = proposal.unwrap();
-        log("Check status & recipient");
+
         require(unwrap_proposal.status == 1, InvalidError::ProposalIsNotActive);
         require(unwrap_proposal.recipient != Identity::Address(Address::from(ZERO_B256)), InvalidError::ProposalHasNotRecipient);
 
@@ -270,8 +267,6 @@ impl DAO for Contract {
         
         let agree = unwrap_proposal.agree;
         let rate = (agree * 10000 / count_member);
-        
-        log("Check quorum");
         
         require(rate >= storage.config.quorum * 100, InvalidError::IsNotVotesEnough);
         require(unwrap_proposal.amount <= this_balance(BASE_ASSET_ID), InvalidError::DaoBalanceNotEnough);
@@ -282,7 +277,6 @@ impl DAO for Contract {
         unwrap_proposal.executed = true;
         unwrap_proposal.status = 2;
 
-        log("change state");
         storage.proposals.set(proposal_id, unwrap_proposal);
         if (unwrap_proposal.proposal_type == 1) {
             log("start transfer");
