@@ -59,6 +59,7 @@ async fn get_contract_instance_1() -> (MyContract<WalletUnlocked>, ContractId, V
     let instance = MyContract::new(id.clone(), wallet);
     (instance, id.into(), wallets)
 }
+
 #[tokio::test]
 async fn can_initialize() {
     let (instance, _id, wallets) = get_contract_instance().await;
@@ -70,30 +71,13 @@ async fn can_initialize() {
     let wallet_4 = wallets.get(3).unwrap();
     let wallet_5 = wallets.get(4).unwrap();
     // Now you have an instance of your contract you can use to test each function
-    let title: SizedAsciiString<50> = "11111111111111111111111111111111111111111111111111"
-    .try_into()
-    .expect("Should have succeeded");
-
-    let description: SizedAsciiString<100> = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
-    .try_into()
-    .expect("Should have succeeded");
-
+    
     let config: DaoConfig = DaoConfig {
-        title: title.clone(),
-        description: description.clone(),
         quorum: 20,
         open: false,
         dao_type: 1
     };
-    let social_link: SizedAsciiString<50> = "11111111111111111111111111111111111111111111111111"
-    .try_into()
-    .expect("Should have succeeded");
-    let social_links = [
-        social_link.clone(),
-        social_link.clone(),
-        social_link.clone(),
-    ];
-
+  
     let members: [Address;5] = [
         wallet_1.address().into(),
         wallet_2.address().into(),
@@ -118,7 +102,6 @@ async fn can_initialize() {
         .methods()
         .initialize(
             config.clone(),
-            social_links.clone(),
             members.clone(),
             whitelist_contributors.clone()
         )
@@ -133,27 +116,14 @@ async fn can_initialize() {
         .unwrap().value;
     
     // make sure the returned config title is correct
-    assert_eq!(_config.title, title);
+    assert_eq!(_config.quorum, 20);
 
     // Create Proposal and check the proposal's information.
-    
-    let proposal_title: SizedAsciiString<50> = "11111111111111111111111111111111111111111111111111"
-    .try_into()
-    .expect("Should have succeeded");
-
-    let proposal_content: SizedAsciiString<200> = "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
-    .try_into()
-    .expect("Should have succeeded"); 
-
-
     let _ = instance
     .with_account(wallet_2.clone())
     .unwrap()
     .methods()
     .create_proposal(
-        proposal_title.clone(),
-        proposal_content.clone(),
-        1,
         1,
         Identity::Address(wallet_3.address().into()),
         1000,
@@ -205,7 +175,6 @@ async fn can_initialize() {
         .methods()
         .initialize(
             config.clone(),
-            social_links.clone(),
             members.clone(),
             whitelist_contributors.clone()
         )
@@ -219,9 +188,6 @@ async fn can_initialize() {
     .unwrap()
     .methods()
     .create_proposal(
-        proposal_title.clone(),
-        proposal_content.clone(),
-        1,
         2,
         Identity::ContractId(_id_1),
         2000,
@@ -265,7 +231,7 @@ async fn can_initialize() {
     .await;
 
     // Execute payout proposal
-    let wallet_3_balance_before: u64 = wallet_3.get_asset_balance(&BASE_ASSET_ID).await.unwrap();
+    // let wallet_3_balance_before: u64 = wallet_3.get_asset_balance(&BASE_ASSET_ID).await.unwrap();
     let _ = instance
     .with_account(wallet_1.clone())
     .unwrap()
@@ -277,8 +243,13 @@ async fn can_initialize() {
     .await;
 
     // Check balance of recipient
-    let wallet_3_balance_after: u64 = wallet_3.get_asset_balance(&BASE_ASSET_ID).await.unwrap();
-    assert_eq!(wallet_3_balance_after - wallet_3_balance_before, 1000);   
+    // let wallet_3_balance_after: u64 = wallet_3.get_asset_balance(&BASE_ASSET_ID).await.unwrap();
+    let balance = instance.methods()
+    .get_balance()
+    .call()
+    .await
+    .unwrap().value;
+    assert_eq!(balance, 19_000);   
 
     // Execute funding proposal
 

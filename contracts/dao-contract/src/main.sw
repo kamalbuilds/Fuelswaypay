@@ -48,8 +48,6 @@ enum InvalidError {
 
 storage {
     config: DaoConfig = DaoConfig {
-        title: "                                                  ",
-        description: "                                                                                                    ",
         quorum: 100,
         open: false,
         dao_type: 1
@@ -58,7 +56,6 @@ storage {
     status: u64 = 0,
     start_date: u64 = 0,
     members: StorageVec<Address> = StorageVec {},
-    social_links: StorageVec<str[50]> = StorageVec {},
     whitelist_contributors: StorageVec<Identity> = StorageVec {},
     proposals: StorageVec<Proposal> = StorageVec {},
     voters: StorageMap<(Address, u64), bool> = StorageMap {},
@@ -86,7 +83,6 @@ impl DAO for Contract {
     #[storage(read, write)]
     fn initialize(
         config: DaoConfig,
-        social_links: [str[50];3],
         members: [Address; 5],
         whitelist_contributors: [Identity; 5]
     ) {
@@ -95,14 +91,7 @@ impl DAO for Contract {
         storage.owner = get_msg_sender_address_or_panic();
         storage.status = 1;
         storage.start_date = timestamp();
-
         let mut i = 0;
-        while i < 3 {
-            storage.social_links.push(social_links[i]);
-            i += 1;
-        }
-
-        i = 0;
         while i < 5 {
             if (Address::from(ZERO_B256) != members[i]) {
                 storage.members.push(members[i]);
@@ -123,24 +112,19 @@ impl DAO for Contract {
 
     #[storage(read, write)]
     fn create_proposal(
-        title: str[50],
-        content: str[200],
-        content_type: u64,
         proposal_type: u64,
         recipient: Identity,
         amount: u64,
         start_date: u64,
         end_date: u64,
         allow_early_execution: bool,
-    ) {
+    ) -> u64 {
         require(storage.status == 1, InvalidError::DAOIsNotActive);
         let sender = get_msg_sender_address_or_panic();
+        let id = storage.proposals.len();
         let proposal: Proposal = Proposal {
-            id: storage.proposals.len(),
+            id: id,
             owner: sender,
-            title: title,
-            content: content,
-            content_type: content_type,
             proposal_type: proposal_type,
             status: 1,
             recipient: recipient,
@@ -154,7 +138,7 @@ impl DAO for Contract {
             executed: false
         };
         storage.proposals.push(proposal);
-
+        id
     }
 
     #[storage(read, write), payable]
@@ -169,7 +153,6 @@ impl DAO for Contract {
             if (storage.whitelist_contributors.get(i).unwrap() == sender) {
                 is_exist = true;
             }
-
             i += 1;
         }
         require(is_exist, InvalidError::NotInWhitelistContributor);

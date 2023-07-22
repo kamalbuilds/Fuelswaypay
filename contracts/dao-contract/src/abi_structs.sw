@@ -1,8 +1,6 @@
 library;
 
 pub struct DaoConfig {
-    title: str[50],
-    description: str[100],
     quorum: u64,
     open: bool,
     dao_type: u64,
@@ -11,9 +9,6 @@ pub struct DaoConfig {
 pub struct Proposal {
     id: u64,
     owner: Address,
-    title: str[50],
-    content: str[200],
-    content_type: u64,
     proposal_type: u64,
     status: u64,
     recipient: Identity,
@@ -31,23 +26,19 @@ abi DAO {
     #[storage(read, write)]
     fn initialize(
         config: DaoConfig,
-        social_links: [str[50];3],
         members: [Address; 5],
         whitelist_contributors: [Identity; 5]
     );
 
     #[storage(read, write)]
     fn create_proposal(
-        title: str[50],
-        content: str[200],
-        content_type: u64,
         proposal_type: u64,
         recipient: Identity,
         amount: u64,
         start_date: u64,
         end_date: u64,
         allow_early_execution: bool
-    );
+    ) -> u64;
 
     #[storage(read, write), payable]
     fn send_fund();
