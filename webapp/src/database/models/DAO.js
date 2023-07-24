@@ -46,7 +46,11 @@ let dao = new Schema({
         type: String,
         require: false,
     },
-    
+    status: {
+        type: Number,
+        require: true,
+        default: -1
+    },
     created_at: {
         type: Date,
         required: true,

@@ -54,6 +54,18 @@ let proposal = new Schema({
         type: Number,
         required: false
     },
+    title: {
+        type: String,
+        required: true,
+    },
+    content: {
+        type: String,
+        required: true,
+    },
+    content_type: {
+        type: Number,
+        required: true
+    },
     created_at: {
         type: Date,
         required: true,
