@@ -1,18 +1,18 @@
 
 import { Button, Drawer, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
-import { Details } from "../../../components/proposal/Detail";
-import { setDaoDetailProps } from "../../../controller/dao/daoDetailSlice";
-import { useAppDispatch, useAppSelector } from "../../../controller/hooks";
-import { getDaoProposals } from "../../../core";
-import { useProposal } from "../../../hooks/useProposal";
+import { Details } from "src/components/proposal/Detail";
+import { setDaoDetailProps } from "src/controller/dao/daoDetailSlice";
+import { useAppDispatch, useAppSelector } from "src/controller/hooks";
+import { getDaoProposals } from "src/core";
+import { useProposal } from "src/hooks/useProposal";
 
 export const Proposals = () => {
     const dispatch = useAppDispatch();
-    const { proposals, currentProposal, dao } = useAppSelector(state => state.daoDetail);
+    const { proposals, daoFromDB } = useAppSelector(state => state.daoDetail);
     // const { convertDataToArray } = useProposal();
     const [openDetail, setOpenDetail] = useState(false);
-    const {convertPayoutProposalDataToArray} = useProposal();
+    // const {convertPayoutProposalDataToArray} = useProposal();
 
     const showDrawerDetail = () => {
         setOpenDetail(true);
@@ -90,27 +90,27 @@ export const Proposals = () => {
         },
         {
             title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
+            dataIndex: 'content',
+            key: 'content',
         },
         {
             title: 'Type',
-            key: 'proposalType',
+            key: 'proposal_type',
             render: (_, record) => (
-                <Tag color={colorMap(record.proposalType)}>{paymentTypeMap(record.proposalType)}</Tag>
+                <Tag color={colorMap(record.proposalType)}>{paymentTypeMap(record.proposal_type)}</Tag>
             )
         },
         {
-            title: "SUI",
-            dataIndex: "totalPayout",
-            key: "totalPayout"
+            title: "ETH",
+            dataIndex: "amount",
+            key: "amount"
         },
         {
             title: "Status",
             dataIndex: "status",
             key: "status",
             render: (_, record) => (
-                <Tag color={colorMap(record.executed  ? 2: record.status)}>{statusMap(record.executed ? 2 : record.status)}</Tag>
+                <Tag color={colorMap(record.executed ? 2 : record.status)}>{statusMap(record.executed ? 2 : record.status)}</Tag>
             )
         },
         {
@@ -126,7 +126,7 @@ export const Proposals = () => {
             key: 'actions',
             render: (_, record) => (
                 <Button type="primary" onClick={() => {
-                    dispatch(setDaoDetailProps({att: "currentProposal", value: record}))
+                    //dispatch(setDaoDetailProps({att: "currentProposal", value: record}))
                     showDrawerDetail()
                 }}>Vote</Button>
             )
@@ -136,21 +136,24 @@ export const Proposals = () => {
 
 
     useEffect(() => {
-        getDaoProposals(dao);
-    }, [dao])
+        if (daoFromDB) {
+            getDaoProposals(daoFromDB.address);
+        }
+
+    }, [daoFromDB])
 
     return (
         <>
-           <Table 
-           pagination={{
-            pageSize: 6
-           }}
-           dataSource={convertPayoutProposalDataToArray(proposals)} 
-           columns={columns} />
-
+            <Table
+                pagination={{
+                    pageSize: 6
+                }}
+                dataSource={proposals}
+                columns={columns} />
+            {/* 
              <Drawer title={currentProposal.title} size="large" placement="right" onClose={onCloseDetail} open={openDetail}>
                 <Details />
-            </Drawer>
+            </Drawer> */}
         </>
     )
 }

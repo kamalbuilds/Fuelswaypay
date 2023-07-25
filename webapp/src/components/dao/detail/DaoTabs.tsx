@@ -10,7 +10,7 @@ export const DaoTabs = () => {
         {
             key: '1',
             label: `Proposals`,
-            children:  <></>//<Proposals />,
+            children:  <Proposals />,
         },
         {
             key: '3',

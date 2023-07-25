@@ -3,7 +3,6 @@ import { useWallet } from '@suiet/wallet-kit';
 import { Button, Col, Divider, Drawer, Dropdown, Input, MenuProps, Popover, Row, Space, Statistic } from 'antd';
 import { useCallback, useState } from 'react';
 import { NewPayout } from 'src/components/proposal/NewPayout';
-import { NewVesting } from 'src/components/proposal/NewVesting';
 import { useAppSelector } from 'src/controller/hooks';
 import { addMember as addMemberAction, fundDao } from 'src/core';
 
@@ -28,21 +27,13 @@ export const DaoStatistic = () => {
   };
 
   const [open, setOpen] = useState(false);
-  const [openVestingForm, setOpenVestingForm] = useState(false);
+
   const showDrawer = () => {
     setOpen(true);
   };
 
   const onClose = () => {
     setOpen(false);
-  };
-
-  const showDrawerVestingForm = () => {
-    setOpenVestingForm(true);
-  };
-
-  const onCloseVestingForm = () => {
-    setOpenVestingForm(false);
   };
 
   const fund = useCallback(() => {
@@ -57,15 +48,10 @@ export const DaoStatistic = () => {
 
   const items: MenuProps['items'] = [
     {
-      label: 'Payout',
+      label: 'Funding',
       key: '1',
       //icon: <UserOutlined />,
       onClick: () => showDrawer()
-    },
-    {
-      label: 'Vesting',
-      key: '2',
-      onClick: () => showDrawerVestingForm()
     },
     {
       label: 'Governance',
@@ -140,12 +126,8 @@ export const DaoStatistic = () => {
         </Space>
 
       </Col>
-      <Drawer title="New Payout Proposal" size="large" placement="right" onClose={onClose} open={open}>
+      <Drawer title="New Proposal" size="large" placement="right" onClose={onClose} open={open}>
         <NewPayout />
-      </Drawer>
-
-      <Drawer title="New Vesting Proposal" size="large" placement="right" onClose={onCloseVestingForm} open={openVestingForm}>
-        <NewVesting />
       </Drawer>
     </Row>
   )
