@@ -109,6 +109,9 @@ abi DAO {
     fn get_count_proposal() -> u64;
 
     #[storage(read)]
+    fn get_count_member() -> u64;
+
+    #[storage(read)]
     fn get_proposal_by_id(proposal_id: u64) -> Option<Proposal>;
 
     #[storage(read)]
@@ -130,5 +133,8 @@ abi DAO {
     
     #[storage(read)]
     fn get_user_vote(address: Address, proposal_id: u64) -> Option<bool>;
+
+    #[storage(read)]
+    fn is_member(member: Address) -> bool;
 
 }

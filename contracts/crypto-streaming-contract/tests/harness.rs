@@ -114,6 +114,6 @@ async fn can_create_stream() {
     .await
     .unwrap().value;
 
-    assert!(new_balance < balance);
+    assert_eq!(new_balance, 19_000);
 
 }

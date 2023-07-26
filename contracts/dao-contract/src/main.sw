@@ -358,6 +358,7 @@ impl DAO for Contract {
             if (storage.whitelist_contributors.get(i).unwrap() == contributor) {
                 is_exist = true;
                 index = i;
+                break;
             }
             i += 1;
         }
@@ -492,6 +493,11 @@ impl DAO for Contract {
     }
 
     #[storage(read)]
+    fn get_count_member() -> u64 {
+        storage.members.len()
+    }
+
+    #[storage(read)]
     fn get_proposal_by_id(proposal_id: u64) -> Option<Proposal> {
        let proposal = if storage.proposals.len() - 1 < proposal_id {
                 Option::None
@@ -562,5 +568,19 @@ impl DAO for Contract {
     #[storage(read)]
     fn get_user_vote(address: Address, proposal_id: u64) -> Option<bool> {
         storage.voters.get((address, proposal_id))
+    }
+    #[storage(read)]
+    fn is_member(member: Address) -> bool {
+        let mut i = 0;
+        let mut is_existed = false;
+        while i < storage.members.len() {
+            if (member == storage.members.get(i).unwrap()) {
+                is_existed = true;
+                break;
+            }
+            i += 1;
+        }
+
+        is_existed
     }
 }
