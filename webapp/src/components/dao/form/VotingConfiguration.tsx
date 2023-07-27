@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'src/controller/hooks';
 import { headStyle } from "src/theme/layout";
 
 export const VotingConfiguration = () => {
-    const {quorum, voting_mode} = useAppSelector(state => state.daoForm)
+    const {voting_mode} = useAppSelector(state => state.daoForm)
     const dispatch = useAppDispatch();
     return (
         <Card title="Voting configuration" headStyle={headStyle}>
@@ -15,7 +15,7 @@ export const VotingConfiguration = () => {
                 </Radio.Group>
             </Form.Item>
 
-            <Form.Item name="quorum" initialValue={quorum} rules={[{ required: voting_mode !== 1, message: 'Missing quorum' }]}>
+            <Form.Item name="quorum" rules={[{ required: voting_mode !== 1, message: 'Missing quorum' }]} initialValue={100}>
                 <Input type='number' size='large' disabled={voting_mode === 1} placeholder='Percentage Number of Accepted Proposal (quorum)' suffix="%" />
             </Form.Item>
         </Card>

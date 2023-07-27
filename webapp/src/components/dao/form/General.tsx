@@ -13,7 +13,7 @@ export const General = () => {
                 <Input.TextArea size='large' />
             </Form.Item>
 
-            <Form.Item name="dao_type">
+            <Form.Item name="dao_type" initialValue={1}>
                 <Radio.Group>
                     <Radio value={1}>Membership DAO (Multisig)</Radio>
                     <Radio disabled value={2}>Token-based DAO (coming soon)</Radio>

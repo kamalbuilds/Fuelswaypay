@@ -1,12 +1,11 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, Radio, Space } from 'antd';
-import { useAppSelector } from 'src/controller/hooks';
 import { headStyle } from 'src/theme/layout';
 
 export const Governance = () => {
     return (
         <Card title="Governance configuration" headStyle={headStyle}>
-            <Form.Item name="open">
+            <Form.Item name="open" initialValue={1}>
                 <Radio.Group>
                     <Radio value={1}>Invited Members Only</Radio>
                     <Radio value={2}>Open to all</Radio>
