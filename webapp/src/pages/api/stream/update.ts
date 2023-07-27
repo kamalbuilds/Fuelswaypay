@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         } = req.body;
         if (owner && _id) {
             try {
-                await Stream.findOneAndUpdate({ owner: owner, _id: _id, status: -1 }, req.body);
+                await Stream.findOneAndUpdate({ owner: owner, _id: _id}, req.body);
                 res.json({ success: true });
             } catch (error) {
                 console.log(error)

@@ -1,18 +1,17 @@
 import connect from 'src/database/connect';
 import { NextApiRequest, NextApiResponse } from 'next';
-import DAO from 'src/database/models/DAO';
+import Proposal from "src/database/models/Proposal";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
-        // need to validate
         const {
-            owner,
-            _id,
+            dao_address
         } = req.body;
-        if (owner && _id) {
+        if (dao_address) {
+        
             try {
-                await DAO.findOneAndUpdate({ owner: owner, _id: _id}, req.body);
-                res.json({ success: true });
+                let proposals = await Proposal.find({dao_address: dao_address});
+                return res.status(200).send(proposals);
             } catch (error) {
                 console.log(error)
                 return res.status(500).send(error.message);
