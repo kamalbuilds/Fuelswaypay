@@ -31,7 +31,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 20,
+              "type": 18,
               "typeArguments": null
             }
           ]
@@ -42,7 +42,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 20,
+              "type": 18,
               "typeArguments": null
             }
           ]
@@ -53,7 +53,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 20,
+              "type": 18,
               "typeArguments": null
             }
           ]
@@ -64,7 +64,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 20,
+              "type": 18,
               "typeArguments": null
             }
           ]
@@ -75,7 +75,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 20,
+              "type": 18,
               "typeArguments": null
             }
           ]
@@ -89,37 +89,37 @@ const _abi = {
       "components": [
         {
           "name": "__tuple_element",
-          "type": 18,
-          "typeArguments": null
-        },
-        {
-          "name": "__tuple_element",
           "type": 16,
           "typeArguments": null
         },
         {
           "name": "__tuple_element",
-          "type": 20,
+          "type": 14,
           "typeArguments": null
         },
         {
           "name": "__tuple_element",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "__tuple_element",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "__tuple_element",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "__tuple_element",
-          "type": 20,
+          "type": 18,
+          "typeArguments": null
+        },
+        {
+          "name": "__tuple_element",
+          "type": 18,
           "typeArguments": null
         }
       ],
@@ -135,7 +135,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -146,7 +146,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -157,7 +157,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -168,7 +168,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -179,7 +179,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -190,7 +190,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -201,7 +201,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -212,7 +212,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -223,7 +223,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -234,7 +234,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 16,
+              "type": 14,
               "typeArguments": null
             }
           ]
@@ -252,7 +252,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -263,7 +263,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -274,7 +274,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -285,7 +285,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -296,7 +296,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -307,7 +307,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -318,7 +318,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -329,7 +329,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -340,7 +340,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -351,7 +351,7 @@ const _abi = {
           "typeArguments": [
             {
               "name": "",
-              "type": 19,
+              "type": 17,
               "typeArguments": null
             }
           ]
@@ -494,7 +494,7 @@ const _abi = {
       "components": [
         {
           "name": "__array_element",
-          "type": 16,
+          "type": 14,
           "typeArguments": null
         }
       ],
@@ -518,12 +518,12 @@ const _abi = {
       "components": [
         {
           "name": "Address",
-          "type": 16,
+          "type": 14,
           "typeArguments": null
         },
         {
           "name": "ContractId",
-          "type": 17,
+          "type": 15,
           "typeArguments": null
         }
       ],
@@ -590,7 +590,7 @@ const _abi = {
         },
         {
           "name": "IncorrectAssetId",
-          "type": 17,
+          "type": 15,
           "typeArguments": null
         },
         {
@@ -633,18 +633,6 @@ const _abi = {
     },
     {
       "typeId": 14,
-      "type": "str[14]",
-      "components": null,
-      "typeParameters": null
-    },
-    {
-      "typeId": 15,
-      "type": "str[19]",
-      "components": null,
-      "typeParameters": null
-    },
-    {
-      "typeId": 16,
       "type": "struct Address",
       "components": [
         {
@@ -656,7 +644,7 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 17,
+      "typeId": 15,
       "type": "struct ContractId",
       "components": [
         {
@@ -668,12 +656,12 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 18,
+      "typeId": 16,
       "type": "struct DaoConfig",
       "components": [
         {
           "name": "quorum",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
@@ -683,34 +671,34 @@ const _abi = {
         },
         {
           "name": "dao_type",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         }
       ],
       "typeParameters": null
     },
     {
-      "typeId": 19,
+      "typeId": 17,
       "type": "struct Proposal",
       "components": [
         {
           "name": "id",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "owner",
-          "type": 16,
+          "type": 14,
           "typeArguments": null
         },
         {
           "name": "proposal_type",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "status",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
@@ -720,22 +708,22 @@ const _abi = {
         },
         {
           "name": "amount",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "start_date",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "end_date",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "created_date",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
@@ -745,12 +733,12 @@ const _abi = {
         },
         {
           "name": "agree",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "disagree",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
@@ -762,7 +750,7 @@ const _abi = {
       "typeParameters": null
     },
     {
-      "typeId": 20,
+      "typeId": 18,
       "type": "u64",
       "components": null,
       "typeParameters": null
@@ -797,7 +785,7 @@ const _abi = {
       "inputs": [
         {
           "name": "new_member",
-          "type": 16,
+          "type": 14,
           "typeArguments": null
         }
       ],
@@ -821,7 +809,7 @@ const _abi = {
       "inputs": [
         {
           "name": "proposal_type",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
@@ -831,17 +819,17 @@ const _abi = {
         },
         {
           "name": "amount",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "start_date",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
           "name": "end_date",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
@@ -853,7 +841,7 @@ const _abi = {
       "name": "create_proposal",
       "output": {
         "name": "",
-        "type": 20,
+        "type": 18,
         "typeArguments": null
       },
       "attributes": [
@@ -870,7 +858,7 @@ const _abi = {
       "inputs": [
         {
           "name": "proposal_id",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         }
       ],
@@ -895,7 +883,7 @@ const _abi = {
       "name": "get_balance",
       "output": {
         "name": "",
-        "type": 20,
+        "type": 18,
         "typeArguments": null
       },
       "attributes": null
@@ -905,7 +893,7 @@ const _abi = {
       "name": "get_count_member",
       "output": {
         "name": "",
-        "type": 20,
+        "type": 18,
         "typeArguments": null
       },
       "attributes": [
@@ -922,7 +910,7 @@ const _abi = {
       "name": "get_count_proposal",
       "output": {
         "name": "",
-        "type": 20,
+        "type": 18,
         "typeArguments": null
       },
       "attributes": [
@@ -978,7 +966,7 @@ const _abi = {
       "inputs": [
         {
           "name": "offset",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         }
       ],
@@ -1001,7 +989,7 @@ const _abi = {
       "inputs": [
         {
           "name": "proposal_id",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         }
       ],
@@ -1012,7 +1000,7 @@ const _abi = {
         "typeArguments": [
           {
             "name": "",
-            "type": 19,
+            "type": 17,
             "typeArguments": null
           }
         ]
@@ -1030,7 +1018,7 @@ const _abi = {
       "inputs": [
         {
           "name": "offset",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         }
       ],
@@ -1053,12 +1041,12 @@ const _abi = {
       "inputs": [
         {
           "name": "address",
-          "type": 16,
+          "type": 14,
           "typeArguments": null
         },
         {
           "name": "proposal_id",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         }
       ],
@@ -1087,7 +1075,7 @@ const _abi = {
       "inputs": [
         {
           "name": "offset",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         }
       ],
@@ -1110,7 +1098,7 @@ const _abi = {
       "inputs": [
         {
           "name": "config",
-          "type": 18,
+          "type": 16,
           "typeArguments": null
         },
         {
@@ -1144,7 +1132,7 @@ const _abi = {
       "inputs": [
         {
           "name": "member",
-          "type": 16,
+          "type": 14,
           "typeArguments": null
         }
       ],
@@ -1227,7 +1215,7 @@ const _abi = {
       "inputs": [
         {
           "name": "old_member",
-          "type": 16,
+          "type": 14,
           "typeArguments": null
         }
       ],
@@ -1257,15 +1245,15 @@ const _abi = {
       },
       "attributes": [
         {
-          "name": "payable",
-          "arguments": []
-        },
-        {
           "name": "storage",
           "arguments": [
             "read",
             "write"
           ]
+        },
+        {
+          "name": "payable",
+          "arguments": []
         }
       ]
     },
@@ -1273,7 +1261,7 @@ const _abi = {
       "inputs": [
         {
           "name": "proposal_id",
-          "type": 20,
+          "type": 18,
           "typeArguments": null
         },
         {
@@ -1392,16 +1380,16 @@ const _abi = {
       "logId": 11,
       "loggedType": {
         "name": "",
-        "type": 14,
-        "typeArguments": null
+        "type": 11,
+        "typeArguments": []
       }
     },
     {
       "logId": 12,
       "loggedType": {
         "name": "",
-        "type": 15,
-        "typeArguments": null
+        "type": 11,
+        "typeArguments": []
       }
     },
     {
@@ -1518,22 +1506,6 @@ const _abi = {
     },
     {
       "logId": 27,
-      "loggedType": {
-        "name": "",
-        "type": 11,
-        "typeArguments": []
-      }
-    },
-    {
-      "logId": 28,
-      "loggedType": {
-        "name": "",
-        "type": 11,
-        "typeArguments": []
-      }
-    },
-    {
-      "logId": 29,
       "loggedType": {
         "name": "",
         "type": 11,
