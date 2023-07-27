@@ -15,12 +15,12 @@ export const DaoTabs = () => {
         {
             key: '3',
             label: `Treasury Details`,
-            children: <></>//<TreasuryInfo />,
+            children: <TreasuryInfo />,
         },
         {
             key: '4',
             label: `Members`,
-            children: <></>//<Members />,
+            children: <Members />,
         },
     ];
 

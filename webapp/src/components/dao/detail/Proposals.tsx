@@ -1,26 +1,15 @@
 
-import { Button, Drawer, Table, Tag } from "antd";
-import { useEffect, useState } from "react";
-import { Details } from "src/components/proposal/Detail";
-import { setDaoDetailProps } from "src/controller/dao/daoDetailSlice";
-import { useAppDispatch, useAppSelector } from "src/controller/hooks";
+import { Button, Table, Tag } from "antd";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useAppSelector } from "src/controller/hooks";
 import { getDaoProposals } from "src/core";
-import { useProposal } from "src/hooks/useProposal";
 
 export const Proposals = () => {
-    const dispatch = useAppDispatch();
+
+    const router = useRouter();
     const { proposals, daoFromDB } = useAppSelector(state => state.daoDetail);
-    // const { convertDataToArray } = useProposal();
-    const [openDetail, setOpenDetail] = useState(false);
-    // const {convertPayoutProposalDataToArray} = useProposal();
 
-    const showDrawerDetail = () => {
-        setOpenDetail(true);
-    };
-
-    const onCloseDetail = () => {
-        setOpenDetail(false);
-    };
     const colorMap = (pt: number) => {
         let color = "blue";
         if (!pt) return color;
@@ -127,8 +116,10 @@ export const Proposals = () => {
             render: (_, record) => (
                 <Button type="primary" onClick={() => {
                     //dispatch(setDaoDetailProps({att: "currentProposal", value: record}))
-                    showDrawerDetail()
-                }}>Vote</Button>
+                    // showDrawerDetail()
+                    router.push(`/proposal/${daoFromDB.address}/${record.id}`)
+
+                }}>Detail</Button>
             )
 
         },
@@ -136,11 +127,11 @@ export const Proposals = () => {
 
 
     useEffect(() => {
-        if (daoFromDB) {
+        if (daoFromDB.address) {
             getDaoProposals(daoFromDB.address);
         }
 
-    }, [daoFromDB])
+    }, [daoFromDB.address])
 
     return (
         <>

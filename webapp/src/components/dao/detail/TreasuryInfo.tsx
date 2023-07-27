@@ -1,17 +1,19 @@
 import { CopyOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Divider, Row, Statistic, Table } from "antd";
-import { useAppSelector } from "../../../controller/hooks";
-import { useTreasury } from "../../../hooks/useTreasury";
-import { useAddress } from "../../../hooks/useAddress";
+import { useAppSelector } from "src/controller/hooks";
+import { useTreasury } from "src/hooks/useTreasury";
+import { useAddress } from "src/hooks/useAddress";
+import { useEffect } from "react";
+import { getContributorFunds } from "src/core";
 
 export const TreasuryInfo = () => {
 
-  const { dao } = useAppSelector(state => state.daoDetail);
+  const { daoFromDB, treasury } = useAppSelector(state => state.daoDetail);
   const { nameMap } = useAppSelector(state => state.name);
   const { getShortAddress, getFriendlyName } = useAddress();
   const { getFundStatistic } = useTreasury();
 
-  const { totalFunds, memberFunds, notMemberFunds } = getFundStatistic(dao.contributorFunds, dao.members);
+  // const { totalFunds, memberFunds, notMemberFunds } = getFundStatistic(dao.contributorFunds, dao.members);
   const columns = [
     {
       title: 'Address',
@@ -22,33 +24,26 @@ export const TreasuryInfo = () => {
       )
     },
     {
-      title: '.SDAO Name',
-      key: 'contributor_sdao_name',
-      dataIndex: "contributor_sdao_name",
-      render: (_, record) => {
-        let friendlyName = getFriendlyName(nameMap, record.address);
-        return (<>
-          {friendlyName ? <Button type="primary">{friendlyName}</Button> : <Button>Unknown</Button>}
-        </>
-        )
-      }
-    },
-    {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
     },
     {
-      title: 'Amount (SUI)',
+      title: 'Amount (ETH)',
       dataIndex: 'amount',
       key: 'amount',
     },
   ];
 
+  useEffect(() => {
+       if (daoFromDB.address) {
+        getContributorFunds(0);
+       }
+  }, [daoFromDB.address])
   return (
     <Card title="Funding History" size="default">
       <Row gutter={8}>
-        <Col span={8}>
+        {/* <Col span={8}>
           <Card bordered={false}>
             <Statistic
               title="Total"
@@ -77,7 +72,7 @@ export const TreasuryInfo = () => {
               precision={3}
             />
           </Card>
-        </Col>
+        </Col> */}
       </Row>
       <Divider />
       <Table
@@ -85,16 +80,16 @@ export const TreasuryInfo = () => {
           pageSize: 6
         }}
         dataSource={
-          dao.contributorFunds.map(({ address, amount }, i) => {
+          treasury.map(({ address, amount }, i) => {
             return {
               key: `c-${i}`,
               address: address,
-              type: dao.members.indexOf(address) !== -1 ? "Member" : "Contributor",
+              type: "Contributor",
               amount: amount,
             }
           })
 
-        } columns={columns} />;
+        } columns={columns} />
 
     </Card>
   )
