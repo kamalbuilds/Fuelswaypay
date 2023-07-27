@@ -23,7 +23,6 @@ use {
     }
 };
 
-
 enum InvalidError {
     CannotReinitialize: (),
     // MemberNotExists: (),
@@ -152,14 +151,17 @@ impl DAO for Contract {
         while i < storage.whitelist_contributors.len() {
             if (storage.whitelist_contributors.get(i).unwrap() == sender) {
                 is_exist = true;
+                break;
             }
             i += 1;
         }
         require(is_exist, InvalidError::NotInWhitelistContributor);
+       
         require(asset_id == BASE_ASSET_ID, InvalidError::IncorrectAssetId(asset_id));
         let amount = msg_amount();
-        let contributed_amount = storage.funds.get(sender).unwrap_or(0);
-        storage.funds.insert(sender, contributed_amount + amount);
+        let mut contributed_amount = storage.funds.get(sender).unwrap_or(0);
+        contributed_amount = contributed_amount + amount;
+        storage.funds.insert(sender, contributed_amount);
     }
 
     #[storage(read, write)]
@@ -262,7 +264,6 @@ impl DAO for Contract {
 
         storage.proposals.set(proposal_id, unwrap_proposal);
         if (unwrap_proposal.proposal_type == 1) {
-            log("start transfer");
             transfer(unwrap_proposal.amount, BASE_ASSET_ID, unwrap_proposal.recipient);
         } 
         if (unwrap_proposal.proposal_type == 2) {
@@ -270,9 +271,8 @@ impl DAO for Contract {
                 Identity::Address(_) => Option::None,
                 Identity::ContractId(id) => Option::Some(id),
             };
-            let funding_dao = abi(DAO, Option::unwrap(contract_id).into());
-            log("Calling funding dao");
-            funding_dao.send_fund {gas: 5000, asset_id: BASE_ASSET_ID.into(), coins: unwrap_proposal.amount}();
+            let funding_dao = abi(AnotherDAO, Option::unwrap(contract_id).into());
+            funding_dao.send_fund {coins: unwrap_proposal.amount}();
         }
         
     }

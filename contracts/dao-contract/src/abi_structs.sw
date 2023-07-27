@@ -138,3 +138,8 @@ abi DAO {
     fn is_member(member: Address) -> bool;
 
 }
+
+abi AnotherDAO {
+    #[storage(read, write), payable]
+    fn send_fund();
+}
