@@ -11,7 +11,7 @@ export const NewPayout = () => {
         createPayoutProposal(values);
     };
     return (
-        <Form onFinish={onFinish} layout="vertical">
+        <Form onFinish={onFinish} initialValues={{proposal_type: 1}} layout="vertical">
             <Card size="small" title="General">
                 <Form.Item label="Title" name="title" rules={[{ required: true, message: 'Missing title' }]}>
                     <Input size={"large"} placeholder="Title" />
@@ -41,14 +41,14 @@ export const NewPayout = () => {
             <Divider />
             <Card size="small" title="Execution Settings">
 
-                <Form.Item required={true} label="Proposal type" name="proposal_type" initialValue={1} rules={[{ required: true, message: 'Missing proposal type' }]}>
-                    <Select defaultValue={1} options={[
+                <Form.Item required={true} label="Proposal type" name="proposal_type" rules={[{ required: true, message: 'Missing proposal type' }]}>
+                    <Select options={[
                         { label: "Payout", value: 1 },
                         { label: "Funding another DAO", value: 2 }
                     ]} />
                 </Form.Item>
-                <Form.Item required={true} label="Allow early exection" name="allow_early_execution" initialValue={true}>
-                    <Switch checkedChildren="Yes" unCheckedChildren="No" defaultChecked />
+                <Form.Item required={true} label="Allow early exection" name="allow_early_execution">
+                    <Switch checkedChildren="Yes" unCheckedChildren="No" defaultChecked/>
                 </Form.Item>
 
 
