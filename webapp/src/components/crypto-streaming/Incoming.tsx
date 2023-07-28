@@ -1,4 +1,4 @@
-import { Alert, Button, Collapse, Space, Table, Tag } from "antd";
+import { Alert, Button, Collapse, Descriptions, Space, Table, Tag } from "antd";
 import { useEffect } from "react";
 
 import { CopyOutlined } from "@ant-design/icons";
@@ -8,18 +8,20 @@ import { getIncomingStreams, withdrawStream as withdrawStreamAction } from "src/
 import { useAddress } from "src/hooks/useAddress";
 import PaymentProcess from "./PaymentProcess";
 import { useDate } from "src/hooks/useDate";
+import { useStream } from "src/hooks/useStream";
 
 
 export const Incoming = () => {
-    const { getUnlockEveryIn } = useDate();
+    const { getUnlockEveryIn, getLocalString } = useDate();
     const { getShortAddress } = useAddress();
+    const { getPrevilegeText } = useStream()
     const { account } = useAppSelector(state => state.account);
     const { incomingStreams } = useAppSelector(state => state.stream);
     const { withdrawStream } = useAppSelector(state => state.process)
 
 
-    const doWithdraw = (streamId: string) => {
-        // withdrawStreamAction( streamId);
+    const doWithdraw = (stream: Stream) => {
+        withdrawStreamAction(stream);
     }
 
     const colorMap = (pt: number) => {
@@ -61,27 +63,22 @@ export const Incoming = () => {
 
     const columns = [
         {
-            title: 'Title',
-            dataIndex: 'title',
-            key: 'title',
-        },
-        {
             title: 'Sender',
             dataIndex: 'owner',
             key: 'owner',
             render: (_, record) => (
 
-                <Button icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(record.owner)}>
+                <Button icon={<CopyOutlined />} type="primary" onClick={() => navigator.clipboard.writeText(record.owner)}>
                     {getShortAddress(record.owner)}
                 </Button>
 
             )
         },
         {
-            title: "Unlock Progress",
-            key: "unlockAmount",
+            title: "Payout Progress",
+            key: "progress",
             render: (_, record) => (
-                <PaymentProcess stream={record} key={`payment-process-${record.id}`} />
+                <PaymentProcess stream={record} key={`payment-progress-${record.id}`} />
             )
         },
         {
@@ -90,15 +87,25 @@ export const Incoming = () => {
             render: (dataIndex, record) => (
                 <Collapse
                     items={[{
-                        key: `dataIndex`,
+                        key: `${dataIndex}`,
                         label: `${record.unlock_amount_each_time} ETH / ${record.unlock_every} ${getUnlockEveryIn(record.unlock_every_type)}`,
-                        children: <>
-                            Unlock: {record.unlock_amount_each_time} ETH / {record.unlock_every} {getUnlockEveryIn(record.unlock_every_type)}
-                            <br />
-                            Max Unlocked: {record.unlock_number}
-                            <br />
-                            Start Date: {new Date(record.start_date).toLocaleString()}
-                        </>
+                        children: <Descriptions column={1} size="small" style={{ maxWidth: 250 }}>
+                            <Descriptions.Item label="Title">
+                                {record.title}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Max Unlocked">
+                                {record.unlock_number}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Start Date">
+                                {getLocalString(record.start_date)}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Cancel Previlege">
+                                {getPrevilegeText(record.cancel_previlege)}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Transfer Previlege">
+                                {getPrevilegeText(record.transfer_previlege)}
+                            </Descriptions.Item>
+                        </Descriptions>
                     }]}
                 />
 
@@ -112,15 +119,13 @@ export const Incoming = () => {
 
                 <Collapse
                     items={[{
-                        key: `dataIndex`,
+                        key: `${dataIndex}`,
                         label: `${record.total_fund - record.withdrew}`,
-                        children: <>
-                            Balance: {record.total_fund - record.withdrew}
-                            <br />
-                            Funds: {record.total_fund}
-                            <br />
-                            Withdrew: {record.withdrew}
-                        </>
+                        children: <Descriptions column={1} size="small" style={{maxWidth: 100}}>
+                            <Descriptions.Item label="Balance">{record.total_fund - record.withdrew}</Descriptions.Item>
+                            <Descriptions.Item label="Funds">{record.total_fund}</Descriptions.Item>
+                            <Descriptions.Item label="Withdrew">{record.withdrew}</Descriptions.Item>
+                        </Descriptions>
                     }]}
                 />
 
@@ -138,9 +143,18 @@ export const Incoming = () => {
             title: 'Actions',
             key: 'actions',
             render: (_, record) => (
-                <Button disabled={
-                    record.status !== 1
-                } type="primary" onClick={() => doWithdraw(record.id)} loading={withdrawStream.processing}>Withdraw</Button>
+                <Space.Compact block>
+                    <Button disabled={
+                        record.status !== 1
+                    } type="primary" onClick={() => doWithdraw(record)} loading={withdrawStream.processing}>Withdraw</Button>
+                    <Button disabled={
+                        record.status === 3 || [2, 3].indexOf(record.cancel_previlege) === -1
+                    } type="default" onClick={() => { }} loading={withdrawStream.processing}>Cancel</Button>
+                    <Button disabled={
+                        record.status === 3 || [2, 3].indexOf(record.transfer_previlege) === -1
+                    } type="default" onClick={() => { }} loading={withdrawStream.processing}>Transfer</Button>
+                </Space.Compact>
+
 
             )
 
@@ -157,7 +171,7 @@ export const Incoming = () => {
 
     return (
         <Space wrap direction="vertical">
-            <Alert showIcon message="Kindly be aware that you can initiate a withdrawal only if the stream balance is greater than or equal to the unlocked amount minus the amount already withdrawn. If this condition is not met, it is advisable to contact the sender and request additional funding for the stream" type="info" />
+            <Alert showIcon message="Kindly be aware that you can initiate a withdrawal only if the stream balance is greater than or equal to the unlocked amount minus the amount already withdrawn. If this condition is not met, it is advisable to contact the sender and request additional funding for the stream" type="success" />
             <Table
                 pagination={{
                     pageSize: 10

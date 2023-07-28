@@ -1,4 +1,4 @@
-import { Alert, Button, Collapse, Divider, Input, Popover, Space, Table, Tag } from "antd";
+import { Alert, Button, Collapse, Descriptions, Divider, Input, Popover, Space, Table, Tag } from "antd";
 import { useCallback, useEffect, useState } from "react";
 
 import { CopyOutlined } from "@ant-design/icons";
@@ -8,10 +8,12 @@ import { useAddress } from "src/hooks/useAddress";
 import PaymentProcess from "./PaymentProcess";
 import { useDate } from "src/hooks/useDate";
 import { ColumnsType } from "antd/es/table";
+import { useStream } from "src/hooks/useStream";
 
 export const Outgoing = () => {
-    const { getUnlockEveryIn } = useDate();
+    const { getUnlockEveryIn, getLocalString } = useDate();
     const { getShortAddress } = useAddress();
+    const { getPrevilegeText } = useStream()
     const { account } = useAppSelector(state => state.account);
     const { outgoingStreams } = useAppSelector(state => state.stream);
     const [fundAmount, setFundAmount] = useState("");
@@ -69,17 +71,11 @@ export const Outgoing = () => {
 
     const columns: ColumnsType<any> = [
         {
-            title: 'Title',
-            dataIndex: 'title',
-            key: 'title',
-        },
-        {
             title: "Recipient",
             dataIndex: "recipient",
             key: "recipient",
             render: (_, record) => (
-
-                <Button icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(record.recipient)}>
+                <Button icon={<CopyOutlined />} type="primary" onClick={() => navigator.clipboard.writeText(record.recipient)}>
                     {getShortAddress(record.recipient)}
                 </Button>
 
@@ -87,10 +83,10 @@ export const Outgoing = () => {
         },
 
         {
-            title: "Unlock Progress",
-            key: "unlockAmount",
+            title: "Payout Progress",
+            key: "progress",
             render: (_, record) => (
-                <PaymentProcess stream={record} key={`payment-process-${record.id}`} />
+                <PaymentProcess stream={record} key={`payment-progress-${record.id}`} />
             )
         },
         {
@@ -99,15 +95,25 @@ export const Outgoing = () => {
             render: (dataIndex, record) => (
                 <Collapse
                     items={[{
-                        key: `dataIndex`,
+                        key: `${dataIndex}`,
                         label: `${record.unlock_amount_each_time} ETH / ${record.unlock_every} ${getUnlockEveryIn(record.unlock_every_type)}`,
-                        children: <>
-                            Unlock: {record.unlock_amount_each_time} ETH / {record.unlock_every} {getUnlockEveryIn(record.unlock_every_type)}
-                            <br />
-                            Max Unlocked: {record.unlock_number}
-                            <br />
-                            Start Date: {new Date(record.start_date).toLocaleString()}
-                        </>
+                        children: <Descriptions column={1} size="small" style={{ maxWidth: 250 }}>
+                            <Descriptions.Item label="Title">
+                                {record.title}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Max Unlocked">
+                                {record.unlock_number}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Start Date">
+                                {getLocalString(record.start_date)}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Cancel Previlege">
+                                {getPrevilegeText(record.cancel_previlege)}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Transfer Previlege">
+                                {getPrevilegeText(record.transfer_previlege)}
+                            </Descriptions.Item>
+                        </Descriptions>
                     }]}
                 />
 
@@ -118,21 +124,19 @@ export const Outgoing = () => {
             dataIndex: "balance",
             key: "balance",
             render: (dataIndex, record) => (
-            
+
                 <Collapse
-                items={[{
-                    key: `dataIndex`,
-                    label: `${record.total_fund - record.withdrew}`,
-                    children: <>
-                    Balance: {record.total_fund - record.withdrew}
-                    <br />
-                    Funds: {record.total_fund}
-                    <br />
-                    Withdrew: {record.withdrew}
-                </>
-                }]}
-            />
-            
+                    items={[{
+                        key: `${dataIndex}`,
+                        label: `${record.total_fund - record.withdrew}`,
+                        children: <Descriptions column={1} size="small" style={{maxWidth: 100}}>
+                            <Descriptions.Item label="Balance">{record.total_fund - record.withdrew}</Descriptions.Item>
+                            <Descriptions.Item label="Funds">{record.total_fund}</Descriptions.Item>
+                            <Descriptions.Item label="Withdrew">{record.withdrew}</Descriptions.Item>
+                        </Descriptions>
+                    }]}
+                />
+
             )
         },
         {
@@ -147,26 +151,36 @@ export const Outgoing = () => {
             title: 'Actions',
             key: 'actions',
             render: (_, record) => (
+                <Space.Compact block>
+                    <Popover
+                        content={
+                            <>
+                                <Input name='adress' type="number" suffix="ETH" value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
+                                <Divider />
+                                <Button disabled={
+                                    record.status !== 1
+                                } type='primary' onClick={() => doFund(record)} loading={fundStream.processing}>Send</Button>
+                            </>
+                        }
+                        title="Amount"
+                        trigger="click"
+                        open={openFundStreamPopup[record.id]}
+                        onOpenChange={() => handleOpenFundStreamPopupChange(!openFundStreamPopup[record.id], record.id)}
+                    >
+                        <Button disabled={
+                            record.status !== 1
+                        } type="primary">Fund</Button>
+                    </Popover>
 
-                <Popover
-                    content={
-                        <>
-                            <Input name='adress' value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
-                            <Divider />
-                            <Button disabled={
-                                record.status !== 1
-                            } type='primary' onClick={() => doFund(record)} loading={fundStream.processing}>Fund</Button>
-                        </>
-                    }
-                    title="Amount"
-                    trigger="click"
-                    open={openFundStreamPopup[record.id]}
-                    onOpenChange={() => handleOpenFundStreamPopupChange(!openFundStreamPopup[record.id], record.id)}
-                >
                     <Button disabled={
-                        record.status !== 1
-                    } type="primary">Fund</Button>
-                </Popover>
+                        record.status === 3 || [1, 3].indexOf(record.cancel_previlege) === -1
+                    } type="default" onClick={() => { }} loading={fundStream.processing}>Cancel</Button>
+                    <Button disabled={
+                        record.status === 3 || [1, 3].indexOf(record.cancel_previlege) === -1
+                    } type="default" onClick={() => { }} loading={fundStream.processing}>Transfer</Button>
+                </Space.Compact>
+
+
 
             )
 
@@ -184,7 +198,7 @@ export const Outgoing = () => {
 
     return (
         <Space wrap direction="vertical">
-            <Alert showIcon message="Please note that the recipient can proceed with a withdrawal only if the stream balance is equal to or greater than the unlocked amount minus the previously withdrawn amount. If this requirement is not met, it is necessary for you, as the sender, to provide additional funding for the stream." type="info" />
+            <Alert showIcon message="Please note that the recipient can proceed with a withdrawal only if the stream balance is equal to or greater than the unlocked amount minus the previously withdrawn amount. If this requirement is not met, it is necessary for you, as the sender, to provide additional funding for the stream." type="success" />
             <Table
                 pagination={{
                     pageSize: 10
