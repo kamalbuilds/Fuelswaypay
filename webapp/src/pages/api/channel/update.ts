@@ -6,12 +6,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
         // need to validate
         const {
-            owner,
+            payer,
             _id,
         } = req.body;
-        if (owner && _id) {
+        if (payer && _id) {
             try {
-                await Channel.findOneAndUpdate({ owner: owner, _id: _id, status: -1 }, req.body);
+                await Channel.findOneAndUpdate({ payer: payer, _id: _id }, req.body);
                 res.json({ success: true });
             } catch (error) {
                 console.log(error)

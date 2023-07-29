@@ -5,14 +5,13 @@ import Channel from "src/database/models/Channel";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
         const {
-            owner,
-            _id
+            payee
         } = req.body;
-        if (owner && _id) {
+        if (payee) {
         
             try {
-                let channel = await Channel.findById(_id);
-                return res.status(200).send(channel);
+                let channels = await Channel.find({payee: payee});
+                return res.status(200).send(channels);
             } catch (error) {
                 console.log(error)
                 return res.status(500).send(error.message);

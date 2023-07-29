@@ -1,19 +1,17 @@
 import connect from 'src/database/connect';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Channel from 'src/database/models/Channel';
+import Channel from "src/database/models/Channel";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
-        // need to validate
         const {
-            payer,
-            title,
+            payer
         } = req.body;
-        if (payer && title) {
+        if (payer) {
+        
             try {
-                let channel = new Channel(req.body);
-                let savedChannel = await channel.save();
-                return res.status(200).send(savedChannel);
+                let channels = await Channel.find({payer: payer});
+                return res.status(200).send(channels);
             } catch (error) {
                 console.log(error)
                 return res.status(500).send(error.message);

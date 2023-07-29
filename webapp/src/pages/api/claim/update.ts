@@ -1,19 +1,18 @@
 import connect from 'src/database/connect';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Channel from 'src/database/models/Channel';
+import Claim from 'src/database/models/Claim';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
         // need to validate
         const {
             payer,
-            title,
+            _id,
         } = req.body;
-        if (payer && title) {
+        if (payer && _id) {
             try {
-                let channel = new Channel(req.body);
-                let savedChannel = await channel.save();
-                return res.status(200).send(savedChannel);
+                await Claim.findOneAndUpdate({ payer: payer, _id: _id}, req.body);
+                res.json({ success: true });
             } catch (error) {
                 console.log(error)
                 return res.status(500).send(error.message);

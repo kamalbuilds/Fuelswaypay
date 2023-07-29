@@ -1,17 +1,17 @@
 import connect from 'src/database/connect';
 import { NextApiRequest, NextApiResponse } from 'next';
-import Channel from "src/database/models/Channel";
+import Claim from "src/database/models/Claim";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
         const {
-            owner
+            channel_address
         } = req.body;
-        if (owner) {
+        if (channel_address) {
         
             try {
-                let channels = await Channel.find({owner: owner});
-                return res.status(200).send(channels);
+                let claims = await Claim.find({channel_address: channel_address});
+                return res.status(200).send(claims);
             } catch (error) {
                 console.log(error)
                 return res.status(500).send(error.message);
