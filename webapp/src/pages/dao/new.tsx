@@ -1,26 +1,16 @@
 import { Col, Divider, Form, Row, Space } from "antd";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { DAOCreationProgress } from "src/components/dao/DAOCreationProgress";
-
 import { General, Governance, KYC, ReviewAndApprove, VotingConfiguration } from "src/components/dao/form";
 import { WhitelistContributors } from "src/components/dao/form/WhitelistContributors";
-import { useAppDispatch, useAppSelector } from "src/controller/hooks";
-import { getDaoDetailFromDB, updateDAO } from "src/core";
+import { saveDAO } from "src/core";
 import { formLayout, formStyle } from "src/theme/layout";
-
-export default function DaoAddress() {
-    const {id} = useRouter().query;
+export default function New() {
+    const router = useRouter();
     const [form] = Form.useForm();
     const onFinish = (values: any) => {
-        updateDAO(values);
+        saveDAO(values).then(data => router.push(`/dao/edit/${data._id}`));
     };
-
-    useEffect(() => {
-        if (id) {
-            getDaoDetailFromDB(id, form);
-        }
-    }, [id])
     return (
         <Form
             form={form}
@@ -37,7 +27,7 @@ export default function DaoAddress() {
                 <Col span={16}>
 
                     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-                        <General />
+                    <General />
                         <Governance />
                         <VotingConfiguration />
                         <WhitelistContributors />
@@ -50,5 +40,6 @@ export default function DaoAddress() {
                 </Col>
             </Row>
         </Form>
+
     )
 }
