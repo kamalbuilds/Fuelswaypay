@@ -165,6 +165,11 @@ const _abi = {
     {
       "inputs": [
         {
+          "name": "hash",
+          "type": 3,
+          "typeArguments": null
+        },
+        {
           "name": "amount",
           "type": 8,
           "typeArguments": null
@@ -290,15 +295,15 @@ const _abi = {
       },
       "attributes": [
         {
+          "name": "payable",
+          "arguments": []
+        },
+        {
           "name": "storage",
           "arguments": [
             "read",
             "write"
           ]
-        },
-        {
-          "name": "payable",
-          "arguments": []
         }
       ]
     }

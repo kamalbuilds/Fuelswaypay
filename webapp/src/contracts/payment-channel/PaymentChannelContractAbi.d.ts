@@ -40,7 +40,7 @@ interface PaymentChannelContractAbiInterface extends Interface {
     send_fund: FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: 'claim_payment', values: [BigNumberish, BigNumberish, string]): Uint8Array;
+  encodeFunctionData(functionFragment: 'claim_payment', values: [string, BigNumberish, BigNumberish, string]): Uint8Array;
   encodeFunctionData(functionFragment: 'get_balance', values: []): Uint8Array;
   encodeFunctionData(functionFragment: 'get_channel_info', values: []): Uint8Array;
   encodeFunctionData(functionFragment: 'get_hash', values: [BigNumberish, BigNumberish, AddressInput]): Uint8Array;
@@ -58,7 +58,7 @@ interface PaymentChannelContractAbiInterface extends Interface {
 export class PaymentChannelContractAbi extends Contract {
   interface: PaymentChannelContractAbiInterface;
   functions: {
-    claim_payment: InvokeFunction<[amount: BigNumberish, nonce: BigNumberish, signature: string], void>;
+    claim_payment: InvokeFunction<[hash: string, amount: BigNumberish, nonce: BigNumberish, signature: string], void>;
     get_balance: InvokeFunction<[], BN>;
     get_channel_info: InvokeFunction<[], [AddressOutput, AddressOutput, BN, BN, BN]>;
     get_hash: InvokeFunction<[amount: BigNumberish, nonce: BigNumberish, payee: AddressInput], string>;
