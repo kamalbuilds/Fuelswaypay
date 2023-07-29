@@ -9,8 +9,7 @@ import { getContributorFunds } from "src/core";
 export const TreasuryInfo = () => {
 
   const { daoFromDB, treasury } = useAppSelector(state => state.daoDetail);
-  const { nameMap } = useAppSelector(state => state.name);
-  const { getShortAddress, getFriendlyName } = useAddress();
+  const { getShortAddress } = useAddress();
   const { getFundStatistic } = useTreasury();
 
   // const { totalFunds, memberFunds, notMemberFunds } = getFundStatistic(dao.contributorFunds, dao.members);
