@@ -120,13 +120,12 @@ impl Stream for Contract {
             storage.status = 2;
         }
         transfer(avaiable_amount, BASE_ASSET_ID, storage.config.recipient);
-
     }
 
     #[storage(read, write)]
     fn cancel_stream() {
         let config = storage.config;
-        require(storage.status == 1, InvalidError::StreamIsNotActive);
+        require(storage.status != 3, InvalidError::StreamIsNotActive);
         require(config.cancel_previlege != 4, InvalidError::NotPermissionToCancel);
         let sender = get_msg_sender_address_or_panic();
         if (config.cancel_previlege == 1) {

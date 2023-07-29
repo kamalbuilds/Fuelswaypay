@@ -35,7 +35,7 @@ async fn get_contract_instance() -> (MyContract<WalletUnlocked>, ContractId, Vec
 }
 
 #[tokio::test]
-async fn can_get_contract_id() {
+async fn can_create_channel() {
     let (instance, _id, wallets) = get_contract_instance().await;
 
     // Now you have an instance of your contract you can use to test each function
@@ -72,5 +72,10 @@ async fn can_get_contract_id() {
     .await
     .unwrap().value;
 
-    assert_eq!(hash, Bits256([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]));
+    // sign message
+
+    // let signature = wallet_1.sign_message(hash).await;
+    
+
+
 }

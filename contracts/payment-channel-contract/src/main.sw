@@ -25,7 +25,7 @@ use {
             storage::StorageMap,
             storage::StorageVec,
             token::transfer,
-            hash::keccak256,
+            hash::{keccak256, sha256},
             b512::B512, 
             ecr::{ec_recover, ec_recover_address, EcRecoverError}
     }
@@ -78,22 +78,22 @@ impl Channel for Contract {
     }
 
     #[storage(read, write)]
-    fn claim_payment(amount: u64, nonce: u64, signature: B512) {
+    fn claim_payment(hash: b256, amount: u64, nonce: u64, signature: B512) {
         require(storage.status == 1, InvalidError::ChannelIsNotActive);
         require(storage.use_nonces.get(nonce).is_none(), InvalidError::IsUsedNonce(nonce));
         require(this_balance(BASE_ASSET_ID) >= amount, InvalidError::ChannelBalanceNotEnough);
+
         let sender = get_msg_sender_address_or_panic();
         require(sender == storage.payee, InvalidError::NotChannelPayee);
 
-        let hash_message = keccak256((sender, amount, nonce, contract_id()));
-
-        let result_address: Result<Address, EcRecoverError> = ec_recover_address(signature, hash_message);
-
+        let result_address: Result<Address, EcRecoverError> = ec_recover_address(signature, hash);
+   
         if let Result::Ok(address) = result_address {
             require(storage.payer == address, InvalidError::NotChannelPayer);
         } else {
             revert(0);
         }
+       
         storage.use_nonces.insert(nonce, true);
         transfer(amount, BASE_ASSET_ID, Identity::Address(storage.payee));
     }

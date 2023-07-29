@@ -7,7 +7,7 @@ abi Channel {
     fn initialize(payee: Address);
 
     #[storage(read, write)]
-    fn claim_payment(amount: u64, nonce: u64, signature: B512);
+    fn claim_payment(hash: b256, amount: u64, nonce: u64, signature: B512);
 
     #[storage(read, write), payable]
     fn send_fund();
