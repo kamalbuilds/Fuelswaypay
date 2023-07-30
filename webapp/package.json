@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "This is the default package.json generated for your project",
   "scripts": {
-    "dev": "next dev -p 5000",
+    "dev": "next dev -p 5555",
     "build": "next build",
-    "start": "next start -p 5000"
+    "start": "next start -p 5555"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
