@@ -1,5 +1,6 @@
 import { ConfigProvider, theme } from 'antd';
 import 'antd/dist/reset.css';
+import "../styles/app.css";
 import type { AppProps } from 'next/app';
 import { Provider } from "react-redux";
 import { store } from 'src/controller/store';
@@ -26,6 +27,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       theme={{
         token: {
           colorPrimary: '#34d399',
+        },
+        components: {
+          Menu: {
+            iconSize: 20,
+            fontSize: 16
+          },
         },
         algorithm: defaultAlgorithm
       }}

@@ -22,6 +22,10 @@ let dao = new Schema({
         type: String,
         require: true,
     },
+    whitelist: {
+        type: String,
+        require: true,
+    },
     address: {
         type: String,
         require: false,

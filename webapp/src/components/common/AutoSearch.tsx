@@ -1,10 +1,12 @@
 import { AutoComplete, Input } from 'antd';
 import type { SelectProps } from 'antd/es/select';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { DAO } from 'src/controller/dao/daoSlice';
 import { useAppSelector } from 'src/controller/hooks';
 
 export default function AutoSearch() {
+    const router = useRouter();
     const [options, setOptions] = useState<SelectProps<object>['options']>([]);
     const { daos } = useAppSelector(state => state.dao)
 
@@ -27,7 +29,7 @@ export default function AutoSearch() {
                                 Found {query} on{' '}
                                 <a
                                     key={`search-dao-link-${index}`}
-                                    onClick={() => {}}
+                                    onClick={() => router.push(`/dao/onchain/${dao._id}`)}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >

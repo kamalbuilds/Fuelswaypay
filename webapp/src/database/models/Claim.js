@@ -3,6 +3,14 @@ import mongoose from 'mongoose';
 let Schema = mongoose.Schema;
 
 let claim = new Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    meta_url: {
+        type: String,
+        required: false,
+    },
     nonce: {
         type: Number,
         require: true 
@@ -26,6 +34,14 @@ let claim = new Schema({
     amount: {
         type: Number,
         require: true 
+    },
+    signature: {
+        type: String,
+        require: true 
+    },
+    hash: {
+        type: String,
+        require: true,
     },
     created_at: {
         type: Date,

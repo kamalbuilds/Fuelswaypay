@@ -1,14 +1,13 @@
-import moment from 'moment';
-import { setDaoDetailProps } from 'src/controller/dao/daoDetailSlice';
-import { actionNames, processKeys, updateProcessStatus } from 'src/controller/process/processSlice';
-import { store } from "src/controller/store";
-import { MESSAGE_TYPE, PACKAGE, getObjectFromDB, insertObjectToDB, openNotification, updatePayout, updateStatistic } from "./common";
+import { Address } from "fuels";
 import { DaoContractAbi__factory } from 'src/contracts/dao';
 import { IdentityInput } from 'src/contracts/dao/DaoContractAbi';
-import { TAI64 } from 'tai64';
-import { provider } from "./constant";
-import { Address } from "fuels";
 import { setProposalDetailProps } from 'src/controller/dao/proposalSlice';
+import { actionNames, processKeys, updateProcessStatus } from 'src/controller/process/processSlice';
+import { store } from "src/controller/store";
+import { TAI64 } from 'tai64';
+import { MESSAGE_TYPE, openNotification, updateStatistic } from "./common";
+import { provider } from "./constant";
+import { getDaoDetail, getDaoProposals } from "./dao";
 
 
 export const createPayoutProposal = async (formValues?: {
@@ -79,14 +78,15 @@ export const createPayoutProposal = async (formValues?: {
       if (saveRes.success) {
         return true;
       }
+
+
       // updateStatistic("proposal", 1);
       // updatePayout("payout", formValues.amount, moment().format('YYYY-MM-DD'));
 
-
       openNotification("Create Proposal", `Create Proposal Successful`, MESSAGE_TYPE.SUCCESS, () => { });
 
-      // Reload proposals list
-      // store.dispatch(setDaoDetailProps({ att: "refreshDAO", value: refreshDAO + 1 }))
+      getDaoDetail(daoFromDB._id);
+      getDaoProposals(daoFromDB.address);
     }
   } catch (e) {
     openNotification("Create Proposal", e.message, MESSAGE_TYPE.ERROR, () => { })
@@ -150,7 +150,7 @@ export const getProposalDetail = async (dao_address: string | string[], id: numb
       executed: value.executed,
       status: value.status.toNumber(),
       allow_early_execution: value.allow_early_execution,
-      amount: value.amount.toNumber() / 10**9
+      amount: value.amount.toNumber() / 10 ** 9
     }
     store.dispatch(setProposalDetailProps({ proposalFromDB: proposalRes, proposalOnchain: proposal }));
   } catch (e) {
@@ -185,6 +185,7 @@ export const vote = async (vote: boolean) => {
     // 
 
   } catch (e) {
+    console.log(e);
     openNotification("Vote", e.message, MESSAGE_TYPE.ERROR, () => { })
   }
 
@@ -220,8 +221,23 @@ export const executeProposal = async () => {
 
     const contract = await DaoContractAbi__factory.connect(proposalFromDB.dao_address, wallet);
 
-
-    await contract.functions.execute_proposal(proposalFromDB.id).txParams({ gasPrice: 1 }).call();;
+    try {
+      if (proposalFromDB.proposal_type == 1) {
+        await contract.functions.execute_proposal(proposalFromDB.id)
+          .txParams({ gasPrice: 1 })
+          .call();
+      } else {
+        const fundToDaoContract = await DaoContractAbi__factory.connect(proposalFromDB.recipient, wallet);
+        await contract.functions.execute_proposal(proposalFromDB.id)
+          .addContracts([fundToDaoContract])
+          .txParams({ gasPrice: 1 })
+          .call();
+      }
+    } catch (e) {
+      if (e.message !== 'Number can only safely store up to 53 bits') {
+        throw e;
+      }
+    }
 
     store.dispatch(updateProcessStatus({
       actionName: actionNames.executeProposal,
@@ -229,7 +245,7 @@ export const executeProposal = async () => {
       value: true
     }))
 
-    
+
     fetch("/api/proposal/update", {
       method: "POST",
       headers: {

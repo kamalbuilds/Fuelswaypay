@@ -1,4 +1,3 @@
-import { channel } from 'diagnostics_channel';
 import mongoose from 'mongoose';
 let Schema = mongoose.Schema;
 
@@ -29,7 +28,13 @@ let channel = new Schema({
     },
     total_fund: {
         type: Number,
-        require: false 
+        require: true,
+        default: 0, 
+    },
+    withdrew: {
+        type: Number,
+        require: true,
+        default: 0
     },
     nonce: {
         type: Number,

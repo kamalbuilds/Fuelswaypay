@@ -42,13 +42,18 @@ let stream = new Schema({
         type: Number,
         required: true
     },
+    unlock_every_type: {
+        type: Number,
+        required: true
+    },
     prepaid: {
         type: Number,
         required: true
     },
     withdrew: {
         type: Number,
-        required: false
+        required: true,
+        default: 0,
     },
     status: {
         type: Number,
@@ -56,7 +61,8 @@ let stream = new Schema({
     },
     total_fund: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     created_at: {
         type: Date,

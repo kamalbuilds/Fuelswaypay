@@ -1,14 +1,15 @@
 import {
     AppstoreAddOutlined,
     AppstoreOutlined,
+    BarChartOutlined,
     GithubOutlined,
     HomeOutlined,
     MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    TwitterOutlined
+    MenuUnfoldOutlined
 } from '@ant-design/icons';
 
 import { AiOutlineDashboard } from "react-icons/ai";
+import { FaSuperscript } from "react-icons/fa";
 import { GrGroup } from "react-icons/gr";
 import { LiaDiscord } from "react-icons/lia";
 import { MdOutlineWaterDrop } from "react-icons/md";
@@ -27,12 +28,11 @@ interface Props {
 
 export const LayoutProvider = (props: Props) => {
     const [collapsed, setCollapsed] = useState(false);
+    const [bottom, setBottom] = useState(10);
     const router = useRouter();
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-
-    const onSearch = (value: string) => console.log(value);
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -44,6 +44,7 @@ export const LayoutProvider = (props: Props) => {
                 </div>
 
                 <Menu
+                    style={{ fontWeight: 600 }}
                     inlineIndent={10}
                     mode="inline"
                     defaultSelectedKeys={['1']}
@@ -52,7 +53,7 @@ export const LayoutProvider = (props: Props) => {
                             key: '1',
                             icon: <HomeOutlined />,
                             label: "Home",
-                            onClick: () => { }
+                            onClick: () => router.push("/")
                         },
                         {
                             key: '2',
@@ -66,6 +67,12 @@ export const LayoutProvider = (props: Props) => {
                             label: "New DAO",
                             onClick: () => router.push("/dao/new")
                         },
+                        {
+                            key: '3.1',
+                            icon: <BarChartOutlined />,
+                            label: "Statistics",
+                            onClick: () => router.push("/statistic")
+                        },
                         { type: 'divider' },
                         {
                             key: '4',
@@ -77,11 +84,6 @@ export const LayoutProvider = (props: Props) => {
                                     label: "Dashboard",
                                     icon: <AiOutlineDashboard />,
                                     onClick: () => router.push("/my-account")
-                                },
-                                {
-                                    key: '6',
-                                    label: "Batch Payment",
-                                    icon: <GrGroup />
                                 },
                                 {
                                     key: '7',
@@ -124,10 +126,16 @@ export const LayoutProvider = (props: Props) => {
                                         {
                                             key: '8_3',
                                             label: "Payee's channels",
-                                            onClick: () => router.push("/my-account/payment-channel/payer")
+                                            onClick: () => router.push("/my-account/payment-channel/payee")
                                         },
                                     ]
-                                }
+                                },
+                                {
+                                    key: '6',
+                                    label: "Batch Payment",
+                                    icon: <GrGroup />,
+                                    onClick: () => router.push("/my-account/batch-payment")
+                                },
                             ]
                         },
                         { type: "divider" },
@@ -144,7 +152,7 @@ export const LayoutProvider = (props: Props) => {
                                 },
                                 {
                                     key: '12',
-                                    icon: <TwitterOutlined />,
+                                    icon: <FaSuperscript />,
                                     label: 'Twitter',
                                     onClick: () => window.open("https://twitter.com/swaypay", "_blank")
                                 },
@@ -181,34 +189,25 @@ export const LayoutProvider = (props: Props) => {
 
                                 <AutoSearch />
                             </Form.Item>
-
-                            {/* <Form.Item>
-                                <Switch checkedChildren={<Image src={"/light.svg"} width={16} height={16} alt="Light"/>}
-                                 
-                                    unCheckedChildren={<Image src={"/dark.svg"} width={16} height={16} alt="Dark"/>}
-                                    defaultChecked />
-                            </Form.Item> */}
                             <Form.Item>
                                 <ConnectButton />
                             </Form.Item>
                         </Form>
-
-
-
                     </Space>
                 </Header>
                 <Content
                     style={{
-                        margin: '24px 16px',
-                        padding: 24,
+                        margin: '24px 16px 0 16px',
+                        padding: 16,
                         boxSizing: "border-box",
                         background: colorBgContainer
                     }}
                 >
                     {props.children}
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>SWAYPAY ©2023 Created by A2N Finance</Footer>
+                <Footer style={{ textAlign: 'center', maxHeight: 50 }}>SWAYPAY ©2023 Created by A2N Finance</Footer>
             </Layout>
+
         </Layout>
     )
 
