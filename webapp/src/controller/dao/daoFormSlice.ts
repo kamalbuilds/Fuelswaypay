@@ -9,7 +9,7 @@ export type DaoFormState = {
     dao_type: number,
     twitter?: string,
     github?: string,
-    slack?: string, 
+    discord?: string, 
     members: {address: string}[],
     step: number,
     voting_mode: number,

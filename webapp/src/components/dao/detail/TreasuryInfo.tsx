@@ -18,8 +18,8 @@ export const TreasuryInfo = () => {
       title: 'Address',
       dataIndex: 'address',
       key: 'address',
-      render: (_, record) => (
-        <Button icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(record.address)}>{getShortAddress(record.address)}</Button>
+      render: (index, record) => (
+        <Button key={`address-${index}`} type="primary" icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(record.address)}>{getShortAddress(record.address)}</Button>
       )
     },
     {

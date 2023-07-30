@@ -13,6 +13,7 @@
     "@mysten/sui.js": "^0.36.0",
     "@reduxjs/toolkit": "^1.8.6",
     "@suiet/wallet-kit": "^0.2.13",
+    "@tinymce/tinymce-react": "^4.3.0",
     "antd": "^5.0.0",
     "dotenv": "^16.0.3",
     "fuels": "^0.38.1",

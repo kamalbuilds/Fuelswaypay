@@ -27,9 +27,11 @@ export const DetailItem = () => {
         <Descriptions.Item label={"Type"}>{daoTypeMap[daoOnchain.dao_type]}</Descriptions.Item>
         <Descriptions.Item label={"Open"}>{daoOnchain.open ? "Yes (Open to all)" : "No (Invited members only)"}</Descriptions.Item>
         <Descriptions.Item label={"KYC"}>
-          {/* {dao.socialLinks.length ? <Space wrap direction='vertical'>
-            {dao.socialLinks.map((s) => <a key={`social-link-index`} href={s}>{s}</a>)}
-          </Space> : <>No</>} */}
+          {(daoFromDB.twitter || daoFromDB.github || daoFromDB.discord) ? <Space wrap direction='horizontal'>
+             { daoFromDB.twitter && <a key={`social-link-index`} target='_blank' href={daoFromDB.twitter}>Twitter</a> }
+             { daoFromDB.github && <a key={`social-link-index`} target='_blank' href={daoFromDB.github}>Github</a> }
+             { daoFromDB.discord && <a key={`social-link-index`} target='_blank' href={daoFromDB.discord}>Discord</a> }
+          </Space> : <>No</>}
         </Descriptions.Item>
       </Descriptions>
       {/* <Space wrap>

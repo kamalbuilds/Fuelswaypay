@@ -16,7 +16,8 @@ type ProposalState = {
         start_date: number,
         title: string,
         _id: string,
-        status?: number
+        status?: number,
+        external_url?: string 
     },
     proposalOnchain: {
         created_date: string
@@ -26,14 +27,28 @@ type ProposalState = {
         status: number,
         allow_early_execution: boolean,
         amount: number
-    }
+    },
+    daoOnchain: {
+        quorum: number,
+        open: boolean,
+        dao_type: number,
+        owner: string,
+        status: number,
+        count_proposal: number,
+        count_member: number,
+        balance: number,
+        created_date: string
+    },
+    daoFromDB: any,
+    voted: any,
+    isMember: boolean
 }
 
 const initialState: ProposalState = {
     proposalFromDB: {
         allow_early_execution: true,
         amount: 0,
-        content: "0",
+        content: "",
         content_type: 1,
         created_at: "",
         dao_address: "",
@@ -45,7 +60,8 @@ const initialState: ProposalState = {
         start_date: new Date().getTime(),
         title: "",
         _id: "",
-        status: 0
+        status: 0,
+        external_url: ""
     },
     proposalOnchain: {
         created_date: "",
@@ -55,16 +71,45 @@ const initialState: ProposalState = {
         status: 0,
         allow_early_execution: false,
         amount: 0
-    }
+    },
+    daoOnchain:  {
+        quorum: 0,
+        open: false,
+        dao_type: 1,
+        owner: "",
+        status: 1,
+        count_proposal: 0,
+        count_member: 0,
+        balance: 0,
+        created_date: "" 
+    },
+    daoFromDB: {
+        title: "",
+        description: "",
+        address: ""
+    },
+    voted: false,
+    isMember: false
 }
 
 export const proposalDetailSlice = createSlice({
     name: 'daoDetail',
     initialState: initialState,
     reducers: {
-        setProposalDetailProps: (state: ProposalState, action: PayloadAction<{ proposalFromDB: any, proposalOnchain: any }>) => {
+        setProposalDetailProps: (state: ProposalState, action: PayloadAction<{ 
+            proposalFromDB: any, 
+            proposalOnchain: any, 
+            daoOnchain: any,
+            daoFromDB: any,
+            voted: any,
+            isMember: boolean
+        }>) => {
             state.proposalFromDB = action.payload.proposalFromDB;
             state.proposalOnchain = action.payload.proposalOnchain;
+            state.daoOnchain = action.payload.daoOnchain;
+            state.daoFromDB = action.payload.daoFromDB;
+            state.voted = action.payload.voted;
+            state.isMember = action.payload.isMember;
         }
     }
 })

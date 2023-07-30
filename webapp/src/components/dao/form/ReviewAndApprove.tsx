@@ -25,7 +25,7 @@ export const ReviewAndApprove = ({ form }: { form: FormInstance<any> }) => {
                         form.getFieldValue("members").map((member, index) => {
                             return (
 
-                                <Tag key={`address-${index}`} color="blue" style={{ marginBottom: "5px" }}>{getShortAddress(member.address)}</Tag>
+                                <Tag key={`address-${index}`} color="blue" style={{ marginBottom: "5px" }}>{getShortAddress(member?.address ?? "")}</Tag>
 
                             )
 

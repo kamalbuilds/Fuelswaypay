@@ -26,7 +26,7 @@ export const Members = () => {
             dataIndex: "address",
             render: (_, record) => (
 
-                <Button icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(record.address)}>
+                <Button type="primary" icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(record.address)}>
                     {getShortAddress(record.address)}
                 </Button>
 

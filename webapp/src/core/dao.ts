@@ -331,7 +331,7 @@ export const fundDao = async (amount: number) => {
 
                 updateStatistic("fund", amount);
                 openNotification("Add Fund", `Add ${amount} ETH successful`, MESSAGE_TYPE.SUCCESS, () => { })
-                // store.dispatch(setDaoDetailProps({ att: "refreshDAO", value: refreshDAO + 1 }))
+                getDaoDetail(daoFromDB._id);
             }
         }
     } catch (e) {

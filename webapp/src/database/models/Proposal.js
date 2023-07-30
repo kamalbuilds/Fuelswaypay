@@ -62,6 +62,10 @@ let proposal = new Schema({
         type: String,
         required: true,
     },
+    external_url: {
+        type: String,
+        require: false
+    },
     content_type: {
         type: Number,
         required: true

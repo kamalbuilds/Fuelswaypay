@@ -11,7 +11,7 @@ const formStyle = {
 }
 
 const headStyle = {
-    backgroundColor: "#10b981", 
+    backgroundColor: "#23ad7f", 
     color: "whitesmoke"
 }
 

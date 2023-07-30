@@ -1,5 +1,6 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input, Radio, Select, Space } from 'antd';
+import { Button, Card, Col, Form, Input, Radio, Row, Select, Space } from 'antd';
+import { AiOutlineWallet } from 'react-icons/ai';
 import { headStyle } from 'src/theme/layout';
 
 export const WhitelistContributors = () => {
@@ -15,35 +16,42 @@ export const WhitelistContributors = () => {
                 {(fields, { add, remove }) => (
                     <>
                         {fields.map(({ key, name, ...restField }, index) => (
-                            <Space key={key} style={{ display: 'flex', marginBottom: 8, width: "100%" }} align="baseline">
-                                <Form.Item
-                                    label={`Contributor (${index + 1})`}
-                                    {...restField}
-                                    name={[name, 'address']}
-                                    rules={[{ required: true, message: 'Missing address' }]}
-                                >
-                                    <Input size='large' placeholder="Member Address" />
-                                </Form.Item>
-                                <Form.Item
-                                    label={`Type (${index + 1})`}
-                                    {...restField}
-                                    name={[name, 'type']}
-                                    initialValue={1}
-                                    rules={[{ required: true, message: 'Missing Type' }]}
-                                >
-                                    <Select size='large' options={[
-                                        {
-                                            label: "Address",
-                                            value: 1
-                                        },
-                                        {
-                                            label: "Contract Id",
-                                            value: 2
-                                        }
-                                    ]} />
-                                </Form.Item>
-                                <MinusCircleOutlined onClick={() => remove(name)} />
-                            </Space>
+                            <Row key={key} style={{ display: 'flex', marginBottom: 8, width: "100%" }} gutter={12}>
+                                <Col span={12}>
+                                    <Form.Item
+                                        label={`Contributor (${index + 1})`}
+                                        {...restField}
+                                        name={[name, 'address']}
+                                        rules={[{ required: true, message: 'Missing address' }]}
+                                    >
+                                        <Input addonBefore={<AiOutlineWallet />} size='large' placeholder="Address or Contract Id" />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={8}>
+                                    <Form.Item
+                                        label={`Type`}
+                                        {...restField}
+                                        name={[name, 'type']}
+                                        initialValue={1}
+                                        rules={[{ required: true, message: 'Missing Type' }]}
+                                    >
+                                        <Select size='large' options={[
+                                            {
+                                                label: "Address",
+                                                value: 1
+                                            },
+                                            {
+                                                label: "Contract Id",
+                                                value: 2
+                                            }
+                                        ]} />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={4}>
+                                    <MinusCircleOutlined onClick={() => remove(name)} />
+                                </Col>
+
+                            </Row>
                         ))}
                         <Form.Item>
                             <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>

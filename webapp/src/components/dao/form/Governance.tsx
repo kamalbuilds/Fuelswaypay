@@ -1,5 +1,6 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input, Radio, Space } from 'antd';
+import { Button, Card, Col, Form, Input, Radio, Row, Space } from 'antd';
+import { AiOutlineWallet } from 'react-icons/ai';
 import { headStyle } from 'src/theme/layout';
 
 export const Governance = () => {
@@ -15,17 +16,23 @@ export const Governance = () => {
                 {(fields, { add, remove }) => (
                     <>
                         {fields.map(({ key, name, ...restField }, index) => (
-                            <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                            <Row key={key} style={{ display: 'flex', marginBottom: 8}}>
+                                <Col span={16}>
                                 <Form.Item
                                     label={`Member (${index + 1})`}
                                     {...restField}
                                     name={[name, 'address']}
                                     rules={[{ required: true, message: 'Missing address' }]}
                                 >
-                                    <Input size='large' placeholder="Member Address" />
+                                    <Input size='large' addonBefore={<AiOutlineWallet />} placeholder="Member Address" />
                                 </Form.Item>
+                                </Col>
+                                <Col span={8}>
                                 <MinusCircleOutlined onClick={() => remove(name)} />
-                            </Space>
+                                </Col>
+                               
+                                
+                            </Row>
                         ))}
                         <Form.Item>
                             <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>

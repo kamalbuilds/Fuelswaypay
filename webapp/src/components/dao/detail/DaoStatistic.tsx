@@ -48,7 +48,7 @@ export const DaoStatistic = () => {
 
   const items: MenuProps['items'] = [
     {
-      label: 'Funding',
+      label: 'Payment',
       key: '1',
       //icon: <UserOutlined />,
       onClick: () => showDrawer()

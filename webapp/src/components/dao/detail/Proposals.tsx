@@ -78,11 +78,6 @@ export const Proposals = () => {
             key: 'title',
         },
         {
-            title: 'Description',
-            dataIndex: 'content',
-            key: 'content',
-        },
-        {
             title: 'Type',
             key: 'proposal_type',
             render: (_, record) => (
@@ -103,11 +98,11 @@ export const Proposals = () => {
             )
         },
         {
-            title: "Executed",
-            dataIndex: "executed",
-            key: "executed",
+            title: "Created At",
+            dataIndex: "created_at",
+            key: "created_at",
             render: (_, record) => (
-                <Tag>{record.executed ? "Yes" : "No"}</Tag>
+                new Date(record.created_at).toLocaleString()
             )
         },
         {

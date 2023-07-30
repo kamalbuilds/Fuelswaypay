@@ -8,6 +8,7 @@ import { TAI64 } from 'tai64';
 import { MESSAGE_TYPE, openNotification, updateStatistic } from "./common";
 import { provider } from "./constant";
 import { getDaoDetail, getDaoProposals } from "./dao";
+import moment from "moment";
 
 
 export const createPayoutProposal = async (formValues?: {
@@ -101,58 +102,90 @@ export const createPayoutProposal = async (formValues?: {
 export const getProposalDetail = async (dao_address: string | string[], id: number) => {
   try {
 
+    let { account } = store.getState().account;
+    if (!account) {
+      if (window.fuel) {
+        const isConnected = await window.fuel.isConnected();
+        if (isConnected) {
+          const [acc] = await window.fuel.accounts();
+          account = acc;
+        }
+      }
+    }
 
     const contract = await DaoContractAbi__factory.connect(dao_address.toString(), provider);
     // Need to get count member here
 
-
-    let proposalReq = await fetch("/api/proposal/getByDAOAndId", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        dao_address: dao_address,
-        id: id
+    const [proposalReq, proposalInfo, daoInfo, daoReq] = await Promise.all([
+      fetch("/api/proposal/getByDAOAndId", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          dao_address: dao_address,
+          id: id
+        })
+      }),
+      contract.functions.get_proposal_by_id(id).get(),
+      contract.functions.get_dao_info().get(),
+      fetch("/api/dao/getByAddress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          address: dao_address
+        })
       })
-    })
+
+    ]);
+    let voted = false;
+    let isMember = false;
+    if (account) {
+      let [userVoteOnchain, isMemberOnchain] = await Promise.all([
+        contract.functions.get_user_vote({ value: Address.fromString(account).toB256() }, id).get(),
+        contract.functions.is_member({ value: Address.fromString(account).toB256() }).get(),
+      ])
+      voted = userVoteOnchain.value;
+      isMember = isMemberOnchain.value;
+    }
+
     let proposalRes = await proposalReq.json();
+    const proposal = proposalInfo.value;
+    const dao = daoInfo.value;
+    const daoRes = await daoReq.json();
 
+    let daoOnchain = {
+      quorum: dao[0].quorum.toNumber(),
+      open: dao[0].open,
+      dao_type: dao[0].dao_type.toNumber(),
+      owner: Address.fromAddressOrString(dao[1].value).toString(),
+      status: dao[2].toNumber(),
+      count_proposal: dao[3].toNumber(),
+      count_member: dao[4].toNumber(),
+      balance: dao[5].toNumber() / 10 ** 9,
+      created_date: new Date(TAI64.fromHexString(dao[6].toHex()).toUnix() * 1000).toLocaleString()
+    };
 
-    const { value } = await contract.functions.get_proposal_by_id(id).get();
-    /**
-     * {
-    "id": "0x4",
-    "owner": {
-        "value": "0xf7f7a94f6873389dea29641a65fe6cd2124ccb9af6c8ae84200c44af77d2eebf"
-    },
-    "proposal_type": "0x1",
-    "status": "0x1",
-    "recipient": {
-        "Address": {
-            "value": "0x8e97044e93ed69d0268c3b022aa3385603d685a57ed2b6d88fae0dd0f6f41b84"
-        }
-    },
-    "amount": "0x989680",
-    "start_date": "0x4000000064bff99d",
-    "end_date": "0x4000000064c14b1d",
-    "created_date": "0x4000000064bffb3b",
-    "allow_early_execution": true,
-    "agree": "0x0",
-    "disagree": "0x0",
-    "executed": false
+    let proposalOnchain = {
+      created_date: new Date(TAI64.fromHexString(proposal.created_date.toHex()).toUnix() * 1000).toLocaleString(),
+      agree: proposal.agree.toNumber(),
+      disagree: proposal.disagree.toNumber(),
+      executed: proposal.executed,
+      status: proposal.status.toNumber(),
+      allow_early_execution: proposal.allow_early_execution,
+      amount: proposal.amount.toNumber() / 10 ** 9
     }
-     */
-    let proposal = {
-      created_date: new Date(TAI64.fromHexString(value.created_date.toHex()).toUnix() * 1000).toLocaleString(),
-      agree: value.agree.toNumber(),
-      disagree: value.disagree.toNumber(),
-      executed: value.executed,
-      status: value.status.toNumber(),
-      allow_early_execution: value.allow_early_execution,
-      amount: value.amount.toNumber() / 10 ** 9
-    }
-    store.dispatch(setProposalDetailProps({ proposalFromDB: proposalRes, proposalOnchain: proposal }));
+
+    store.dispatch(setProposalDetailProps({
+      proposalFromDB: proposalRes,
+      proposalOnchain: proposalOnchain,
+      daoOnchain: daoOnchain,
+      daoFromDB: daoRes,
+      voted: voted,
+      isMember: isMember
+    }));
   } catch (e) {
     console.log(e)
   }
@@ -180,9 +213,7 @@ export const vote = async (vote: boolean) => {
     await contract.functions.vote(proposalFromDB.id, vote).txParams({ gasPrice: 1 }).call();
 
     openNotification("Vote", `Vote successful`, MESSAGE_TYPE.SUCCESS, () => { })
-    //Reload Dao Proposals
-    //   getDaoProposals(dao);
-    // 
+    getProposalDetail(proposalFromDB.dao_address, proposalFromDB.id);
 
   } catch (e) {
     console.log(e);
@@ -256,10 +287,12 @@ export const executeProposal = async () => {
         status: 2
       })
     })
+
+    updateStatistic("executedProposal", 1);
+    getProposalDetail(proposalFromDB.dao_address, proposalFromDB.id);
+    
     openNotification("Execute proposal", `Execute proposal successful`, MESSAGE_TYPE.SUCCESS, () => { })
-    // updateStatistic("executedProposal", 1);
-    // getDaoDetail(sharedDAOObj.id);
-    // getDaoProposals(dao);
+  
   } catch (e) {
     console.log(e);
     openNotification("Execute proposal", e.message, MESSAGE_TYPE.ERROR, () => { })
