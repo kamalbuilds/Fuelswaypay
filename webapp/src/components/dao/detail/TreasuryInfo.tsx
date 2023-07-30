@@ -8,7 +8,7 @@ import { getContributorFunds } from "src/core";
 
 export const TreasuryInfo = () => {
 
-  const { daoFromDB, treasury } = useAppSelector(state => state.daoDetail);
+  const { daoFromDB, daoOnchain, treasury } = useAppSelector(state => state.daoDetail);
   const { getShortAddress } = useAddress();
   const { getFundStatistic } = useTreasury();
 
@@ -42,11 +42,11 @@ export const TreasuryInfo = () => {
   return (
     <Card title="Funding History" size="default">
       <Row gutter={8}>
-        {/* <Col span={8}>
+        <Col span={8}>
           <Card bordered={false}>
             <Statistic
-              title="Total"
-              value={totalFunds}
+              title="Total Funds"
+              value={treasury.reduce((a,b) => a + b.amount, 0)}
               valueStyle={{ color: '#3f8600' }}
               precision={3}
             />
@@ -55,8 +55,8 @@ export const TreasuryInfo = () => {
         <Col span={8}>
           <Card bordered={false}>
             <Statistic
-              title="Members"
-              value={memberFunds}
+              title="Remaining Balance"
+              value={daoOnchain.balance}
               valueStyle={{ color: '#3f8600' }}
               precision={3}
             />
@@ -65,13 +65,12 @@ export const TreasuryInfo = () => {
         <Col span={8}>
           <Card bordered={false}>
             <Statistic
-              title="Contributors"
-              value={notMemberFunds}
+              title="Whitelist Contributors"
+              value={treasury.length}
               valueStyle={{ color: '#3f8600' }}
-              precision={3}
             />
           </Card>
-        </Col> */}
+        </Col>
       </Row>
       <Divider />
       <Table

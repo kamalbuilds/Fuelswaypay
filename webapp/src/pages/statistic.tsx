@@ -9,7 +9,7 @@ export default function Statistics() {
     const {generalStatistic, payoutStatistic} = useAppSelector(state => state.statistic);
 
     useEffect(() => {
-        //getStatistic();
+        getStatistic();
     }, [])
     return (
         <>
@@ -27,12 +27,12 @@ export default function Statistics() {
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                     <Card style={statisticCard}>
-                        <Statistic title="Sub-DAOs" value={1}/>
+                        <Statistic title="Channel" value={1}/>
                     </Card>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                     <Card style={statisticCard} >
-                        <Statistic title="Funds" value={generalStatistic.fund} precision={3} suffix="SUI"/>
+                        <Statistic title="Stream" value={generalStatistic.fund}/>
                     </Card>
                 </Col>
             </Row>
@@ -40,17 +40,18 @@ export default function Statistics() {
                 <Col xs={24} lg={6}>
 
                     <Card  style={statisticCardRight}>
-                        <Statistic title="Payout" value={(payoutStatistic.totalPayout && payoutStatistic.totalPayout[0])? payoutStatistic.totalPayout[0].sum : 0} precision={3} suffix="SUI" />
+                        <Statistic title="Payout" value={(payoutStatistic.totalPayout && payoutStatistic.totalPayout[0])? payoutStatistic.totalPayout[0].sum : 0} precision={3} suffix="ETH" />
                     </Card>
                     <Card  style={statisticCardRight}>
-                        <Statistic title="Vesting" value={(payoutStatistic.totalPayout && payoutStatistic.totalPayout[1])? payoutStatistic.totalPayout[1].sum : 0} precision={3} suffix="SUI" />
+                        <Statistic title="Funding" value={(payoutStatistic.totalPayout && payoutStatistic.totalPayout[1])? payoutStatistic.totalPayout[1].sum : 0} precision={3} suffix="ETH" />
+                    </Card>
+                    <Card  style={statisticCardRight}>
+                        <Statistic title="Members" value={generalStatistic.fund} precision={3} suffix="ETH"/>
                     </Card>
                     <Card  style={statisticCardRight}>
                         <Statistic title="Executed Proposals" value={1} />
                     </Card>
-                    <Card  style={statisticCardRight}>
-                        <Statistic title="Members" value={generalStatistic.members} />
-                    </Card>
+                   
                 </Col>
                 <Col xs={24} lg={18}>
                     <PayoutChart />

@@ -104,7 +104,7 @@ export const updatePayout = async (field: string, value: number, date: string) =
 
 export const getGeneralStatistic = async () => {
     try {
-        let request = await fetch("api/statistic/get", {
+        let request = await fetch("api/statistic/getGeneral", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -124,7 +124,7 @@ export const getGeneralStatistic = async () => {
 
 export const getPayoutStatistic = async () => {
     try {
-        let request = await fetch("/api/proposal-payout/get-statistic", {
+        let request = await fetch("/api/statistic/getPayoutStatistic", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
