@@ -10,8 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         } = req.body;
         if (id) {
             try {
-                let address = Address.findById(id);
-                await address.remove();
+                await Address.findByIdAndRemove(id);
                 return res.status(200).send("deleted");
             } catch (error) {
                 console.log(error)

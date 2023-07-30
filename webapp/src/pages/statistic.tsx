@@ -27,7 +27,7 @@ export default function Statistics() {
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                     <Card style={statisticCard}>
-                        <Statistic title="Sub-DAOs" value={generalStatistic.subDAO}/>
+                        <Statistic title="Sub-DAOs" value={1}/>
                     </Card>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
@@ -46,7 +46,7 @@ export default function Statistics() {
                         <Statistic title="Vesting" value={(payoutStatistic.totalPayout && payoutStatistic.totalPayout[1])? payoutStatistic.totalPayout[1].sum : 0} precision={3} suffix="SUI" />
                     </Card>
                     <Card  style={statisticCardRight}>
-                        <Statistic title="Executed Proposals" value={generalStatistic.executedProposal} />
+                        <Statistic title="Executed Proposals" value={1} />
                     </Card>
                     <Card  style={statisticCardRight}>
                         <Statistic title="Members" value={generalStatistic.members} />

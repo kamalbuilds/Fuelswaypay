@@ -7,7 +7,7 @@ import { useAddress } from "src/hooks/useAddress";
 import { statisticCard } from "src/theme/layout";
 
 export default function Dashboard() {
-    const { getShortAddress, getFriendlyName } = useAddress();
+    const { getShortAddress } = useAddress();
     const {countOwnerProposal, countOwnerDaos} = useAppSelector(state => state.dao);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {account} = useAppSelector(state => state.account)
