@@ -14,7 +14,7 @@ export const FeatureImageSlides = ({ imageUrls }: { imageUrls: string[] }) => {
         <Carousel autoplay>
             {
                 imageUrls.map((image, index) => {
-                    return <div>
+                    return <div key={`wrapper-${index}`}>
                         <div key={`image-wrapper-${index}`} style={contentStyle}>
                             <img width={"100%"} src={image} />
                         </div>

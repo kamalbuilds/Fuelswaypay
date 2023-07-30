@@ -1,4 +1,4 @@
-import { Button, Collapse, Descriptions, Space } from "antd";
+import { Alert, Button, Collapse, Descriptions, Space, Tag } from "antd";
 import { useAppSelector } from "src/controller/hooks";
 import { acceptClaim as acceptClaimAction, rejectClaim as RejectClaimAction } from "src/core";
 
@@ -54,12 +54,16 @@ export const RecievedClaims = () => {
                 <Collapse key={`claim-${index}`} items={[{
                     key: '1',
                     label: claim.title,
-                    children: <Descriptions column={1}>
-                        <Descriptions.Item label="Document">{claim.meta_url}</Descriptions.Item>
+                    children: <Descriptions column={1} layout="vertical">
+                        <Descriptions.Item label="Document">
+                            <a href={claim.meta_url} target="_blank">Document Link</a>
+                        </Descriptions.Item>
                         <Descriptions.Item label="Amount">{claim.amount} ETH</Descriptions.Item>
-                        <Descriptions.Item label="Signature">{claim.signature}</Descriptions.Item>
-                        <Descriptions.Item label="Created At">{claim.created_at}</Descriptions.Item>
-                        <Descriptions.Item label="Status">{statusMap(claim.status)}</Descriptions.Item>
+                        <Descriptions.Item label="Signature">
+                            <Alert type="info" showIcon={false} message={claim.signature} />                        
+                            </Descriptions.Item>
+                        <Descriptions.Item label="Created At">{new Date(claim.created_at).toLocaleString()}</Descriptions.Item>
+                        <Descriptions.Item label="Status"><Tag color="blue">{statusMap(claim.status)}</Tag></Descriptions.Item>
                         <Descriptions.Item>
                             <Space.Compact block>
                                 <Button type="primary" loading={acceptClaim.processing} onClick={() => acceptClaimAction(claim)}>Accept</Button>

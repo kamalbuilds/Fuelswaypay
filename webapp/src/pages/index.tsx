@@ -24,27 +24,27 @@ export default function Index() {
                 <Col span={8}>
                     <Card
                         cover={
-                            <FeatureImageSlides imageUrls={["/DAO.png", "/STREAM.png"]}/>
+                            <FeatureImageSlides key={"dao-slides"} imageUrls={["/DAO.png", "/PROPOSAL.png"]}/>
                         }
                         actions={[
-                            <Button size="large" type="primary">VIEW MORE</Button>,
-                            <Button size="large">NEW DAO</Button>
+                            <Button size="large" type="primary" onClick={() => router.push("/dao/list")}>VIEW MORE</Button>,
+                            <Button size="large" onClick={() => router.push("/dao/new")}>NEW DAO</Button>
                         ]}
                     >
                         <Meta
                             title={<Text strong style={{fontSize: 18}}>DAO Management</Text>}
-                            description="This module empowers users to efficiently manage DAOs, treasuries, members, and payment proposals."
+                            description="This module grants users the ability to effectively oversee DAOs, treasuries, members, and payment proposals. It can be utilized to manage member payments or provide funding for other DAOs."
                         />
                     </Card>
                 </Col>
                 <Col span={8}>
                     <Card
                         cover={
-                           <FeatureImageSlides imageUrls={["/STREAM.png"]} />
+                           <FeatureImageSlides key={"stream-slides"} imageUrls={["/STREAMS.png", "/STREAM.png"]} />
                         }
                         actions={[
-                            <Button size="large" type="primary">VIEW MORE</Button>,
-                            <Button size="large">NEW STREAM</Button>
+                            <Button size="large" type="primary" onClick={() => router.push("/my-account/crypto-streaming/outgoing")}>VIEW MORE</Button>,
+                            <Button size="large" onClick={() => router.push("/my-account/crypto-streaming/new")}>NEW STREAM</Button>
                         ]}
                     >
                         <Meta
@@ -56,16 +56,16 @@ export default function Index() {
                 <Col span={8}>
                     <Card
                         cover={
-                            <FeatureImageSlides imageUrls={["/CHANNEL.png"]} />
+                            <FeatureImageSlides key={"channel-slides"} imageUrls={["/CHANNEL.png", "/CLAIM.png"]} />
                         }
                         actions={[
-                            <Button size="large" type="primary">VIEW MORE</Button>,
-                            <Button size="large">NEW CHANNEL</Button>
+                            <Button size="large" type="primary" onClick={() => router.push("/my-account/payment-channel/payer")}>VIEW MORE</Button>,
+                            <Button size="large" onClick={() => router.push("/my-account/payment-channel/new")}>NEW CHANNEL</Button>
                         ]}
                     >
                         <Meta
                               title={<Text strong style={{fontSize: 18}}>Payment Channel</Text>}
-                            description="This module enables users to establish a payment channel between a payer and a payee, facilitating multiple payments through individual claims."
+                            description="This module facilitates a payment channel between a payer and payee, enabling multiple payments through individual claims, often used for customers making multiple payouts to service or product providers."
                         />
                     </Card>
                 </Col>

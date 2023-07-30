@@ -1,4 +1,4 @@
-import { Collapse, Descriptions, Table, Tag } from "antd";
+import { Alert, Collapse, Descriptions, Table, Tag } from "antd";
 import { useAppSelector } from "../../controller/hooks";
 
 export const CreatedClaims = () => {
@@ -47,16 +47,21 @@ export const CreatedClaims = () => {
 
         currentClaims.map((claim, index) => {
             return (
-                <Collapse key={`claim-${index}`} items={[{ 
-                    key: '1', 
-                    label: claim.title, 
-                    children: <Descriptions column={1}>
-                    <Descriptions.Item label="Document">{claim.meta_url}</Descriptions.Item>
-                    <Descriptions.Item label="Amount">{claim.amount} ETH</Descriptions.Item>
-                    <Descriptions.Item label="Signature">{claim.signature}</Descriptions.Item>
-                    <Descriptions.Item label="Created At">{claim.created_at}</Descriptions.Item>
-                    <Descriptions.Item label="Status">{statusMap(claim.status)}</Descriptions.Item>
-                </Descriptions> }]} />
+                <Collapse key={`claim-${index}`} items={[{
+                    key: '1',
+                    label: claim.title,
+                    children: <Descriptions column={1} layout="vertical">
+                        <Descriptions.Item label="Document">
+                            <a href={claim.meta_url} target="_blank">Document Link</a>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Amount">{claim.amount} ETH</Descriptions.Item>
+                        <Descriptions.Item label="Signature">
+                            <Alert type="info" showIcon={false} message={claim.signature} />
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Created At">{new Date(claim.created_at).toLocaleString()}</Descriptions.Item>
+                        <Descriptions.Item label="Status"><Tag color="blue">{statusMap(claim.status)}</Tag></Descriptions.Item>
+                    </Descriptions>
+                }]} />
             )
         })
 

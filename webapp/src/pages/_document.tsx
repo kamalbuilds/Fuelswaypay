@@ -4,8 +4,8 @@ export default function Document() {
         <Html lang='en'>
             <Head>
                 <title>Swaypay - A payment application for both DAOs and Individuals</title>
-                <meta name="title" content="A payment application for both DAOs and Individuals"></meta>
-                <meta name="description" content="Swaypay - A2N Finance"></meta>
+                <meta name="title" content="A payment application for both DAOs and Individuals" />
+                <meta name="description" content="Swaypay - A2N Finance"/>
                 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
                 <link
                     rel="stylesheet"
