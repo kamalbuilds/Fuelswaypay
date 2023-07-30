@@ -4,7 +4,7 @@ import { Button, Table } from "antd";
 import { useEffect } from "react";
 import { useAppSelector } from "src/controller/hooks";
 import { getMembers } from "src/core";
-// import { leaveDao, removeMember as removeMemberAction } from "src/core";
+import { removeMember as removeMemberAction } from "src/core";
 import { useAddress } from "src/hooks/useAddress";
 
 export const Members = () => {
@@ -39,7 +39,7 @@ export const Members = () => {
                 if (daoFromDB.open && account === record.address) {
                     return <Button loading={leave.processing} onClick={() => {}} danger>Leave</Button>
                 } else {
-                    return <Button loading={removeMember.processing} onClick={() => {}} danger>Remove</Button>
+                    return <Button loading={removeMember.processing} onClick={() => removeMemberAction(record.address)} danger>Remove</Button>
                 }
 
             }

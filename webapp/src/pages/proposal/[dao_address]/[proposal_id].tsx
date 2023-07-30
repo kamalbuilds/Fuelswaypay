@@ -101,10 +101,10 @@ export default function ProposalDetail() {
                                 <Descriptions.Item label="Token">
                                     ETH
                                 </Descriptions.Item>
-                                <Descriptions.Item label="Token Amount">
+                                <Descriptions.Item label="Proposal Type">
                                     {proposalFromDB.proposal_type === 1 ? "Payout" : "Funding"}
                                 </Descriptions.Item>
-                                <Descriptions.Item label="Token Amount">
+                                <Descriptions.Item label="Amount">
                                     {proposalFromDB.amount}
                                 </Descriptions.Item>
                                 <Descriptions.Item label="Recipient Type">

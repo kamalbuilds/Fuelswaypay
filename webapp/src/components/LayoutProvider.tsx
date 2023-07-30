@@ -154,13 +154,13 @@ export const LayoutProvider = (props: Props) => {
                                     key: '12',
                                     icon: <FaSuperscript />,
                                     label: 'Twitter',
-                                    onClick: () => window.open("https://twitter.com/swaypay", "_blank")
+                                    onClick: () => window.open("https://twitter.com/a2n_swaypay", "_blank")
                                 },
                                 {
                                     key: '13',
                                     icon: <LiaDiscord />,
                                     label: 'Discord',
-                                    onClick: () => window.open("https://twitter.com/swaypay", "_blank")
+                                    onClick: () => window.open("https://discord.com/a2n_swaypay", "_blank")
                                 },
                             ]
                         }
@@ -185,8 +185,6 @@ export const LayoutProvider = (props: Props) => {
                         <Form layout="inline">
 
                             <Form.Item >
-
-
                                 <AutoSearch />
                             </Form.Item>
                             <Form.Item>

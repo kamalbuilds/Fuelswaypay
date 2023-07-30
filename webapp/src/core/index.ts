@@ -11,12 +11,10 @@ import {
   addMember,
   getMembers,
   getContributorFunds,
-  // removeMember,
+  removeMember,
   // joinDao,
   // leaveDao,
-  // createSubDAO,
   getOwnerDaos,
-  // getSubDaosOf
 } from "./dao";
 
 import { createPayoutProposal, getProposalDetail, vote, executeProposal } from "./proposal";
@@ -57,7 +55,7 @@ export {
   addMember,
   getMembers,
   getContributorFunds,
-  // removeMember,
+  removeMember,
   // joinDao,
   // leaveDao,
   createPayoutProposal,

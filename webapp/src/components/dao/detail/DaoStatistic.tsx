@@ -1,18 +1,17 @@
 import { DownOutlined } from '@ant-design/icons';
-import { useWallet } from '@suiet/wallet-kit';
 import { Button, Col, Divider, Drawer, Dropdown, Input, MenuProps, Popover, Row, Space, Statistic } from 'antd';
 import { useCallback, useState } from 'react';
+import { AiOutlineWallet } from 'react-icons/ai';
 import { NewPayout } from 'src/components/proposal/NewPayout';
 import { useAppSelector } from 'src/controller/hooks';
 import { addMember as addMemberAction, fundDao } from 'src/core';
 
 export const DaoStatistic = () => {
-  const wallet = useWallet();
   const { daoOnchain } = useAppSelector(state => state.daoDetail);
   const { addFund, addMember } = useAppSelector(state => state.process);
 
   const [fundAmount, setFundAmount] = useState("");
-  const [newMember, setNewMember] = useState("");
+  const [newMember, setNewMember] = useState<`fuel${string}`>();
 
   const [openFundPopup, setOpenFundPopup] = useState(false);
   const [openAddMemberPopup, setOpenAddMemberPopup] = useState(false);
@@ -42,7 +41,7 @@ export const DaoStatistic = () => {
 
 
   const doAddMember = useCallback(() => {
-    addMemberAction(wallet, newMember);
+    addMemberAction(newMember);
   }, [newMember])
 
 
@@ -93,7 +92,9 @@ export const DaoStatistic = () => {
           <Popover
             content={
               <>
-                <Input name='adress' value={newMember} onChange={(e) => setNewMember(e.target.value)} />
+                <Input name='adress' addonBefore={<AiOutlineWallet />} size='large' value={newMember} onChange={(e) => 
+                  //@ts-ignore
+                  setNewMember(e.target.value)} />
                 <Divider />
                 <Button type='primary' onClick={() => doAddMember()} loading={addMember.processing}>Add</Button>
               </>
@@ -111,7 +112,7 @@ export const DaoStatistic = () => {
             content={
               <>
 
-                <Input name='amount' type='number' value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
+                <Input name='amount' size='large' type='number' suffix={"ETH"} value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
                 <Divider />
                 <Button type='primary' onClick={() => fund()} loading={addFund.processing}>Send</Button>
               </>

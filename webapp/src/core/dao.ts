@@ -15,8 +15,6 @@ import {
 import { ZERO_B256, provider } from './constant';
 import { AddressInput, IdentityInput } from 'src/contracts/dao/DaoContractAbi';
 
-
-
 export const saveDAO = async (formValues) => {
     let { account } = store.getState();
     if (account.account) {
@@ -348,23 +346,19 @@ export const fundDao = async (amount: number) => {
 
 export const getDaoProposals = async (daoAddress: string) => {
     try {
-
-        const { account } = store.getState().account;
-        if (account) {
-
-            let getReq = await fetch("/api/proposal/getByDAO", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    dao_address: daoAddress
-                })
+        let getReq = await fetch("/api/proposal/getByDAO", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                dao_address: daoAddress
             })
-            let proposals = await getReq.json();
+        })
+        let proposals = await getReq.json();
 
-            store.dispatch(setProposals(proposals));
-        }
+        store.dispatch(setProposals(proposals));
+
     } catch (e) {
         openNotification("Get Proposal", e.message, MESSAGE_TYPE.ERROR, () => { })
     }
@@ -372,40 +366,35 @@ export const getDaoProposals = async (daoAddress: string) => {
 }
 
 
-export const addMember = async (wallet: any, address: string) => {
+export const addMember = async (address: `fuel${string}`) => {
     try {
-        if (!wallet.connected) {
-            openNotification("SUI wallet is not currently connected.", `To utilize SDAO features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+        const { account } = store.getState().account;
+        if (!window.fuel || !account) {
+            openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
             return;
         }
-        // let { sharedDAOObj, refreshDAO } = store.getState().daoDetail;
+        let { daoFromDB } = store.getState().daoDetail;
+        if (daoFromDB) {
+            store.dispatch(updateProcessStatus({
+                actionName: actionNames.addMember,
+                att: processKeys.processing,
+                value: true
+            }))
 
-        // store.dispatch(updateProcessStatus({
-        //     actionName: actionNames.addMember,
-        //     att: processKeys.processing,
-        //     value: true
-        // }))
-        // const tx = new TransactionBlock();
-        // tx.moveCall({
-        //     target: `${PACKAGE}::dao::add_member`,
-        //     arguments: [
-        //         tx.sharedObjectRef({
-        //             objectId: sharedDAOObj.id,
-        //             initialSharedVersion: sharedDAOObj.initialSharedVersion,
-        //             mutable: true
-        //         }),
-        //         tx.pure(address)
-        //     ],
-        // });
 
-        // await wallet.signAndExecuteTransactionBlock({
-        //     transactionBlock: tx,
-        // });
+            let wallet = await window.fuel.getWallet(account);
+            const daoContract = DaoContractAbi__factory.connect(daoFromDB.address, wallet);
 
-        // updateStatistic("members", 1);
-        // openNotification("Add Member", `Add new member "${address}" successful`, MESSAGE_TYPE.SUCCESS, () => { })
-        // // Reload member list
-        // store.dispatch(setDaoDetailProps({ att: "refreshDAO", value: refreshDAO + 1 }))
+            await daoContract.functions.add_member(
+                {value: new Address(address).toB256()}
+            ).txParams({ gasPrice: 1 }).call();
+
+
+            updateStatistic("members", 1);
+            openNotification("Add Member", `Add new member "${address}" successful`, MESSAGE_TYPE.SUCCESS, () => { })
+            getDaoDetail(daoFromDB._id);
+            getMembers(0);
+        }
     } catch (e) {
         openNotification("Add Member", e.message, MESSAGE_TYPE.ERROR, () => { })
     }
@@ -417,29 +406,51 @@ export const addMember = async (wallet: any, address: string) => {
     }))
 }
 
-// export const removeMember = async (wallet: any, address: string) => {
-//     try {
-//         if (!wallet.connected) {
-//             openNotification("SUI wallet is not currently connected.", `To utilize SDAO features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
-//             return;
-//         }
+export const removeMember = async (address: any) => {
+    try {
+        const { account } = store.getState().account;
+        if (!window.fuel || !account) {
+            openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+            return;
+        }
+        let { daoFromDB } = store.getState().daoDetail;
+        if (daoFromDB) {
+            store.dispatch(updateProcessStatus({
+                actionName: actionNames.removeMember,
+                att: processKeys.processing,
+                value: true
+            }))
+
+            let wallet = await window.fuel.getWallet(account);
+            const daoContract = DaoContractAbi__factory.connect(daoFromDB.address, wallet);
+
+            await daoContract.functions.remove_member(
+                {value: new Address(address).toB256()}
+            ).txParams({ gasPrice: 1 }).call();
+
+            updateStatistic("members", -1);
+            openNotification("Remove Member", `Remove member "${address}" successful`, MESSAGE_TYPE.SUCCESS, () => { });
+
+            getDaoDetail(daoFromDB._id);
+            getMembers(0);
+        
+        }
 
 
-//         updateStatistic("members", -1);
-//         openNotification("Remove Member", `Remove member "${address}" successful`, MESSAGE_TYPE.SUCCESS, () => { })
-//         // Reload member list
-//         store.dispatch(setDaoDetailProps({ att: "refreshDAO", value: refreshDAO + 1 }))
-//     } catch (e) {
-//         openNotification("Remove Member", e.message, MESSAGE_TYPE.ERROR, () => { })
-//     }
 
-//     store.dispatch(updateProcessStatus({
-//         actionName: actionNames.removeMember,
-//         att: processKeys.processing,
-//         value: false
-//     }))
+        
+        
+    } catch (e) {
+        openNotification("Remove Member", e.message, MESSAGE_TYPE.ERROR, () => { })
+    }
 
-// }
+    store.dispatch(updateProcessStatus({
+        actionName: actionNames.removeMember,
+        att: processKeys.processing,
+        value: false
+    }))
+
+}
 // export const joinDao = async (wallet: any, daoId: string) => {
 //     try {
 
