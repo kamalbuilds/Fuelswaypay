@@ -155,7 +155,7 @@ export const deployDAO = async (name: string, form: FormInstance<any>) => {
 
         } catch (e) {
             console.log(e);
-            return false;
+            openNotification("Deploy DAO", e.message, MESSAGE_TYPE.ERROR, () => { })
         }
     }
     store.dispatch(updateProcessStatus({
@@ -230,11 +230,10 @@ export const initializeDAO = async (contractId: string, form: FormInstance<any>)
             if (updateRes.success) {
                 openNotification("Initialized DAO", `DAO was initialized successful`, MESSAGE_TYPE.SUCCESS, () => { })
                 store.dispatch(setDaoFormProps({ att: "status", value: 1 }));
-                return true;
             }
         } catch (e) {
             console.log(e);
-            return false;
+            openNotification("Initialized DAO", e.message, MESSAGE_TYPE.ERROR, () => { })
         }
 
     }
@@ -355,6 +354,7 @@ export const fundDao = async (amount: number) => {
                 updateStatistic("fund", amount);
                 openNotification("Add Fund", `Add ${amount} ETH successful`, MESSAGE_TYPE.SUCCESS, () => { })
                 getDaoDetail(daoFromDB._id);
+                getContributorFunds(0);
             }
         }
     } catch (e) {

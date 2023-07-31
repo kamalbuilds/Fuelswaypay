@@ -9,7 +9,7 @@ import { headStyle } from "src/theme/layout";
 export const ReviewAndApprove = ({ form }: { form: FormInstance<any> }) => {
     const router = useRouter();
     const { quorum, status, address, _id } = useAppSelector(state => state.daoForm);
-    const { createDao, deployDAO, initializeDAO } = useAppSelector(state => state.process);
+    const { createDao, deployDao, initializeDao } = useAppSelector(state => state.process);
     const { getShortAddress } = useAddress();
 
     return (
@@ -47,14 +47,14 @@ export const ReviewAndApprove = ({ form }: { form: FormInstance<any> }) => {
                             Update
                         </Button>
                         <span>or</span>
-                        <Button type="primary" htmlType="button" size="large" onClick={() => deployDAOAction("dao", form)} loading={deployDAO.processing}>
+                        <Button type="primary" htmlType="button" size="large" onClick={() => deployDAOAction("dao", form)} loading={deployDao.processing}>
                             Deploy DAO onchain
                         </Button>
                     </Space>
                 }
                 {
                     (status == 0) && <Space  style={{width: "100%"}}>
-                        <Button type="primary"  style={{width: "100%"}} htmlType="button" size="large" onClick={() => initializeDAOAction(address, form)} loading={initializeDAO.processing}>
+                        <Button type="primary"  style={{width: "100%"}} htmlType="button" size="large" onClick={() => initializeDAOAction(address, form)} loading={initializeDao.processing}>
                             Initialize DAO
                         </Button>
                     </Space>

@@ -250,9 +250,16 @@ export const executeProposal = async () => {
 
     let wallet = await window.fuel.getWallet(account);
 
+    store.dispatch(updateProcessStatus({
+      actionName: actionNames.executeProposal,
+      att: processKeys.processing,
+      value: true
+    }))
+
     const contract = await DaoContractAbi__factory.connect(proposalFromDB.dao_address, wallet);
 
     try {
+
       if (proposalFromDB.proposal_type == 1) {
         await contract.functions.execute_proposal(proposalFromDB.id)
           .txParams({ gasPrice: 1 })
@@ -270,12 +277,6 @@ export const executeProposal = async () => {
       }
     }
 
-    store.dispatch(updateProcessStatus({
-      actionName: actionNames.executeProposal,
-      att: processKeys.processing,
-      value: true
-    }))
-
 
     fetch("/api/proposal/update", {
       method: "POST",
@@ -290,9 +291,9 @@ export const executeProposal = async () => {
 
     updateStatistic("executedProposal", 1);
     getProposalDetail(proposalFromDB.dao_address, proposalFromDB.id);
-    
+
     openNotification("Execute proposal", `Execute proposal successful`, MESSAGE_TYPE.SUCCESS, () => { })
-  
+
   } catch (e) {
     console.log(e);
     openNotification("Execute proposal", e.message, MESSAGE_TYPE.ERROR, () => { })
