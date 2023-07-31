@@ -2,14 +2,14 @@
 import { Alert, Button, Card, Descriptions, Divider, Form, FormInstance, Space, Tag } from "antd";
 import { useRouter } from "next/router";
 import { useAppSelector } from "src/controller/hooks";
-import { deployDAO, initializeDAO } from "src/core";
+import { deployDAO as deployDAOAction, initializeDAO as initializeDAOAction} from "src/core";
 import { useAddress } from "src/hooks/useAddress";
 import { headStyle } from "src/theme/layout";
 
 export const ReviewAndApprove = ({ form }: { form: FormInstance<any> }) => {
     const router = useRouter();
     const { quorum, status, address, _id } = useAppSelector(state => state.daoForm);
-    const { createDao } = useAppSelector(state => state.process);
+    const { createDao, deployDAO, initializeDAO } = useAppSelector(state => state.process);
     const { getShortAddress } = useAddress();
 
     return (
@@ -47,15 +47,15 @@ export const ReviewAndApprove = ({ form }: { form: FormInstance<any> }) => {
                             Update
                         </Button>
                         <span>or</span>
-                        <Button type="primary" htmlType="button" size="large" onClick={() => deployDAO("dao", form)} loading={false}>
-                            Deploy Smart Contract
+                        <Button type="primary" htmlType="button" size="large" onClick={() => deployDAOAction("dao", form)} loading={deployDAO.processing}>
+                            Deploy DAO onchain
                         </Button>
                     </Space>
                 }
                 {
                     (status == 0) && <Space  style={{width: "100%"}}>
-                        <Button type="primary"  style={{width: "100%"}} htmlType="button" size="large" onClick={() => initializeDAO(address, form)} loading={false}>
-                            Initialize smart contract
+                        <Button type="primary"  style={{width: "100%"}} htmlType="button" size="large" onClick={() => initializeDAOAction(address, form)} loading={initializeDAO.processing}>
+                            Initialize DAO
                         </Button>
                     </Space>
                 }

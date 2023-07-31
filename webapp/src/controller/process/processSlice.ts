@@ -6,7 +6,8 @@ import {
 export const actionNames = {
     connectWallet: "connectWallet",
     createDao: "createDao",
-    createSubDao: "createSubDao",
+    deployDao: "deployDao",
+    initializeDao: "initializeDao",
     createProposal: "createProposal",
     vote: "vote",
     executeProposal: "executeProposal",
@@ -49,7 +50,10 @@ const initialState: Processes = {
     createDao: {
         processing: false
     },
-    createSubDao: {
+    deployDao: {
+        processing: false
+    },
+    initializeDao: {
         processing: false
     },
     createProposal: {

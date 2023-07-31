@@ -34,7 +34,7 @@ export const saveDAO = async (formValues) => {
             })
 
             let result = await request.json()
-
+            openNotification("Save DAO", `"${formValues.title}" was saved successful`, MESSAGE_TYPE.SUCCESS, () => { })
             return result;
         } catch (e) {
             return false;
@@ -64,6 +64,7 @@ export const updateDAO = async (formValues) => {
             let result = await request.json()
 
             if (result.success) {
+                openNotification("Save DAO", `"${formValues.title}" was updated successful`, MESSAGE_TYPE.SUCCESS, () => { })
                 return true;
             }
         } catch (e) {
@@ -104,6 +105,11 @@ export const deployDAO = async (name: string, form: FormInstance<any>) => {
     const { _id } = store.getState().daoForm;
     if (window.fuel && account) {
         try {
+            store.dispatch(updateProcessStatus({
+                actionName: actionNames.deployDao,
+                att: processKeys.processing,
+                value: true
+            }))
 
             let request = await fetch("/api/contract/getFiles", {
                 method: "POST",
@@ -140,6 +146,9 @@ export const deployDAO = async (name: string, form: FormInstance<any>) => {
             store.dispatch(setDaoFormProps({ att: "status", value: 0 }))
             let updateRes = await updateRequest.json()
 
+
+            openNotification("Deploy DAO", `DAO was deployed successful with contract id: ${contractId}`, MESSAGE_TYPE.SUCCESS, () => { })
+
             if (updateRes.success) {
                 await initializeDAO(contractId, form);
             }
@@ -149,7 +158,11 @@ export const deployDAO = async (name: string, form: FormInstance<any>) => {
             return false;
         }
     }
-
+    store.dispatch(updateProcessStatus({
+        actionName: actionNames.deployDao,
+        att: processKeys.processing,
+        value: false
+    }))
 }
 
 export const initializeDAO = async (contractId: string, form: FormInstance<any>) => {
@@ -157,6 +170,11 @@ export const initializeDAO = async (contractId: string, form: FormInstance<any>)
     const { _id } = store.getState().daoForm;
     if (window.fuel && account) {
         try {
+            store.dispatch(updateProcessStatus({
+                actionName: actionNames.initializeDao,
+                att: processKeys.processing,
+                value: true
+            }))
             let wallet = await window.fuel.getWallet(account);
             const daoContract = DaoContractAbi__factory.connect(contractId, wallet);
             const members = form.getFieldValue("members");
@@ -210,6 +228,7 @@ export const initializeDAO = async (contractId: string, form: FormInstance<any>)
             })
             let updateRes = await updateRequest.json();
             if (updateRes.success) {
+                openNotification("Initialized DAO", `DAO was initialized successful`, MESSAGE_TYPE.SUCCESS, () => { })
                 store.dispatch(setDaoFormProps({ att: "status", value: 1 }));
                 return true;
             }
@@ -219,6 +238,12 @@ export const initializeDAO = async (contractId: string, form: FormInstance<any>)
         }
 
     }
+
+    store.dispatch(updateProcessStatus({
+        actionName: actionNames.deployDao,
+        att: processKeys.processing,
+        value: false
+    }))
 
 }
 
@@ -386,7 +411,7 @@ export const addMember = async (address: `fuel${string}`) => {
             const daoContract = DaoContractAbi__factory.connect(daoFromDB.address, wallet);
 
             await daoContract.functions.add_member(
-                {value: new Address(address).toB256()}
+                { value: new Address(address).toB256() }
             ).txParams({ gasPrice: 1 }).call();
 
 
@@ -425,7 +450,7 @@ export const removeMember = async (address: any) => {
             const daoContract = DaoContractAbi__factory.connect(daoFromDB.address, wallet);
 
             await daoContract.functions.remove_member(
-                {value: new Address(address).toB256()}
+                { value: new Address(address).toB256() }
             ).txParams({ gasPrice: 1 }).call();
 
             updateStatistic("members", -1);
@@ -433,13 +458,13 @@ export const removeMember = async (address: any) => {
 
             getDaoDetail(daoFromDB._id);
             getMembers(0);
-        
+
         }
 
 
 
-        
-        
+
+
     } catch (e) {
         openNotification("Remove Member", e.message, MESSAGE_TYPE.ERROR, () => { })
     }
