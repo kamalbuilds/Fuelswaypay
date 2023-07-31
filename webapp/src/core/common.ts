@@ -144,3 +144,24 @@ export const getPayoutStatistic = async () => {
     }
    
 }
+
+export const countDAOProposalStreamChannel = async (account: string) => {
+    try {
+        let request = await fetch("/api/statistic/getCountDAOProposalsStreamChannel", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                owner: account
+            })
+        })
+
+        let result = await request.json();
+        return result;
+    } catch (e) {
+        console.error("Error:", e.message);
+        return false;
+    }
+
+}

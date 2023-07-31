@@ -19,7 +19,7 @@ import {
 
 import { createPayoutProposal, getProposalDetail, vote, executeProposal } from "./proposal";
 
-import { getStatistic, getCountDAOAndProposal } from "./statistic";
+import { getStatistic, getCountOwnerContracts } from "./statistic";
 
 import { doBatch } from "./batch-payment";
 
@@ -63,7 +63,7 @@ export {
   vote,
   executeProposal,
   getStatistic,
-  getCountDAOAndProposal,
+  getCountOwnerContracts,
   getOwnerDaos,
   doBatch,
   createStream,

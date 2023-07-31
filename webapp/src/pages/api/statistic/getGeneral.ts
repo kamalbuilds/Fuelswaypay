@@ -5,7 +5,7 @@ import Statistic from 'src/database/models/Statistic';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
-        let statistic = await Statistic.findOne()
+        let statistic = await Statistic.findOne();
         return res.status(200).send(statistic);
     } catch (error) {
         return res.status(500).send(error.message);

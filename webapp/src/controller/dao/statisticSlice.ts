@@ -12,6 +12,10 @@ type StatisticState = {
         totalPayout: any[],
         totalPayoutByDate: any[]
     },
+    countDAOs: number,
+    countProposals: number,
+    countStreams: number,
+    countChannels: number
 }
 const initialState: StatisticState = {
     generalStatistic: {
@@ -25,6 +29,11 @@ const initialState: StatisticState = {
         totalPayout: [],
         totalPayoutByDate: []
     },
+    countDAOs: 0,
+    countProposals: 0,
+    countStreams: 0,
+    countChannels: 0,
+    
 
 }
 
@@ -35,8 +44,14 @@ export const statisticSlice = createSlice({
         setProps: (state: StatisticState, action: PayloadAction<{ generalStatistic: any, payoutStatistic: any }>) => {
             state.generalStatistic = action.payload.generalStatistic;
             state.payoutStatistic = action.payload.payoutStatistic;
-        }
+        },
+        setOwnerStatistic: (state: StatisticState, action: PayloadAction<{ countDAOs: number, countProposals: number, countStreams: number, countChannels: number }>) => {
+            state.countDAOs = action.payload.countDAOs;
+            state.countProposals = action.payload.countProposals;
+            state.countStreams = action.payload.countStreams;
+            state.countChannels = action.payload.countChannels;
+        },
     }
 })
-export const { setProps } = statisticSlice.actions;
+export const { setProps, setOwnerStatistic } = statisticSlice.actions;
 export default statisticSlice.reducer;

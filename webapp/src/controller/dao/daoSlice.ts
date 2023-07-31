@@ -21,7 +21,7 @@ type DaoState = {
     ownerDaos: DAO[],
     ownerSubDaos: DAO[],
     countOwnerProposal: number,
-    countOwnerDaos: number
+    countOwnerDaos: number,
 }
 
 const initialState: DaoState = {
@@ -33,6 +33,7 @@ const initialState: DaoState = {
     ownerSubDaos: [],
     countOwnerProposal: 0,
     countOwnerDaos: 0,
+   
 }
 
 export const daoSlice = createSlice({
@@ -41,12 +42,8 @@ export const daoSlice = createSlice({
     reducers: {
         setDaoProps: (state: DaoState, action: PayloadAction<{ att: string, value: any }>) => {
             state[action.payload.att] = action.payload.value
-        },
-        setDAOStatistic: (state: DaoState, action: PayloadAction<{ countOwnerProposal: number, countOwnerDaos: number }>) => {
-            state.countOwnerProposal = action.payload.countOwnerProposal;
-            state.countOwnerDaos = action.payload.countOwnerDaos;
-        },
+        }
     }
 })
-export const { setDaoProps, setDAOStatistic } = daoSlice.actions;
+export const { setDaoProps } = daoSlice.actions;
 export default daoSlice.reducer;

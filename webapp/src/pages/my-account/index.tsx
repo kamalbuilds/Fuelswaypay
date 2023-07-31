@@ -1,51 +1,38 @@
-import { Button, Card, Col, Input, Modal, Row, Statistic } from "antd";
-import { useEffect, useState } from "react";
+import { Card, Col, Row, Statistic } from "antd";
+import { useEffect } from "react";
 import { OwnerDAOItems } from "src/components/dao/OwnerDaoItems";
 import { useAppSelector } from "src/controller/hooks";
-import { getCountDAOAndProposal } from "src/core";
-import { useAddress } from "src/hooks/useAddress";
+import { getCountOwnerContracts } from "src/core";
 import { statisticCard } from "src/theme/layout";
 
 export default function Dashboard() {
-    const { getShortAddress } = useAddress();
-    const {countOwnerProposal, countOwnerDaos} = useAppSelector(state => state.dao);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const {countDAOs, countChannels, countStreams, countProposals} = useAppSelector(state => state.statistic);
     const {account} = useAppSelector(state => state.account)
 
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleOk = () => {
-        // setIsModalOpen(false);
-        //createName(wallet, name)
-    };
-
     useEffect(() => {
-        //getNames();
-        getCountDAOAndProposal(account);
+        getCountOwnerContracts(account);
     }, [account])
     return (<>
         <Row gutter={16}>
             <Col xs={24} sm={12} lg={6}>
                 <Card style={statisticCard}>
-                    <Statistic title="DAOs" value={countOwnerDaos} />
+                    <Statistic title="DAOs" value={countDAOs} />
                 </Card>
 
             </Col>
             <Col xs={24} sm={12} lg={6}>
                 <Card style={statisticCard}>
-                    <Statistic title="Proposals" value={countOwnerProposal} />
+                    <Statistic title="Proposals" value={countProposals} />
                 </Card>
             </Col>
             <Col xs={24} sm={12} lg={6}>
                 <Card style={statisticCard}>
-                    <Statistic title="Streams" value={0} />
+                    <Statistic title="Streams" value={countStreams} />
                 </Card>
             </Col>
             <Col xs={24} sm={12} lg={6}>
                 <Card style={statisticCard} >
-                    <Statistic title="Channels" value={0}/>
+                    <Statistic title="Channels" value={countChannels}/>
                 </Card>
             </Col>
         </Row>
