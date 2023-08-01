@@ -17,7 +17,7 @@ import {
   getOwnerDaos,
 } from "./dao";
 
-import { createPayoutProposal, getProposalDetail, vote, executeProposal } from "./proposal";
+import { createPayoutProposal, getProposalDetail, vote, executeProposal, getMyProposals } from "./proposal";
 
 import { getStatistic, getCountOwnerContracts } from "./statistic";
 
@@ -62,6 +62,7 @@ export {
   getProposalDetail,
   vote,
   executeProposal,
+  getMyProposals,
   getStatistic,
   getCountOwnerContracts,
   getOwnerDaos,

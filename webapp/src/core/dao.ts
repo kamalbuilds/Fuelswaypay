@@ -228,6 +228,7 @@ export const initializeDAO = async (contractId: string, form: FormInstance<any>)
             })
             let updateRes = await updateRequest.json();
             if (updateRes.success) {
+                updateStatistic("members", members.length);
                 openNotification("Initialized DAO", `DAO was initialized successful`, MESSAGE_TYPE.SUCCESS, () => { })
                 store.dispatch(setDaoFormProps({ att: "status", value: 1 }));
             }

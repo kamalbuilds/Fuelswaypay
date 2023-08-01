@@ -27,12 +27,12 @@ export default function Statistics() {
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                     <Card style={statisticCard}>
-                        <Statistic title="Channel" value={1}/>
+                        <Statistic title="Channel" value={generalStatistic.channel}/>
                     </Card>
                 </Col>
                 <Col xs={24} sm={12} lg={6}>
                     <Card style={statisticCard} >
-                        <Statistic title="Stream" value={generalStatistic.fund}/>
+                        <Statistic title="Stream" value={generalStatistic.stream}/>
                     </Card>
                 </Col>
             </Row>
@@ -46,10 +46,10 @@ export default function Statistics() {
                         <Statistic title="Funding" value={(payoutStatistic.totalPayout && payoutStatistic.totalPayout[1])? payoutStatistic.totalPayout[1].sum : 0} precision={3} suffix="ETH" />
                     </Card>
                     <Card  style={statisticCardRight}>
-                        <Statistic title="Members" value={generalStatistic.fund} precision={3} suffix="ETH"/>
+                        <Statistic title="Members" value={generalStatistic.members}/>
                     </Card>
                     <Card  style={statisticCardRight}>
-                        <Statistic title="Executed Proposals" value={1} />
+                        <Statistic title="Executed Proposals" value={generalStatistic.executedProposal} />
                     </Card>
                    
                 </Col>

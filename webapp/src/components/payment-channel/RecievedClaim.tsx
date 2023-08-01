@@ -1,4 +1,4 @@
-import { Alert, Button, Collapse, Descriptions, Space, Tag } from "antd";
+import { Alert, Button, Collapse, Descriptions, Divider, Space, Tag } from "antd";
 import { useAppSelector } from "src/controller/hooks";
 import { acceptClaim as acceptClaimAction, rejectClaim as RejectClaimAction } from "src/core";
 
@@ -29,7 +29,7 @@ export const RecievedClaims = () => {
     }
 
     return (
-        <> {
+        <Space direction={"vertical"} style={{width: "100%"}}> {
             currentClaims.map((claim, index) => {
                 return (
                     <Collapse key={`claim-${index}`} items={[{
@@ -47,8 +47,8 @@ export const RecievedClaims = () => {
                             <Descriptions.Item label="Status"><Tag color="blue">{statusMap(claim.status)}</Tag></Descriptions.Item>
                             <Descriptions.Item>
                                 <Space.Compact block>
-                                    <Button type="primary" loading={acceptClaim.processing} onClick={() => acceptClaimAction(claim)}>Accept</Button>
-                                    <Button>Reject</Button>
+                                    <Button disabled={claim.status !== 1} type="primary" loading={acceptClaim.processing} onClick={() => acceptClaimAction(claim)}>Accept</Button>
+                                    <Button disabled={claim.status !== 1}>Reject</Button>
                                 </Space.Compact>
                             </Descriptions.Item>
 
@@ -57,7 +57,7 @@ export const RecievedClaims = () => {
                 )
             })
         }
-        </>
+        </Space>
 
     )
 }

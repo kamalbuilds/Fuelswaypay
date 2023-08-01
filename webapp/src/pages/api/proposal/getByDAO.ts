@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (dao_address) {
         
             try {
-                let proposals = await Proposal.find({dao_address: dao_address});
+                let proposals = await Proposal.find({dao_address: dao_address}).sort({created_at: -1});
                 return res.status(200).send(proposals);
             } catch (error) {
                 console.log(error)

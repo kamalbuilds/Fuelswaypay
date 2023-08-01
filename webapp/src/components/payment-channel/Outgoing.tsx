@@ -122,7 +122,7 @@ export const Outgoing = () => {
                     getClaims(record);
                     showDrawerDetail()
                 }}>
-                    Claims
+                    Details
                 </Button>
 
             )
@@ -144,7 +144,7 @@ export const Outgoing = () => {
                         content={
                             <>
 
-                                <Input size="large" name='amount' type='number' value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} suffix={"ETH"} />
+                                <Input size="large" name='amount' type='number' value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} addonAfter={"ETH"} />
                                 <Divider />
                                 <Button disabled={record.status !== 1} type='primary' onClick={() => handleFundChannel(record)} loading={fundChannel.processing}>Send</Button>
                             </>

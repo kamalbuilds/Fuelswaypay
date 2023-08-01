@@ -155,7 +155,7 @@ export const Outgoing = () => {
                     <Popover
                         content={
                             <>
-                                <Input name='adress' type="number" suffix="ETH" value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
+                                <Input name='adress' type="number"  addonAfter={"ETH"} value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
                                 <Divider />
                                 <Button disabled={
                                     record.status !== 1

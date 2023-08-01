@@ -1,24 +1,25 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+export type ProposalFromDB = {
+    allow_early_execution: boolean,
+    amount: number,
+    content: string,
+    content_type: number,
+    created_at: string,
+    dao_address: string,
+    end_date: number,
+    id: number,
+    owner: string,
+    proposal_type: number,
+    recipient: string,
+    start_date: number,
+    title: string,
+    _id: string,
+    status?: number,
+    external_url?: string
+};
 
 type ProposalState = {
-    proposalFromDB: {
-        allow_early_execution: boolean,
-        amount: number,
-        content: string,
-        content_type: number,
-        created_at: string,
-        dao_address: string,
-        end_date: number,
-        id: number,
-        owner: string,
-        proposal_type: 1,
-        recipient: string,
-        start_date: number,
-        title: string,
-        _id: string,
-        status?: number,
-        external_url?: string 
-    },
+    proposalFromDB: ProposalFromDB,
     proposalOnchain: {
         created_date: string
         agree: number,
@@ -41,7 +42,8 @@ type ProposalState = {
     },
     daoFromDB: any,
     voted: any,
-    isMember: boolean
+    isMember: boolean,
+    myProposals: ProposalFromDB[]
 }
 
 const initialState: ProposalState = {
@@ -72,7 +74,7 @@ const initialState: ProposalState = {
         allow_early_execution: false,
         amount: 0
     },
-    daoOnchain:  {
+    daoOnchain: {
         quorum: 0,
         open: false,
         dao_type: 1,
@@ -81,7 +83,7 @@ const initialState: ProposalState = {
         count_proposal: 0,
         count_member: 0,
         balance: 0,
-        created_date: "" 
+        created_date: ""
     },
     daoFromDB: {
         title: "",
@@ -89,16 +91,17 @@ const initialState: ProposalState = {
         address: ""
     },
     voted: false,
-    isMember: false
+    isMember: false,
+    myProposals: []
 }
 
 export const proposalDetailSlice = createSlice({
-    name: 'daoDetail',
+    name: 'proposal',
     initialState: initialState,
     reducers: {
-        setProposalDetailProps: (state: ProposalState, action: PayloadAction<{ 
-            proposalFromDB: any, 
-            proposalOnchain: any, 
+        setProposalDetailProps: (state: ProposalState, action: PayloadAction<{
+            proposalFromDB: any,
+            proposalOnchain: any,
             daoOnchain: any,
             daoFromDB: any,
             voted: any,
@@ -110,8 +113,11 @@ export const proposalDetailSlice = createSlice({
             state.daoFromDB = action.payload.daoFromDB;
             state.voted = action.payload.voted;
             state.isMember = action.payload.isMember;
+        },
+        setMyProposals: (state: ProposalState, action: PayloadAction<ProposalFromDB[]>) => {
+            state.myProposals = action.payload;
         }
     }
 })
-export const { setProposalDetailProps } = proposalDetailSlice.actions;
+export const { setProposalDetailProps, setMyProposals } = proposalDetailSlice.actions;
 export default proposalDetailSlice.reducer;

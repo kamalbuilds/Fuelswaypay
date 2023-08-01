@@ -25,8 +25,9 @@ export const NewStream = () => {
             <Descriptions title="Payout Settings" column={1} layout="vertical">
                 <Descriptions.Item label="Address">Recipient Address</Descriptions.Item>
                 <Descriptions.Item label="Amount">The amount of ETH that will be unlocked with each occurrence</Descriptions.Item>
-                <Descriptions.Item label="Release frequency">Refers to the duration (seconds) between two occurrences of unlocks.</Descriptions.Item>
-                <Descriptions.Item label="Number of unlocks">The maximum number of unlocks allowed.</Descriptions.Item>
+                <Descriptions.Item label="Unlock Every (Release Frequency)">Refers to the duration (seconds) between two occurrences of unlocks.</Descriptions.Item>
+                <Descriptions.Item label="Unlock Number">The maximum number of unlocks allowed.</Descriptions.Item>
+                <Descriptions.Item label="Prepaid">The recipient will receive the token amount when the first unlocking event occurs.</Descriptions.Item>
                 <Descriptions.Item label="Example">If the amount is 0.1, the release frequency is 5 seconds, and the number of unlocks is 4, it implies that every 5 seconds, the stream will unlock 0.1 ETH, and this process will occur 4 times.</Descriptions.Item>
             </Descriptions>
         )
@@ -85,7 +86,7 @@ export const NewStream = () => {
                         <Form.Item
                             label="Unlock Number"
                             name={'unlock_number'}
-                            rules={[{ required: true, message: 'Number of unlocks' }]}
+                            rules={[{ required: true, message: 'Missing Number of unlocks' }]}
                         >
                             <Input size='large' type="number" placeholder="Number of unlocks" />
                         </Form.Item>
@@ -96,7 +97,7 @@ export const NewStream = () => {
                             name={'unlock_amount_each_time'}
                             rules={[{ required: true, message: 'Missing amount' }]}
                         >
-                            <Input size='large' type="number" placeholder="Amount" />
+                            <Input size='large' type="number" placeholder="Amount"  addonAfter="ETH"/>
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -130,15 +131,13 @@ export const NewStream = () => {
                         <Form.Item
                             label={"Prepaid"}
                             name={'prepaid'}
-                            rules={[{ required: true, message: 'Number of unlocks' }]}
+                            initialValue={0}
+                            rules={[{ required: true, message: 'Missing Prepaid Amount' }]}
                         >
                             <Input size='large' type="number" placeholder="Prepaid" addonAfter="ETH" />
                         </Form.Item>
                     </Col>
                 </Row>
-                <Divider />
-
-
             </Card>
             <Divider />
             <Form.Item>

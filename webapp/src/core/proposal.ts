@@ -1,11 +1,11 @@
 import { Address } from "fuels";
 import { DaoContractAbi__factory } from 'src/contracts/dao';
 import { IdentityInput } from 'src/contracts/dao/DaoContractAbi';
-import { setProposalDetailProps } from 'src/controller/dao/proposalSlice';
+import { setMyProposals, setProposalDetailProps } from 'src/controller/dao/proposalSlice';
 import { actionNames, processKeys, updateProcessStatus } from 'src/controller/process/processSlice';
 import { store } from "src/controller/store";
 import { TAI64 } from 'tai64';
-import { MESSAGE_TYPE, openNotification, updateStatistic } from "./common";
+import { MESSAGE_TYPE, openNotification, updatePayout, updateStatistic } from "./common";
 import { provider } from "./constant";
 import { getDaoDetail, getDaoProposals } from "./dao";
 import moment from "moment";
@@ -81,8 +81,7 @@ export const createPayoutProposal = async (formValues?: {
       }
 
 
-      // updateStatistic("proposal", 1);
-      // updatePayout("payout", formValues.amount, moment().format('YYYY-MM-DD'));
+      updateStatistic("proposal", 1);
 
       openNotification("Create Proposal", `Create Proposal Successful`, MESSAGE_TYPE.SUCCESS, () => { });
 
@@ -191,6 +190,28 @@ export const getProposalDetail = async (dao_address: string | string[], id: numb
   }
 }
 
+export const getMyProposals = async () => {
+  let { account } = store.getState().account;
+  if (account) {
+
+    let myProposalsRq = await fetch("/api/proposal/getList", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        owner: account
+      })
+    })
+
+    let myProposalsRes = await myProposalsRq.json();
+
+    if (myProposalsRes && myProposalsRes.length) {
+      store.dispatch(setMyProposals(myProposalsRes));
+    }
+  }
+}
+
 export const vote = async (vote: boolean) => {
   try {
     const { account } = store.getState().account;
@@ -290,6 +311,10 @@ export const executeProposal = async () => {
     })
 
     updateStatistic("executedProposal", 1);
+    let proposalType = proposalFromDB.proposal_type === 1 ? "payout" : "funding";
+
+    updatePayout(proposalType, proposalFromDB.amount, moment().format('YYYY-MM-DD'));
+    
     getProposalDetail(proposalFromDB.dao_address, proposalFromDB.id);
 
     openNotification("Execute proposal", `Execute proposal successful`, MESSAGE_TYPE.SUCCESS, () => { })

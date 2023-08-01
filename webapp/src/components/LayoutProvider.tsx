@@ -10,7 +10,7 @@ import {
 
 import { AiOutlineDashboard } from "react-icons/ai";
 import { FaSuperscript } from "react-icons/fa";
-import { GrGroup } from "react-icons/gr";
+import { GrDocumentTime, GrGroup } from "react-icons/gr";
 import { LiaDiscord } from "react-icons/lia";
 import { MdOutlineWaterDrop } from "react-icons/md";
 import { TfiLoop } from "react-icons/tfi";
@@ -84,6 +84,12 @@ export const LayoutProvider = (props: Props) => {
                                     label: "Dashboard",
                                     icon: <AiOutlineDashboard />,
                                     onClick: () => router.push("/my-account")
+                                },
+                                {
+                                    key: '5.1',
+                                    label: "My Proposals",
+                                    icon: <GrDocumentTime />,
+                                    onClick: () => router.push("/my-account/my-proposals")
                                 },
                                 {
                                     key: '7',

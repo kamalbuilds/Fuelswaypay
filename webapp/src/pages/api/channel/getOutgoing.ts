@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (payer) {
         
             try {
-                let channels = await Channel.find({payer: payer});
+                let channels = await Channel.find({payer: payer}).sort({created_at: -1});
                 return res.status(200).send(channels);
             } catch (error) {
                 console.log(error)

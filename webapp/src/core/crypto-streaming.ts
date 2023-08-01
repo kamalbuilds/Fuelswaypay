@@ -4,6 +4,7 @@ import { Address, ContractFactory } from 'fuels';
 import {
     MESSAGE_TYPE,
     openNotification,
+    updatePayout,
     updateStatistic
 } from "./common";
 import { calculateUnlockEvery } from "./utils";
@@ -11,6 +12,7 @@ import { setCreateStreamProps } from "src/controller/stream/createStreamSlice";
 import { CryptoStreamingContractAbi__factory } from "src/contracts/crypto-streaming";
 import { TAI64 } from "tai64";
 import { Stream, setStreamProps } from "src/controller/stream/streamSlice";
+import moment from "moment";
 
 export const createStream = async (formValues) => {
     try {
@@ -276,7 +278,8 @@ export const withdrawStream = async (stream: Stream) => {
                 withdrew: stream.total_fund - value.toNumber()/10**9
             })
         })
-
+        // Need correct
+        updatePayout("payout",  value.toNumber()/10**9, moment().format('YYYY-MM-DD'));
         openNotification("Withdraw", `Withdraw successful`, MESSAGE_TYPE.SUCCESS, () => { })
         getIncomingStreams();
 

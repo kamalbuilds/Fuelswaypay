@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (owner) {
         
             try {
-                let proposals = await Proposal.find({owner: owner});
+                let proposals = await Proposal.find({owner: owner}).sort({created_at: -1});
                 return res.status(200).send(proposals);
             } catch (error) {
                 console.log(error)

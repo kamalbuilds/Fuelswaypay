@@ -112,7 +112,7 @@ export const DaoStatistic = () => {
             content={
               <>
 
-                <Input name='amount' size='large' type='number' suffix={"ETH"} value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
+                <Input name='amount' size='large' type='number' addonAfter="ETH" value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
                 <Divider />
                 <Button type='primary' onClick={() => fund()} loading={addFund.processing}>Send</Button>
               </>

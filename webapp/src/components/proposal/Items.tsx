@@ -1,14 +1,18 @@
-
-import { Button, Table, Tag } from "antd";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useAppSelector } from "src/controller/hooks";
-import { getDaoProposals } from "src/core";
+import { useAppSelector } from "src/controller/hooks"
+import { Button, List, Table, Tag } from "antd";
+import { getMyProposals } from "src/core";
+import { useRouter } from "next/router";
 
-export const Proposals = () => {
-
+export const Items = () => {
     const router = useRouter();
-    const { proposals, daoFromDB } = useAppSelector(state => state.daoDetail);
+    const { account } = useAppSelector(state => state.account);
+    const { myProposals } = useAppSelector(state => state.proposal);
+    useEffect(() => {
+        if (account) {
+            getMyProposals();
+        }
+    }, [account])
 
     const colorMap = (pt: number) => {
         let color = "blue";
@@ -112,31 +116,20 @@ export const Proposals = () => {
                 <Button type="primary" onClick={() => {
                     //dispatch(setDaoDetailProps({att: "currentProposal", value: record}))
                     // showDrawerDetail()
-                    router.push(`/proposal/${daoFromDB.address}/${record.id}`)
+                    router.push(`/proposal/${record.dao_address}/${record.id}`)
 
                 }}>Detail</Button>
             )
 
         },
     ];
-
-
-    useEffect(() => {
-        if (daoFromDB.address) {
-            getDaoProposals(daoFromDB.address);
-        }
-
-    }, [daoFromDB.address])
-
     return (
-
         <Table
             pagination={{
                 pageSize: 6,
                 position: ["bottomCenter"]
             }}
-            dataSource={proposals}
+            dataSource={myProposals}
             columns={columns} />
-
     )
 }

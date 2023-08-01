@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (payer) {
         
             try {
-                let claims = await Claim.find({payer: payer});
+                let claims = await Claim.find({payer: payer}).sort({created_at: -1});
                 return res.status(200).send(claims);
             } catch (error) {
                 console.log(error)

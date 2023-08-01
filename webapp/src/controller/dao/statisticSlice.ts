@@ -5,12 +5,15 @@ type StatisticState = {
         dao: number,
         fund: number,
         proposal: number,
-        executed_proposal: number,
-        members: number
+        executedProposal: number,
+        members: number,
+        channel: number,
+        stream: number,
+        claim: number
     },
     payoutStatistic: {
         totalPayout: any[],
-        totalPayoutByDate: any[]
+        totalPayoutByDate: any[],
     },
     countDAOs: number,
     countProposals: number,
@@ -22,8 +25,11 @@ const initialState: StatisticState = {
         dao: 0,
         fund: 0,
         proposal: 0,
-        executed_proposal: 0,
-        members: 0
+        executedProposal: 0,
+        members: 0,
+        channel: 0,
+        stream: 0,
+        claim: 0
     },
     payoutStatistic: {
         totalPayout: [],
@@ -33,7 +39,7 @@ const initialState: StatisticState = {
     countProposals: 0,
     countStreams: 0,
     countChannels: 0,
-    
+
 
 }
 

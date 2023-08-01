@@ -1,4 +1,4 @@
-import { Alert, Collapse, Descriptions, Table, Tag } from "antd";
+import { Alert, Collapse, Descriptions, Space, Table, Tag } from "antd";
 import { useAppSelector } from "../../controller/hooks";
 
 export const CreatedClaims = () => {
@@ -12,7 +12,10 @@ export const CreatedClaims = () => {
                 st = "active"
                 break;
             case 2:
-                st = "closed";
+                st = "completed";
+                break;
+            case 3:
+                st = "rejected";
                 break;
             default:
                 break;
@@ -23,7 +26,7 @@ export const CreatedClaims = () => {
     }
 
     return (
-        <>
+        <Space direction={"vertical"} style={{width: "100%"}}>
             {currentClaims.map((claim, index) => {
                 return (
                     <Collapse key={`claim-${index}`} items={[{
@@ -44,6 +47,6 @@ export const CreatedClaims = () => {
                 )
             })
             }
-        </>
+        </Space>
     )
 }

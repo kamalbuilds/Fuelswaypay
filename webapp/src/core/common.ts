@@ -78,7 +78,7 @@ export const updateStatistic = async (field: string, value: number) => {
 
 export const updatePayout = async (field: string, value: number, date: string) => {
     try {
-        let request = await fetch("/api/proposal-payout/save", {
+        let request = await fetch("/api/statistic/updatePayout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -112,10 +112,7 @@ export const getGeneralStatistic = async () => {
            
         })
         let result = await request.json();
-
-        if (result.success) {
-            return result.statistic;
-        }
+        return result;
     } catch (e) {
         return false;
     }

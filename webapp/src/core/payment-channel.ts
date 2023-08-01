@@ -6,10 +6,12 @@ import { store } from "src/controller/store";
 import {
     MESSAGE_TYPE,
     openNotification,
+    updatePayout,
     updateStatistic
 } from "./common";
 import { setCreateChannelProps } from "src/controller/channel/createChannelSlice";
 import { provider } from "./constant";
+import moment from "moment";
 
 
 export const createChannel = async (formValues: {
@@ -375,7 +377,7 @@ export const acceptClaim = async (claim: Claim) => {
         })
 
         // Update channel
-
+        updatePayout("payout", claim.amount, moment().format('YYYY-MM-DD'));
         openNotification("Accept Claim", `Accept Claim Successful`, MESSAGE_TYPE.SUCCESS, () => { })
     } catch (e) {
         console.log(e);

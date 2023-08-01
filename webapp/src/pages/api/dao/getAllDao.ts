@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (status) {
 
             try {
-                let daos = await DAO.find({ status: status });
+                let daos = await DAO.find({ status: status }).sort({created_at: -1});
                 return res.status(200).send(daos);
             } catch (error) {
                 console.log(error)

@@ -72,7 +72,7 @@ export const Incoming = () => {
             key: 'payer',
             render: (_, record) => (
 
-                <Button icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(record.payer)}>
+                <Button type="primary" icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(record.payer)}>
                     {getShortAddress(record.payer)}
                 </Button>
 
@@ -88,7 +88,7 @@ export const Incoming = () => {
                     getClaims(record);
                     showDrawerDetail()
                 }}>
-                   Claims
+                   Details
                 </Button>
 
             )
