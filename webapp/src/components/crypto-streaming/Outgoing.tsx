@@ -201,7 +201,8 @@ export const Outgoing = () => {
             <Alert showIcon message="Please note that the recipient can proceed with a withdrawal only if the stream balance is equal to or greater than the unlocked amount minus the previously withdrawn amount. If this requirement is not met, it is necessary for you, as the sender, to provide additional funding for the stream." type="success" />
             <Table
                 pagination={{
-                    pageSize: 10
+                    pageSize: 10,
+                    position: ["bottomCenter"]
                 }}
                 dataSource={outgoingStreams}
                 columns={columns} />

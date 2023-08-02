@@ -33,7 +33,7 @@ export const ChannelCreationProgress = () => {
                         title: 'Onchain',
                     },
                     {
-                        title: 'Initialize',
+                        title: 'Initialized',
                     }
                 ]}
             />

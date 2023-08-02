@@ -28,20 +28,20 @@ export const DAOCreationProgress = () => {
                 current={checkStep(status)}
                 items={[
                     {
-                        title: 'Start',
+                        title: 'Setup',
                         description: "Input DAO settings",
                     },
                     {
-                        title: 'Saved',
+                        title: 'DAO info is saved',
                         description: "Settings is saved to database",
                     },
                     {
-                        title: 'Created DAO contract',
+                        title: 'DAO is deployed',
                         description: "A smart contract is deployed onchain"
                     },
                     {
-                        title: 'Updated DAO state',
-                        description: "Initialized DAO with settings"
+                        title: 'DAO is initialized',
+                        description: "DAO is initialized with settings"
                     },
                 ]}
             />

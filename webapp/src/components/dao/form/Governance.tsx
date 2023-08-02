@@ -17,7 +17,7 @@ export const Governance = () => {
                     <>
                         {fields.map(({ key, name, ...restField }, index) => (
                             <Row key={key} style={{ display: 'flex', marginBottom: 8}}>
-                                <Col span={16}>
+                                <Col span={20}>
                                 <Form.Item
                                     label={`Member (${index + 1})`}
                                     {...restField}
@@ -27,7 +27,7 @@ export const Governance = () => {
                                     <Input size='large' addonBefore={<AiOutlineWallet />} placeholder="Member Address" />
                                 </Form.Item>
                                 </Col>
-                                <Col span={8}>
+                                <Col span={4}>
                                 <MinusCircleOutlined onClick={() => remove(name)} />
                                 </Col>
                                

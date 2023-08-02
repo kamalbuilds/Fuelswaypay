@@ -88,7 +88,8 @@ const initialState: ProposalState = {
     daoFromDB: {
         title: "",
         description: "",
-        address: ""
+        address: "",
+        quorum: 0
     },
     voted: false,
     isMember: false,

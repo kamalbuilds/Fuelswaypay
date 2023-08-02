@@ -1,17 +1,13 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Form, Input, Radio, Row, Select, Space } from 'antd';
+import { Alert, Button, Card, Col, Form, Input, Radio, Row, Select, Space } from 'antd';
 import { AiOutlineWallet } from 'react-icons/ai';
 import { headStyle } from 'src/theme/layout';
 
 export const WhitelistContributors = () => {
     return (
         <Card title="Whitelist Contributors" headStyle={headStyle}>
-            {/* <Form.Item name="whitelist_mode">
-                <Radio.Group>
-                    <Radio value={1}>Members Only</Radio>
-                    <Radio value={2}>Predefined List</Radio>
-                </Radio.Group>
-            </Form.Item> */}
+            <Alert showIcon type='success' message={`The whitelist contributors consist of a list of addresses and contract IDs authorized to fund this DAO. If anyone else attempts to call the "send fund" function, that action will result in failure and will not be executed.`}/>
+            <br />
             <Form.List name="whitelist" initialValue={[]}>
                 {(fields, { add, remove }) => (
                     <>

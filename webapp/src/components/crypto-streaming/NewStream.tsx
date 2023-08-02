@@ -36,7 +36,7 @@ export const NewStream = () => {
         <Form onFinish={onFinish} style={{ maxWidth: 600, margin: "auto" }} layout="vertical">
             <Alert
                 message="Crypto Streaming"
-                description="Token amount will be released every second. Recipient or Member can executed the proposal multitime, each calculated amount of token will be sent to each recipient"
+                description="The token amount will be released according to a predetermined schedule. The recipient has the option to withdraw the tokens multiple times, with each withdrawal corresponding to a calculated amount of tokens being sent to the recipient."
                 type="success"
                 showIcon
             />
@@ -143,7 +143,7 @@ export const NewStream = () => {
             <Form.Item>
                 {
                     status === 0 && <Button type="primary" htmlType="submit" loading={createStream.processing}>
-                        Deploy Stream Onchain
+                        Deploy Stream
                     </Button>
                 }
                 {

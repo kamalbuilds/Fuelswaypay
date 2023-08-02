@@ -33,7 +33,7 @@ export const StreamCreationProcess = () => {
                         title: 'Onchain',
                     },
                     {
-                        title: 'Initialize',
+                        title: 'Initialized',
                     }
                 ]}
             />

@@ -110,7 +110,7 @@ export default function ProposalDetail() {
                                 <Descriptions.Item label="Recipient Type">
                                     {proposalFromDB.proposal_type === 1 ? "User" : "A DAO"}
                                 </Descriptions.Item>
-                                <Descriptions.Item label="Reciever">
+                                <Descriptions.Item label="Identity">
                                     <Button type="primary" icon={<CopyOutlined />} onClick={() => navigator.clipboard.writeText(proposalFromDB.recipient)}>
                                         {getShortAddress(proposalFromDB.recipient)}
                                     </Button>

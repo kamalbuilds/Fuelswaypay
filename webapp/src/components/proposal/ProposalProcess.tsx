@@ -37,7 +37,7 @@ export const ProposalCreationProgress = () => {
                         title: 'Voting',
                     },
                     {
-                        title: 'Execute',
+                        title: 'Executed',
                     }
                 ]}
             />

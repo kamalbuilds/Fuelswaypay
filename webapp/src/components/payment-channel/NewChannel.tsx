@@ -30,7 +30,7 @@ export const NewChannel = () => {
 
             <Alert
                 message="Payment Channel"
-                description="Token amount will be released every second. Recipient or Member can executed the proposal multitime, each calculated amount of token will be sent to each recipient"
+                description={<p>A payment channel has been established between the payer and payee, enabling the payee to withdraw money from the channel multiple times. Each withdrawal is secured by a claim containing a signed signature from the payer. <br/><br/>This payment channel setup reduces transaction fees for the payer, and the payee is responsible for paying the transaction fees. This method facilitates micro payments on the blockchain, making small transactions more efficient and cost-effective.</p>}
                 type="success"
                 showIcon
             />

@@ -197,7 +197,8 @@ export const Outgoing = () => {
             <Alert type="success" showIcon message="As the payer, it is crucial to maintain a channel balance that is sufficient to cover the created claim amounts. This will enable payees to accept claims, ensuring successful transactions. Please ensure that the channel balance is adequate to facilitate seamless claim acceptance by the payees." />
             <Table
                 pagination={{
-                    pageSize: 10
+                    pageSize: 10,
+                    position: ["bottomCenter"]
                 }}
                 dataSource={outgoingChannels}
                 columns={columns} />

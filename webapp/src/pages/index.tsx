@@ -16,7 +16,7 @@ export default function Index() {
         <div style={{ maxWidth: 1440, margin: "auto", padding: 10 }}>
             <div style={{textAlign: "center", maxWidth: 600, margin: "auto"}}>
                 <Text style={{color: "blue"}} strong>OUR BEST FEATURES &#128293;</Text >
-                <Title level={2} style={{fontWeight: 700}}>Unleash your full finance potential with our best features</Title>
+                <Title level={2} style={{fontWeight: 700}}>Swaypay: Empowering Payments, Crypto Streaming, and Channels for All!</Title>
             </div>
             <br/>
             <Row gutter={16}>

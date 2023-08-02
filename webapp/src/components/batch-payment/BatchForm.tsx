@@ -21,8 +21,8 @@ export const BatchForm = () => {
         }}>
             <Alert
                 message="Batch Payments"
-                description="Token amount will be released every second. Recipient or Member can executed the proposal multitime, each calculated amount of token will be sent to each recipient"
-                type="success"
+                description="This feature is experimental and functional but contains some inaccuracies. Instead of signing only once for multiple transfers, you are required to sign each time you make a payment."
+                type="warning"
                 showIcon
             />
             <br />
@@ -44,7 +44,7 @@ export const BatchForm = () => {
                                         name={[name, 'amount']}
                                         rules={[{ required: true, message: 'Missing amount' }]}
                                     >
-                                        <Input addonBefore={"$"} size='large' type="number" suffix={"ETH"} placeholder="Amount" />
+                                        <Input size='large' type="number" addonAfter={"ETH"} placeholder="Amount" />
                                     </Form.Item>
                                     <MinusCircleOutlined onClick={() => remove(name)} />
                                 </Space>
@@ -61,7 +61,7 @@ export const BatchForm = () => {
             </Card>
             <Divider />
             <Button size="large" style={{ width: "100%" }} htmlType="submit" type="primary" loading={createBatchPayment.processing}>
-                Upcoming Feature
+                Transfer
             </Button>
         </Form>
     )

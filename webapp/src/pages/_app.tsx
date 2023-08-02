@@ -1,51 +1,36 @@
-import { ConfigProvider, theme } from 'antd';
 import 'antd/dist/reset.css';
-import "../styles/app.css";
 import type { AppProps } from 'next/app';
 import { Provider } from "react-redux";
-import { store } from 'src/controller/store';
 import { LayoutProvider } from 'src/components/LayoutProvider';
-const { defaultAlgorithm, darkAlgorithm } = theme;
-import NProgress from "nprogress";
+import { store } from 'src/controller/store';
+import "../styles/app.css";
 import Router from "next/router";
+import NProgress from "nprogress";
+import withTheme from 'src/theme';
 
 Router.events.on("routeChangeStart", (url) => {
-    NProgress.start()
+  NProgress.start()
 })
 
 Router.events.on("routeChangeComplete", (url) => {
-    NProgress.done()
+  NProgress.done()
 })
 
 Router.events.on("routeChangeError", (url) => {
-    NProgress.done()
+  NProgress.done()
 })
 export default function MyApp({ Component, pageProps }: AppProps) {
-  
+
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#34d399',
-        },
-        components: {
-          Menu: {
-            iconSize: 20,
-            fontSize: 16
-          },
-        },
-        algorithm: defaultAlgorithm
-      }}
-    >
-      <Provider store={store}>
-        {/* <PersistGate loading={null} persistor={persistor}> */}
-        <LayoutProvider>
 
-          <Component {...pageProps} />
+    <Provider store={store}>
 
-        </LayoutProvider>
-        {/* </PersistGate> */}
-      </Provider >
-    </ConfigProvider>
+      {
+
+        withTheme(<LayoutProvider>
+            <Component {...pageProps} />
+        </LayoutProvider>)
+      }
+    </Provider >
   )
 }

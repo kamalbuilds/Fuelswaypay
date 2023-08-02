@@ -137,7 +137,8 @@ export const Incoming = () => {
             <Alert type="success" showIcon message="Prior to accepting a claim, it is essential to verify the channel balance. If the channel balance is not greater than the claim amount, the transaction will not succeed, and the SUI coins will not be transferred to your wallet. In such a situation, it is recommended to contact the payer and request additional funding for the channel to ensure a successful transaction." />
              <Table
                 pagination={{
-                    pageSize: 10
+                    pageSize: 10,
+                    position: ["bottomCenter"]
                 }}
                 dataSource={incomingChannels}
                 columns={columns} />

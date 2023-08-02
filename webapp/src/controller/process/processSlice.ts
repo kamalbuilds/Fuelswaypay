@@ -23,6 +23,8 @@ export const actionNames = {
     createName: "createName",
     createBatchPayment: "createBatchPayment",
     createStream: "createStream",
+    cancelStream: "cancelStream",
+    transferStream: "transferStream",
     createChannel: "createChannel",
     createClaim: "createClaim",
     fundStream: "fundStream",
@@ -99,6 +101,12 @@ const initialState: Processes = {
         processing: false
     },
     createStream: {
+        processing: false
+    },
+    cancelStream: {
+        processing: false
+    },
+    transferStream: {
         processing: false
     },
     createChannel: {

@@ -260,6 +260,7 @@ export const withdrawStream = async (stream: Stream) => {
         let wallet = await window.fuel.getWallet(account);
       
         const streamContract = await CryptoStreamingContractAbi__factory.connect(stream.address, wallet);
+        const balanceBefore = await streamContract.functions.get_balance().get();
 
         await streamContract.functions.withdraw()
             .txParams({ gasPrice: 1 })
@@ -278,17 +279,126 @@ export const withdrawStream = async (stream: Stream) => {
                 withdrew: stream.total_fund - value.toNumber()/10**9
             })
         })
-        // Need correct
-        updatePayout("payout",  value.toNumber()/10**9, moment().format('YYYY-MM-DD'));
+        updatePayout("payout",  (balanceBefore.value.toNumber() - value.toNumber()) / 10**9, moment().format('YYYY-MM-DD'));
         openNotification("Withdraw", `Withdraw successful`, MESSAGE_TYPE.SUCCESS, () => { })
         getIncomingStreams();
 
     } catch (e) {
-        openNotification("Add Fund", e.message, MESSAGE_TYPE.ERROR, () => { })
+        openNotification("Withdraw Fund", e.message, MESSAGE_TYPE.ERROR, () => { })
     }
 
     store.dispatch(updateProcessStatus({
         actionName: actionNames.withdrawStream,
+        att: processKeys.processing,
+        value: false
+    }))
+}
+
+export const cancel = async (stream: Stream) => {
+    try {
+        const { account } = store.getState().account;
+        if (!window.fuel || !account) {
+            openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+            return;
+        }
+        
+        store.dispatch(updateProcessStatus({
+            actionName: actionNames.cancelStream,
+            att: processKeys.processing,
+            value: true
+        }))
+
+        let wallet = await window.fuel.getWallet(account);
+      
+        const streamContract = await CryptoStreamingContractAbi__factory.connect(stream.address, wallet);
+
+        await streamContract.functions.cancel_stream()
+            .txParams({ gasPrice: 1 })
+            .call();
+
+        await fetch("/api/stream/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                owner: stream.owner,
+                _id: stream._id,
+                withdrew: stream.total_fund,
+                status: 2
+            })
+        })
+
+        openNotification("Cancel  Stream", `Cancel Stream successful`, MESSAGE_TYPE.SUCCESS, () => { });
+        if (account === stream.recipient) {
+            getIncomingStreams();
+        } else {
+            getOutgoingStreams();
+        }
+   
+
+    } catch (e) {
+        openNotification("Cancel Fund", e.message, MESSAGE_TYPE.ERROR, () => { })
+    }
+
+    store.dispatch(updateProcessStatus({
+        actionName: actionNames.cancelStream,
+        att: processKeys.processing,
+        value: false
+    }))
+}
+
+export const transfer = async (stream: Stream, newRecipient: `fuel${string}`) => {
+    try {
+        const { account } = store.getState().account;
+        if (!window.fuel || !account) {
+            openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+            return;
+        }
+        
+        store.dispatch(updateProcessStatus({
+            actionName: actionNames.transferStream,
+            att: processKeys.processing,
+            value: true
+        }))
+
+        let wallet = await window.fuel.getWallet(account);
+      
+        const streamContract = await CryptoStreamingContractAbi__factory.connect(stream.address, wallet);
+        const balanceBefore = await streamContract.functions.get_balance().get();
+
+        await streamContract.functions.transfer_stream({Address: {value: newRecipient}})
+            .txParams({ gasPrice: 1 })
+            .call();
+
+        const {value} = await streamContract.functions.get_balance().get();
+
+        await fetch("/api/stream/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                owner: stream.owner,
+                _id: stream._id,
+                withdrew: stream.total_fund - value.toNumber()/10**9,
+            })
+        })
+        updatePayout("payout",  (balanceBefore.value.toNumber() - value.toNumber()) / 10**9, moment().format('YYYY-MM-DD'));
+        openNotification("Transfer  Stream", `Transfer Stream successful`, MESSAGE_TYPE.SUCCESS, () => { });
+        if (account === stream.recipient) {
+            getIncomingStreams();
+        } else {
+            getOutgoingStreams();
+        }
+   
+
+    } catch (e) {
+        openNotification("Transfer Stream", e.message, MESSAGE_TYPE.ERROR, () => { })
+    }
+
+    store.dispatch(updateProcessStatus({
+        actionName: actionNames.cancelStream,
         att: processKeys.processing,
         value: false
     }))

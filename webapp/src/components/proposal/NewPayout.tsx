@@ -69,13 +69,18 @@ export const NewPayout = () => {
 
                 <Row gutter={12}>
                     <Col span={12}>
-                        <Form.Item label="Address or Contract ID" name="recipient" rules={[{ required: true, message: 'Address or Contract ID' }]}>
+                        <Form.Item label="Address or Contract ID" 
+                        name="recipient" 
+                        rules={[{ required: true, message: 'Required Address or Contract ID' }]}
+                        extra="Please provide the contract ID if this proposal involves funding."
+                        
+                        >
                             <Input size="large" placeholder="Address" addonBefore={<AiOutlineWallet />} />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item label="Amount" name="amount" rules={[{ required: true, message: 'Missing amount' }]}>
-                            <Input size="large" type="number" suffix="ETH" />
+                            <Input size="large" type="number" addonAfter="ETH" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -107,7 +112,11 @@ export const NewPayout = () => {
                     }}
                 />
                 <br />
-                <Form.Item label="Content referrence" initialValue={1} name="content_type" rules={[{ required: true, message: 'Missing content type' }]}>
+                <Form.Item label="Content reference" 
+                initialValue={1} name="content_type" 
+                rules={[{ required: true, message: 'Missing content type' }]}
+                extra="If the proposal content relies on information from an external source, please choose one of the options and provide the corresponding external URL."
+                >
                     <Select size="large" options={[
                         { label: "No", value: 1 },
                         { label: "From a Github issue", value: 2 }
@@ -115,7 +124,7 @@ export const NewPayout = () => {
                 </Form.Item>
 
                 <Form.Item label="Proposal Discussion URL" name="external_url">
-                    <Input size="large" placeholder="Proposal Discussion URL" />
+                    <Input addonBefore="URL" size="large" placeholder="Proposal Discussion URL" />
                 </Form.Item>
             </Card>
 

@@ -121,7 +121,7 @@ export const Incoming = () => {
                     items={[{
                         key: `${dataIndex}`,
                         label: `${record.total_fund - record.withdrew}`,
-                        children: <Descriptions column={1} size="small" style={{maxWidth: 100}}>
+                        children: <Descriptions column={1} size="small" style={{maxWidth: 150}}>
                             <Descriptions.Item label="Balance">{record.total_fund - record.withdrew}</Descriptions.Item>
                             <Descriptions.Item label="Funds">{record.total_fund}</Descriptions.Item>
                             <Descriptions.Item label="Withdrew">{record.withdrew}</Descriptions.Item>
@@ -154,8 +154,6 @@ export const Incoming = () => {
                         record.status === 3 || [2, 3].indexOf(record.transfer_previlege) === -1
                     } type="default" onClick={() => { }} loading={withdrawStream.processing}>Transfer</Button>
                 </Space.Compact>
-
-
             )
 
         },
@@ -174,7 +172,8 @@ export const Incoming = () => {
             <Alert showIcon message="Kindly be aware that you can initiate a withdrawal only if the stream balance is greater than or equal to the unlocked amount minus the amount already withdrawn. If this condition is not met, it is advisable to contact the sender and request additional funding for the stream" type="success" />
             <Table
                 pagination={{
-                    pageSize: 10
+                    pageSize: 10,
+                    position: ["bottomCenter"]
                 }}
                 dataSource={incomingStreams.map((stream: Stream, index: number) => ({
                     ...stream,
