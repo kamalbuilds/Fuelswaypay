@@ -54,7 +54,7 @@ export const NewPayout = () => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item required={true} label="Allow early exection" name="allow_early_execution">
+                        <Form.Item required={true} label="Allow early execution" name="allow_early_execution">
                             <Select size="large" options={[
                                 { label: "Yes", value: 1 },
                                 { label: "No", value: 2 }

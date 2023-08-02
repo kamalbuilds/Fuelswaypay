@@ -401,11 +401,21 @@ export const rejectClaim = async (wallet: any, claim: Claim) => {
                 value: true
             }))
 
-
-            openNotification("Accept Claim", `Accept Claim Successful`, MESSAGE_TYPE.SUCCESS, () => { })
+            fetch("/api/claim/update", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    _id: claim._id,
+                    payer: claim.payer,
+                    status: 3
+                })
+            })
+            openNotification("Reject Claim", `Reject Claim Successful`, MESSAGE_TYPE.SUCCESS, () => { })
         }
     } catch (e) {
-        openNotification("Create Claim", e.message, MESSAGE_TYPE.ERROR, () => { })
+        openNotification("Reject Claim", e.message, MESSAGE_TYPE.ERROR, () => { })
     }
     store.dispatch(updateProcessStatus({
         actionName: actionNames.rejectClaim,
