@@ -1,14 +1,15 @@
-import { Alert, Button, Collapse, Descriptions, Divider, Input, Popover, Space, Table, Tag } from "antd";
+import { Alert, Button, Collapse, Descriptions, Divider, Input, Modal, Popover, Space, Table, Tag } from "antd";
 import { useCallback, useEffect, useState } from "react";
 
-import { CopyOutlined } from "@ant-design/icons";
-import { useAppSelector } from "src/controller/hooks";
-import { fundStream as fundStreamAction, getOutgoingStreams } from "src/core";
-import { useAddress } from "src/hooks/useAddress";
-import PaymentProcess from "./PaymentProcess";
-import { useDate } from "src/hooks/useDate";
+import { CopyOutlined, WalletOutlined } from "@ant-design/icons";
 import { ColumnsType } from "antd/es/table";
+import { useAppSelector } from "src/controller/hooks";
+import { Stream } from "src/controller/stream/streamSlice";
+import { cancelStreamAction, fundStream as fundStreamAction, getOutgoingStreams, transferStreamAction } from "src/core";
+import { useAddress } from "src/hooks/useAddress";
+import { useDate } from "src/hooks/useDate";
 import { useStream } from "src/hooks/useStream";
+import PaymentProcess from "./PaymentProcess";
 
 export const Outgoing = () => {
     const { getUnlockEveryIn, getLocalString } = useDate();
@@ -19,7 +20,30 @@ export const Outgoing = () => {
     const [fundAmount, setFundAmount] = useState("");
 
     const [openFundStreamPopup, setOpenFundStreamPopup] = useState({});
-    const { fundStream } = useAppSelector(state => state.process);
+    const { fundStream, cancelStream, transferStream } = useAppSelector(state => state.process);
+
+
+    const [selectedStream, setSelectedStream] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newRecipient, setNewRecipient] = useState(null);
+
+
+    const handleOk = () => {
+        console.log(selectedStream, newRecipient);
+        transferStreamAction(selectedStream, newRecipient);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleTransfer = (stream: Stream) => {
+        setSelectedStream(stream);
+        setIsModalOpen(true);
+    }
+
+
+
     const handleOpenFundStreamPopupChange = (newOpen: boolean,
         //@ts-ignore
         streamId: string) => {
@@ -60,6 +84,9 @@ export const Outgoing = () => {
                 break;
             case 2:
                 st = "completed";
+                break;
+            case 3:
+                st = "canceled";
                 break;
             default:
                 break;
@@ -129,7 +156,7 @@ export const Outgoing = () => {
                     items={[{
                         key: `${dataIndex}`,
                         label: `${record.total_fund - record.withdrew}`,
-                        children: <Descriptions column={1} size="small" style={{maxWidth: 100}}>
+                        children: <Descriptions column={1} size="small" style={{ maxWidth: 150 }}>
                             <Descriptions.Item label="Balance">{record.total_fund - record.withdrew}</Descriptions.Item>
                             <Descriptions.Item label="Funds">{record.total_fund}</Descriptions.Item>
                             <Descriptions.Item label="Withdrew">{record.withdrew}</Descriptions.Item>
@@ -155,7 +182,7 @@ export const Outgoing = () => {
                     <Popover
                         content={
                             <>
-                                <Input name='adress' type="number"  addonAfter={"ETH"} value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
+                                <Input name='adress' size="large" type="number" addonAfter={"ETH"} value={fundAmount} onChange={(e) => setFundAmount(e.target.value)} />
                                 <Divider />
                                 <Button disabled={
                                     record.status !== 1
@@ -174,10 +201,10 @@ export const Outgoing = () => {
 
                     <Button disabled={
                         record.status === 3 || [1, 3].indexOf(record.cancel_previlege) === -1
-                    } type="default" onClick={() => { }} loading={fundStream.processing}>Cancel</Button>
+                    } type="default" onClick={() => cancelStreamAction(record)} loading={cancelStream.processing}>Cancel</Button>
                     <Button disabled={
-                        record.status === 3 || [1, 3].indexOf(record.cancel_previlege) === -1
-                    } type="default" onClick={() => { }} loading={fundStream.processing}>Transfer</Button>
+                        [2,3].indexOf(record.status) !== -1 || [1, 3].indexOf(record.transfer_previlege) === -1
+                    } type="default" onClick={() => handleTransfer(record)}>Transfer</Button>
                 </Space.Compact>
 
 
@@ -206,6 +233,9 @@ export const Outgoing = () => {
                 }}
                 dataSource={outgoingStreams}
                 columns={columns} />
+            <Modal title="Transfer Stream" open={isModalOpen} onOk={handleOk} confirmLoading={transferStream.processing} onCancel={handleCancel}>
+                <Input name="new_address" size="large" value={newRecipient} onChange={(e) => setNewRecipient(e.target.value)} addonBefore={<WalletOutlined />} />
+            </Modal>
         </Space>
     )
 }

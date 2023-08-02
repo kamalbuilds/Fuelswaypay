@@ -59,7 +59,6 @@ export const createStream = async (formValues) => {
                 start_date: Date.parse(formValues.start_date),
                 status: 0,
                 total_fund: 0
-
             })
         })
 
@@ -227,7 +226,7 @@ export const fundStream = async (stream: Stream, amount: number) => {
             })
 
             updateStatistic("fund", amount);
-            openNotification("Add Fund", `Add ${amount} SUI successful`, MESSAGE_TYPE.SUCCESS, () => { })
+            openNotification("Add Fund", `Add ${amount} ETH successful`, MESSAGE_TYPE.SUCCESS, () => { })
             getOutgoingStreams();
         }
 
@@ -266,7 +265,7 @@ export const withdrawStream = async (stream: Stream) => {
             .txParams({ gasPrice: 1 })
             .call();
 
-        const {value} = await streamContract.functions.get_balance().get();
+        const {value} = await streamContract.functions.get_stream_info().get();
 
         await fetch("/api/stream/update", {
             method: "POST",
@@ -276,10 +275,11 @@ export const withdrawStream = async (stream: Stream) => {
             body: JSON.stringify({
                 owner: stream.owner,
                 _id: stream._id,
-                withdrew: stream.total_fund - value.toNumber()/10**9
+                withdrew: value[2].toNumber() / 10**9,
+                status: value[1].toNumber()
             })
         })
-        updatePayout("payout",  (balanceBefore.value.toNumber() - value.toNumber()) / 10**9, moment().format('YYYY-MM-DD'));
+        updatePayout("payout",  (balanceBefore.value.toNumber() - value[4].toNumber()) / 10**9, moment().format('YYYY-MM-DD'));
         openNotification("Withdraw", `Withdraw successful`, MESSAGE_TYPE.SUCCESS, () => { })
         getIncomingStreams();
 
@@ -294,7 +294,7 @@ export const withdrawStream = async (stream: Stream) => {
     }))
 }
 
-export const cancel = async (stream: Stream) => {
+export const cancelStreamAction = async (stream: Stream) => {
     try {
         const { account } = store.getState().account;
         if (!window.fuel || !account) {
@@ -325,11 +325,11 @@ export const cancel = async (stream: Stream) => {
                 owner: stream.owner,
                 _id: stream._id,
                 withdrew: stream.total_fund,
-                status: 2
+                status: 3
             })
         })
 
-        openNotification("Cancel  Stream", `Cancel Stream successful`, MESSAGE_TYPE.SUCCESS, () => { });
+        openNotification("Cancel Stream", `Cancel Stream successful`, MESSAGE_TYPE.SUCCESS, () => { });
         if (account === stream.recipient) {
             getIncomingStreams();
         } else {
@@ -338,7 +338,7 @@ export const cancel = async (stream: Stream) => {
    
 
     } catch (e) {
-        openNotification("Cancel Fund", e.message, MESSAGE_TYPE.ERROR, () => { })
+        openNotification("Cancel Stream", e.message, MESSAGE_TYPE.ERROR, () => { })
     }
 
     store.dispatch(updateProcessStatus({
@@ -348,7 +348,7 @@ export const cancel = async (stream: Stream) => {
     }))
 }
 
-export const transfer = async (stream: Stream, newRecipient: `fuel${string}`) => {
+export const transferStreamAction = async (stream: Stream, newRecipient: `fuel${string}`) => {
     try {
         const { account } = store.getState().account;
         if (!window.fuel || !account) {
@@ -367,7 +367,7 @@ export const transfer = async (stream: Stream, newRecipient: `fuel${string}`) =>
         const streamContract = await CryptoStreamingContractAbi__factory.connect(stream.address, wallet);
         const balanceBefore = await streamContract.functions.get_balance().get();
 
-        await streamContract.functions.transfer_stream({Address: {value: newRecipient}})
+        await streamContract.functions.transfer_stream({Address: {value: Address.fromString(newRecipient).toB256()}})
             .txParams({ gasPrice: 1 })
             .call();
 
@@ -398,7 +398,7 @@ export const transfer = async (stream: Stream, newRecipient: `fuel${string}`) =>
     }
 
     store.dispatch(updateProcessStatus({
-        actionName: actionNames.cancelStream,
+        actionName: actionNames.transferStream,
         att: processKeys.processing,
         value: false
     }))

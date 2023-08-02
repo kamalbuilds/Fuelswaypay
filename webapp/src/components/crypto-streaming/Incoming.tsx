@@ -1,14 +1,14 @@
-import { Alert, Button, Collapse, Descriptions, Space, Table, Tag } from "antd";
-import { useEffect } from "react";
+import { Alert, Button, Collapse, Descriptions, Input, Modal, Space, Table, Tag } from "antd";
+import { useEffect, useState } from "react";
 
-import { CopyOutlined } from "@ant-design/icons";
-import { Stream } from "src/controller/stream/streamSlice";
+import { CopyOutlined, WalletOutlined } from "@ant-design/icons";
 import { useAppSelector } from "src/controller/hooks";
-import { getIncomingStreams, withdrawStream as withdrawStreamAction } from "src/core";
+import { Stream } from "src/controller/stream/streamSlice";
+import { cancelStreamAction, getIncomingStreams, transferStreamAction, withdrawStream as withdrawStreamAction } from "src/core";
 import { useAddress } from "src/hooks/useAddress";
-import PaymentProcess from "./PaymentProcess";
 import { useDate } from "src/hooks/useDate";
 import { useStream } from "src/hooks/useStream";
+import PaymentProcess from "./PaymentProcess";
 
 
 export const Incoming = () => {
@@ -17,11 +17,29 @@ export const Incoming = () => {
     const { getPrevilegeText } = useStream()
     const { account } = useAppSelector(state => state.account);
     const { incomingStreams } = useAppSelector(state => state.stream);
-    const { withdrawStream } = useAppSelector(state => state.process)
+    const { withdrawStream, cancelStream, transferStream } = useAppSelector(state => state.process);
 
+    const [selectedStream, setSelectedStream] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newRecipient, setNewRecipient] = useState(null);
+
+
+    const handleOk = () => {
+        console.log(selectedStream, newRecipient);
+        transferStreamAction(selectedStream, newRecipient);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     const doWithdraw = (stream: Stream) => {
         withdrawStreamAction(stream);
+    }
+
+    const handleTransfer = (stream: Stream) => {
+        setSelectedStream(stream);
+        setIsModalOpen(true);
     }
 
     const colorMap = (pt: number) => {
@@ -52,6 +70,9 @@ export const Incoming = () => {
                 break;
             case 2:
                 st = "completed";
+                break;
+            case 3:
+                st = "canceled";
                 break;
             default:
                 break;
@@ -121,7 +142,7 @@ export const Incoming = () => {
                     items={[{
                         key: `${dataIndex}`,
                         label: `${record.total_fund - record.withdrew}`,
-                        children: <Descriptions column={1} size="small" style={{maxWidth: 150}}>
+                        children: <Descriptions column={1} size="small" style={{ maxWidth: 150 }}>
                             <Descriptions.Item label="Balance">{record.total_fund - record.withdrew}</Descriptions.Item>
                             <Descriptions.Item label="Funds">{record.total_fund}</Descriptions.Item>
                             <Descriptions.Item label="Withdrew">{record.withdrew}</Descriptions.Item>
@@ -149,10 +170,10 @@ export const Incoming = () => {
                     } type="primary" onClick={() => doWithdraw(record)} loading={withdrawStream.processing}>Withdraw</Button>
                     <Button disabled={
                         record.status === 3 || [2, 3].indexOf(record.cancel_previlege) === -1
-                    } type="default" onClick={() => { }} loading={withdrawStream.processing}>Cancel</Button>
+                    } type="default" onClick={() => cancelStreamAction(record)} loading={cancelStream.processing}>Cancel</Button>
                     <Button disabled={
-                        record.status === 3 || [2, 3].indexOf(record.transfer_previlege) === -1
-                    } type="default" onClick={() => { }} loading={withdrawStream.processing}>Transfer</Button>
+                        [2, 3].indexOf(record.status) !== -1 || [2, 3].indexOf(record.transfer_previlege) === -1
+                    } type="default" onClick={() => handleTransfer(record)} loading={transferStream.processing}>Transfer</Button>
                 </Space.Compact>
             )
 
@@ -180,6 +201,9 @@ export const Incoming = () => {
                     key: index
                 }))}
                 columns={columns} />
+            <Modal title="Transfer Stream" open={isModalOpen} onOk={handleOk} confirmLoading={transferStream.processing} onCancel={handleCancel}>
+                <Input name="new_address" size="large" value={newRecipient} onChange={(e) => setNewRecipient(e.target.value)} addonBefore={<WalletOutlined />} />
+            </Modal>
         </Space>
     )
 }

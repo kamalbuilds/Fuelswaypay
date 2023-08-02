@@ -8,7 +8,7 @@ export default function PaymentProcess({ stream }) {
     useEffect(() => {
         if (!firstLoading) {
             let paymentAmount = stream.unlock_amount_each_time * stream.unlock_number;
-            let unlockFrequency = calculateUnlockEvery(stream.unlock_every, stream.unlock_every_type)
+            let unlockFrequency = calculateUnlockEvery(stream.unlock_every, stream.unlock_every_type) * 1000;
             if (stream.status === 1) {
 
                 let i = setInterval(function () {
@@ -40,7 +40,7 @@ export default function PaymentProcess({ stream }) {
 
     return (
 
-        <Progress percent={unlockAmount * 100 / (stream.unlock_amount_each_time * stream.unlock_number)} 
+        <Progress percent={Math.floor(unlockAmount * 100 / (stream.unlock_amount_each_time * stream.unlock_number))} 
         status="active" 
         strokeColor={{ from: '#108ee9', to: '#87d068' }} />
 

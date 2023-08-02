@@ -23,15 +23,17 @@ import { getStatistic, getCountOwnerContracts } from "./statistic";
 
 import { doBatch } from "./batch-payment";
 
-import { 
-  createStream, 
-  fundStream, 
-  withdrawStream, 
+import {
+  createStream,
+  fundStream,
+  withdrawStream,
   getIncomingStreams,
-  getOutgoingStreams 
+  getOutgoingStreams,
+  cancelStreamAction,
+  transferStreamAction
 } from "./crypto-streaming";
 
-import { 
+import {
   createChannel,
   getIncomingChannels,
   getOutgoingChannels,
@@ -72,6 +74,8 @@ export {
   withdrawStream,
   getIncomingStreams,
   getOutgoingStreams,
+  cancelStreamAction,
+  transferStreamAction,
   createChannel,
   getIncomingChannels,
   getOutgoingChannels,

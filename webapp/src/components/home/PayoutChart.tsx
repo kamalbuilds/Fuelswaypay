@@ -1,7 +1,7 @@
 
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { useAppSelector } from '../../controller/hooks';
-import { useStatistic } from '../../hooks/useStatistic';
+import { useAppSelector } from 'src/controller/hooks';
+import { useStatistic } from 'src/hooks/useStatistic';
 
 
 export default function PayoutChart() {
@@ -23,7 +23,7 @@ export default function PayoutChart() {
           <Tooltip />
           <Legend />
           <Line type="monotone" dataKey="payout" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="vesting" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="funding" stroke="#82ca9d" />
         </LineChart>
       </ResponsiveContainer>
     )

@@ -23,7 +23,7 @@ export const useStatistic = () => {
                     value.vesting = p.amount;
                 }
             } else {
-                dataMap.set(p.date, { payout: p.type == "payout" ? p.amount : 0, vesting: p.type == "vesting" ? p.amount : 0})
+                dataMap.set(p.date, { payout: p.type == "payout" ? p.amount : 0, vesting: p.type == "funding" ? p.amount : 0})
             }
         })
 
