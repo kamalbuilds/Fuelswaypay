@@ -72,7 +72,7 @@ export const Incoming = () => {
                 st = "completed";
                 break;
             case 3:
-                st = "canceled";
+                st = "cancelled";
                 break;
             default:
                 break;
