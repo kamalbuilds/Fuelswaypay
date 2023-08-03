@@ -458,6 +458,7 @@ export const closeChannel = async (channel: Channel) => {
             })
         })
 
+        getOutgoingChannels();
         openNotification("Close Channel", `Close Channel Successful`, MESSAGE_TYPE.SUCCESS, () => { })
 
     } catch (e) {
