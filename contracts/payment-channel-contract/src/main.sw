@@ -36,7 +36,6 @@ enum InvalidError {
     CannotReinitialize: (),
     SenderIsNotOwner: (),
     ChannelIsNotActive: (),
-    // StreamHasNotRecipient: (),
     IncorrectAssetId: ContractId,
     ChannelBalanceNotEnough: (),
     NotChannelPayee: (),
@@ -86,6 +85,12 @@ impl Channel for Contract {
         let sender = get_msg_sender_address_or_panic();
         require(sender == storage.payee, InvalidError::NotChannelPayee);
 
+        // Fuel Wallet creates a signature from a string by h256(message as a string), but sha256 creates a hash from bytes. So this made an issue.
+        // This code block is expected logic:
+        // let message =  keccak256((sender, amount, nonce, contract_id()));
+        // let hash = sha256(message);
+        // let result_address: Result<Address, EcRecoverError> = ec_recover_address(signature, hash);
+
         let result_address: Result<Address, EcRecoverError> = ec_recover_address(signature, hash);
    
         if let Result::Ok(address) = result_address {
@@ -127,4 +132,13 @@ impl Channel for Contract {
         require(storage.use_nonces.get(nonce).is_none(), InvalidError::IsUsedNonce(nonce));
         keccak256((payee, amount, nonce, contract_id()))
     }
+
+    #[storage(read, write)]
+    fn close() {
+        validate_owner();
+        require(storage.status == 1, InvalidError::ChannelIsNotActive);
+        storage.status = 2;
+        transfer(this_balance(BASE_ASSET_ID), BASE_ASSET_ID, Identity::Address(storage.payer));
+    }
+
 }

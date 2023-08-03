@@ -33,6 +33,7 @@ export type ContractIdOutput = ContractIdInput;
 interface PaymentChannelContractAbiInterface extends Interface {
   functions: {
     claim_payment: FunctionFragment;
+    close: FunctionFragment;
     get_balance: FunctionFragment;
     get_channel_info: FunctionFragment;
     get_hash: FunctionFragment;
@@ -41,6 +42,7 @@ interface PaymentChannelContractAbiInterface extends Interface {
   };
 
   encodeFunctionData(functionFragment: 'claim_payment', values: [string, BigNumberish, BigNumberish, string]): Uint8Array;
+  encodeFunctionData(functionFragment: 'close', values: []): Uint8Array;
   encodeFunctionData(functionFragment: 'get_balance', values: []): Uint8Array;
   encodeFunctionData(functionFragment: 'get_channel_info', values: []): Uint8Array;
   encodeFunctionData(functionFragment: 'get_hash', values: [BigNumberish, BigNumberish, AddressInput]): Uint8Array;
@@ -48,6 +50,7 @@ interface PaymentChannelContractAbiInterface extends Interface {
   encodeFunctionData(functionFragment: 'send_fund', values: []): Uint8Array;
 
   decodeFunctionData(functionFragment: 'claim_payment', data: BytesLike): DecodedValue;
+  decodeFunctionData(functionFragment: 'close', data: BytesLike): DecodedValue;
   decodeFunctionData(functionFragment: 'get_balance', data: BytesLike): DecodedValue;
   decodeFunctionData(functionFragment: 'get_channel_info', data: BytesLike): DecodedValue;
   decodeFunctionData(functionFragment: 'get_hash', data: BytesLike): DecodedValue;
@@ -59,6 +62,7 @@ export class PaymentChannelContractAbi extends Contract {
   interface: PaymentChannelContractAbiInterface;
   functions: {
     claim_payment: InvokeFunction<[hash: string, amount: BigNumberish, nonce: BigNumberish, signature: string], void>;
+    close: InvokeFunction<[], void>;
     get_balance: InvokeFunction<[], BN>;
     get_channel_info: InvokeFunction<[], [AddressOutput, AddressOutput, BN, BN, BN]>;
     get_hash: InvokeFunction<[amount: BigNumberish, nonce: BigNumberish, payee: AddressInput], string>;

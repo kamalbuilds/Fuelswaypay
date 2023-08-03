@@ -20,4 +20,7 @@ abi Channel {
     #[storage(read)]
     fn get_hash(amount: u64, nonce:u64, payee: Address) -> b256;
 
+    #[storage(read, write)]
+    fn close();
+
 }
