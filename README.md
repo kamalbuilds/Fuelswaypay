@@ -42,3 +42,4 @@ Each DAO, Crypto Stream, or Payment Channel in SWAYPAY is deployed as a separate
 ### Crypto Streaming
 ![](webapp/public/docs/crypto_streaming.jpg)
 ### Payment Channels
+![](webapp/public/docs/payment_channels.jpg)
