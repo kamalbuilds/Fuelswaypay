@@ -109,19 +109,19 @@ export const Incoming = () => {
                 <Tag color={colorMap(record.status)}>{statusMap(record.status)}</Tag>
             )
         },
-        {
-            title: 'Actions',
-            key: 'actions',
-            render: (_, record) => (
-                <Space wrap>
-                    <Button disabled={record.status !== 1} type="dashed" onClick={() => {
-                        // closeChannelAction(wallet, record.id)
-                    }}>Close</Button>
-                </Space>
+        // {
+        //     title: 'Actions',
+        //     key: 'actions',
+        //     render: (_, record) => (
+        //         <Space wrap>
+        //             <Button disabled={record.status !== 1} type="dashed" onClick={() => {
+        //                 // closeChannelAction(wallet, record.id)
+        //             }}>Close</Button>
+        //         </Space>
 
-            )
+        //     )
 
-        },
+        // },
     ];
 
     useEffect(() => {

@@ -19,7 +19,7 @@ export const Outgoing = () => {
     const [claimMetaURL, setClaimMetaURL] = useState("");
 
     const [fundAmount, setFundAmount] = useState("");
-    const { fundChannel, createClaim } = useAppSelector(state => state.process)
+    const { fundChannel, createClaim, closeChannel } = useAppSelector(state => state.process)
     const { outgoingChannels } = useAppSelector(state => state.channel);
 
     const [openDetail, setOpenDetail] = useState(false);
@@ -173,8 +173,8 @@ export const Outgoing = () => {
                     >
                         <Button disabled={record.status !== 1}>New Claim</Button>
                     </Popover>
-                    <Button disabled={record.status !== 1} onClick={() => {
-                        // closeChannelAction(wallet, record.id)
+                    <Button loading={closeChannel.processing} disabled={record.status !== 1} onClick={() => {
+                        closeChannelAction(record)
                     }}>Close</Button>
                 </Space.Compact>
 

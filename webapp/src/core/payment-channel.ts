@@ -424,23 +424,44 @@ export const rejectClaim = async (wallet: any, claim: Claim) => {
     }))
 }
 
-export const closeChannel = async (wallet: any, channelId: string) => {
+export const closeChannel = async (channel: Channel) => {
     try {
-        if (wallet.connected) {
-
-
-            store.dispatch(updateProcessStatus({
-                actionName: actionNames.closeChannel,
-                att: processKeys.processing,
-                value: true
-            }))
-
-
-
-            openNotification("Close Channel", `Close Channel Successful`, MESSAGE_TYPE.SUCCESS, () => { })
+        const { account } = store.getState().account;
+        if (!window.fuel || !account) {
+            openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+            return;
         }
+
+        store.dispatch(updateProcessStatus({
+            actionName: actionNames.closeChannel,
+            att: processKeys.processing,
+            value: true
+        }))
+
+        let wallet = await window.fuel.getWallet(account);
+
+        const channelContract = await PaymentChannelContractAbi__factory.connect(channel.address, wallet);
+
+        await channelContract.functions.close()
+            .txParams({ gasPrice: 1 })
+            .call();
+
+        fetch("/api/channel/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                payer: account,
+                _id: channel._id,
+                status: 2
+            })
+        })
+
+        openNotification("Close Channel", `Close Channel Successful`, MESSAGE_TYPE.SUCCESS, () => { })
+
     } catch (e) {
-        openNotification("Create Claim", e.message, MESSAGE_TYPE.ERROR, () => { })
+        openNotification("Close Channel", e.message, MESSAGE_TYPE.ERROR, () => { })
     }
     store.dispatch(updateProcessStatus({
         actionName: actionNames.closeChannel,
