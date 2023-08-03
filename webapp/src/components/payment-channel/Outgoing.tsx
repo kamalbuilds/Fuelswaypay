@@ -161,7 +161,7 @@ export const Outgoing = () => {
                             <Space direction="vertical">
                                 <Input size="large" placeholder="Title" name='title' value={claimTitle} onChange={(e) => setClaimTitle(e.target.value)} />
                                 <Input size="large" placeholder="Document URL" type="URL" name='meta_url' value={claimMetaURL} onChange={(e) => setClaimMetaURL(e.target.value)} />
-                                <Input size="large" placeholder="Amount" name='amount' type='number' suffix="ETH" value={claimAmount} onChange={(e) => setClaimAmount(e.target.value)} />
+                                <Input size="large" placeholder="Amount" name='amount' type='number' addonAfter="ETH" value={claimAmount} onChange={(e) => setClaimAmount(e.target.value)} />
                                 <Divider />
                                 <Button disabled={record.status !== 1} type='primary' onClick={() => handleCreateClaim(record)} loading={createClaim.processing}>Submit</Button>
                             </Space>

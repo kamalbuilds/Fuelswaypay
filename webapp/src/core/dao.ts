@@ -150,6 +150,7 @@ export const deployDAO = async (name: string, form: FormInstance<any>) => {
             openNotification("Deploy DAO", `DAO was deployed successful with contract id: ${contractId}`, MESSAGE_TYPE.SUCCESS, () => { })
 
             if (updateRes.success) {
+                updateStatistic("dao", 1);
                 await initializeDAO(contractId, form);
             }
 
