@@ -76,6 +76,7 @@ impl Channel for Contract {
         storage.status = 1;
     }
 
+    // Payee call this function when he accept the signed claim.
     #[storage(read, write)]
     fn claim_payment(hash: b256, amount: u64, nonce: u64, signature: B512) {
         require(storage.status == 1, InvalidError::ChannelIsNotActive);
@@ -127,12 +128,15 @@ impl Channel for Contract {
             this_balance(BASE_ASSET_ID)
         )
     }
+
+    // Generate hash message from payout info.
     #[storage(read)]
     fn get_hash(amount: u64, nonce:u64, payee: Address) -> b256 {
         require(storage.use_nonces.get(nonce).is_none(), InvalidError::IsUsedNonce(nonce));
         keccak256((payee, amount, nonce, contract_id()))
     }
 
+    // Close the channel and send remaining balance to the channel owner
     #[storage(read, write)]
     fn close() {
         validate_owner();

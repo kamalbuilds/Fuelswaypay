@@ -25,18 +25,13 @@ use {
 
 enum InvalidError {
     CannotReinitialize: (),
-    // MemberNotExists: (),
-    // ProposalNotInDAO: (),
     DAOIsNotOpen: (),
-    // DAOMemberExisted: (),
     DAOMemberNotExisted: (),
     SenderIsNotOwner: (),
-    // IsNotDAOProposal: (),
     IsNotVotesEnough: (),
     NotToEndDate: (),
     VotingIsNotStart: (),
     VotingHasEnded: (),
-    // ProposalWasExecuted: (),
     ProposalIsNotActive: (),
     DAOIsNotActive: (),
     ProposalHasNotRecipient: (),
@@ -79,6 +74,8 @@ fn validate_owner() {
 
 impl DAO for Contract {
 
+
+    // Initialize a deployed contract
     #[storage(read, write)]
     fn initialize(
         config: DaoConfig,
@@ -90,6 +87,8 @@ impl DAO for Contract {
         storage.owner = get_msg_sender_address_or_panic();
         storage.status = 1;
         storage.start_date = timestamp();
+
+        // maximum 5 members and 5 whitelist contributors in this phase
         let mut i = 0;
         while i < 5 {
             if (Address::from(ZERO_B256) != members[i]) {
@@ -109,6 +108,7 @@ impl DAO for Contract {
 
     }
 
+    // New proposal with settings
     #[storage(read, write)]
     fn create_proposal(
         proposal_type: u64,
@@ -140,6 +140,7 @@ impl DAO for Contract {
         id
     }
 
+    // Only users in whitelist contributors can send fund.
     #[storage(read, write), payable]
     fn send_fund() {
         require(storage.status == 1, InvalidError::DAOIsNotActive);
@@ -164,6 +165,8 @@ impl DAO for Contract {
         storage.funds.insert(sender, contributed_amount);
     }
 
+
+    // Only members can vote
     #[storage(read, write)]
     fn vote(
         proposal_id: u64,
@@ -229,6 +232,8 @@ impl DAO for Contract {
         storage.voters.insert((sender, proposal_id), is_agree);
     }
     
+
+    // Execute a proposal if number of aggrees is enough
     #[storage(read, write)]
     fn execute_proposal(
         proposal_id: u64
@@ -271,6 +276,8 @@ impl DAO for Contract {
                 Identity::Address(_) => Option::None,
                 Identity::ContractId(id) => Option::Some(id),
             };
+
+            // Call send_fund function of another DAO.
             let funding_dao = abi(AnotherDAO, Option::unwrap(contract_id).into());
             funding_dao.send_fund {coins: unwrap_proposal.amount}();
         }
@@ -294,23 +301,22 @@ impl DAO for Contract {
         )
     }
 
+    // Only DAO owner can add members.
     #[storage(read, write)]
     fn add_member(new_member: Address) {
         validate_owner();
         require(storage.status == 1, InvalidError::DAOIsNotActive);
         let mut i = 0;
-        // let mut is_exist = false;
         while i < storage.members.len() {
             if (storage.members.get(i).unwrap() == new_member) {
-                // is_exist = true;
                 revert(1);
             }
             i += 1;
         }
-        // require(!is_exist, InvalidError::DAOMemberExisted);
         storage.members.push(new_member);
     }
 
+    // Only DAO owner can remove member
     #[storage(read, write)]
     fn remove_member(old_member: Address) {
         validate_owner();
@@ -333,6 +339,7 @@ impl DAO for Contract {
         
     }
 
+    // Only DAO owner can add contributors to whitelist.
     #[storage(read, write)]
     fn add_contributor_to_whitelist(contributor: Identity) {
         validate_owner();   
@@ -347,6 +354,7 @@ impl DAO for Contract {
         storage.whitelist_contributors.push(contributor);
     }
 
+    // Only DAO owner can remove contributor from whitelist
     #[storage(read, write)]
     fn remove_contributor_from_whitelist(contributor: Identity) {
         validate_owner();
@@ -369,7 +377,7 @@ impl DAO for Contract {
         }
     }
 
-
+    // A web3 user can join if this DAO is open
     #[storage(read, write)]
     fn join() {
         require(storage.config.open, InvalidError::DAOIsNotOpen);
@@ -385,6 +393,7 @@ impl DAO for Contract {
         storage.members.push(sender);
     }
 
+    // A web3 user can leave if this DAO is open
     #[storage(read, write)]
     fn leave() {
         require(storage.config.open, InvalidError::DAOIsNotOpen);
@@ -565,10 +574,13 @@ impl DAO for Contract {
         )
     }
 
+    // Check whether a member voted or not.
     #[storage(read)]
     fn get_user_vote(address: Address, proposal_id: u64) -> Option<bool> {
         storage.voters.get((address, proposal_id))
     }
+
+    // Check whether or not an user is a member.
     #[storage(read)]
     fn is_member(member: Address) -> bool {
         let mut i = 0;

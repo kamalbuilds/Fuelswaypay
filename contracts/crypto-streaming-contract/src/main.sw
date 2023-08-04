@@ -69,6 +69,7 @@ fn validate_owner() {
     require(storage.owner == sender, InvalidError::SenderIsNotOwner);
 }
 
+// Calculate avaiable amount for recipient's withdrawal
 #[storage(read)]
 fn get_avaiable_amount() -> (u64, u64) {
         let mut total_unlocked_amount = 0;
@@ -84,6 +85,7 @@ fn get_avaiable_amount() -> (u64, u64) {
 }
 
 impl Stream for Contract {
+
     #[storage(read, write)]
     fn initialize(config: Config) {
         require(storage.owner.into() == ZERO_B256, InvalidError::CannotReinitialize);
@@ -92,6 +94,7 @@ impl Stream for Contract {
         storage.owner = get_msg_sender_address_or_panic();
     }
     
+    // Only Stream owner can fund.
     #[storage(read, write), payable]
     fn send_fund() {
         validate_owner();
@@ -101,6 +104,7 @@ impl Stream for Contract {
         storage.total_fund += amount;
     }
 
+    // Only recipient can withdraw.
     #[storage(read, write)]
     fn withdraw() {
         require(storage.status == 1, InvalidError::StreamIsNotActive);
@@ -126,6 +130,8 @@ impl Stream for Contract {
     fn cancel_stream() {
         let config = storage.config;
         require(storage.status != 3, InvalidError::StreamIsNotActive);
+
+        // Check cancel previlege of the stream
         require(config.cancel_previlege != 4, InvalidError::NotPermissionToCancel);
         let sender = get_msg_sender_address_or_panic();
         if (config.cancel_previlege == 1) {
@@ -162,6 +168,8 @@ impl Stream for Contract {
     fn transfer_stream(new_recipient: Identity) {
         let mut config = storage.config;
         require(storage.status == 1, InvalidError::StreamIsNotActive);
+
+        // Check transfer previlege of the stream
         require(config.transfer_previlege != 4, InvalidError::NotPermissionToTransfer);
         
         let sender = get_msg_sender_address_or_panic();
