@@ -104,18 +104,26 @@ At this phase, SWAYPAY serves as an MVP that represents the core ideas of our pr
 
 Here are the planned enhancements and features for SWAYPAY:
 
-- Implement gasless deployment and initialization for all smart contracts, making it easier for users to interact with the platform.
-- Introduce token-based DAOs, providing greater flexibility and utility within the decentralized ecosystem.
-- Expand proposal types to cover a wide range of payment and governance scenarios, enhancing the platform's functionality.
-- Support parent and children DAOs architecture to facilitate hierarchical organization structures and collaborations.
-- Introduce batch streams and channels deployment, streamlining the process for multiple transactions.
-- Implement a personal invoice system for users, enhancing transparency and ease of payment management.
-- Introduce a user's address book for convenient and efficient transactions between familiar parties.
-- Implement a user-friendly naming system to simplify SWAYPAY user addresses and improve user experience.
-- Transition from offchain Database to an indexer-based solution for enhanced scalability and data management.
-- Integrate Oracle services to bring real-world data onto the blockchain, expanding use cases and applications.
-- Add support for more tokens, increasing the diversity of assets available on SWAYPAY.
-- Introduce support for fiat currencies, bridging the gap between traditional finance and the decentralized ecosystem.
-- Conduct a thorough audit of all smart contracts to ensure security and reliability.
-- Develop APIs and SDKs to enable easy integration and interaction with SWAYPAY's features.
-- Conduct research and expand business use cases to identify new opportunities and potential areas for growth.
+1. Implement gasless deployment and initialization for all smart contracts, making it easier for users to interact with the platform.
+2. Introduce token-based DAOs, providing greater flexibility and utility within the decentralized ecosystem.
+3. Expand proposal types to cover a wide range of payment and governance scenarios, enhancing the platform's functionality.
+4. Support parent and children DAOs architecture to facilitate hierarchical organization structures and collaborations.
+5. Introduce batch streams and channels deployment, streamlining the process for multiple transactions.
+6. Implement a personal invoice system for users, enhancing transparency and ease of payment management.
+7. Introduce a user's address book for convenient and efficient transactions between familiar parties.
+8. Implement a user-friendly naming system to simplify SWAYPAY user addresses and improve user experience.
+9. Transition from offchain Database to an indexer-based solution for enhanced scalability and data management.
+10. Integrate Oracle services to bring real-world data onto the blockchain, expanding use cases and applications.
+11. Add support for more tokens, increasing the diversity of assets available on SWAYPAY.
+12. Introduce support for fiat currencies, bridging the gap between traditional finance and the decentralized ecosystem.
+13. Conduct a thorough audit of all smart contracts to ensure security and reliability.
+14. Develop APIs and SDKs to enable easy integration and interaction with SWAYPAY's features.
+15. Conduct research and expand business use cases to identify new opportunities and potential areas for growth.
+
+## Conclusion
+
+During the SWAY Summer Hackathon, we had an incredible experience exploring the possibilities with SWAYPAY. FUEL, as a blockchain platform, exhibits tremendous potential to become a major player in the industry. We are thrilled to have contributed, even in a small way, to the success of the FUEL ecosystem through SWAYPAY.
+
+We extend a heartfelt thanks to the FUEL open-source community and the dedicated support from the FUEL community. Without their invaluable assistance, we wouldn't have been able to complete this product within the given time limitations.
+
+We look forward to further contributing to the growth and success of the FUEL ecosystem and are excited about the future possibilities with SWAYPAY.
