@@ -15,6 +15,7 @@ import {
   // joinDao,
   // leaveDao,
   getOwnerDaos,
+  addContributorAction
 } from "./dao";
 
 import { createPayoutProposal, getProposalDetail, vote, executeProposal, getMyProposals } from "./proposal";
@@ -60,6 +61,7 @@ export {
   removeMember,
   // joinDao,
   // leaveDao,
+  addContributorAction,
   createPayoutProposal,
   getProposalDetail,
   vote,

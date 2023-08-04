@@ -600,3 +600,40 @@ export const getContributorFunds = async (offset: number) => {
     }
 
 }
+
+export const addContributorAction = async (newContributor: string) => {
+    try {
+        const { account } = store.getState().account;
+        if (!window.fuel || !account) {
+            openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+            return;
+        }
+        let { daoFromDB } = store.getState().daoDetail;
+        if (daoFromDB) {
+            store.dispatch(updateProcessStatus({
+                actionName: actionNames.addContributor,
+                att: processKeys.processing,
+                value: true
+            }))
+
+
+            let wallet = await window.fuel.getWallet(account);
+            const daoContract = DaoContractAbi__factory.connect(daoFromDB.address, wallet);
+            
+            await daoContract.functions.add_contributor_to_whitelist(
+                (newContributor.indexOf(`fuel`) === -1) ? {ContractId: {value: newContributor}} : {Address: {value: Address.fromString(newContributor).toB256()}}
+            ).txParams({ gasPrice: 1 }).call();
+
+            openNotification("Add Contributor", `Add new contributor "${newContributor}" successful`, MESSAGE_TYPE.SUCCESS, () => { })
+            getDaoDetail(daoFromDB._id);
+        }
+    } catch (e) {
+        openNotification("Add Contributor", e.message, MESSAGE_TYPE.ERROR, () => { })
+    }
+
+    store.dispatch(updateProcessStatus({
+        actionName: actionNames.addContributor,
+        att: processKeys.processing,
+        value: false
+    }))
+}
