@@ -68,7 +68,7 @@ To ensure fairness to both parties, users must possess the qualified assigned pr
 
 This is an MVP implementation for the payment channel concept. However, it still requires improvement to address critical security issues.
 
-## Usecases
+## 4. Usecases
 
 SWAYPAY can be used for the following purposes:
 
@@ -78,7 +78,7 @@ SWAYPAY can be used for the following purposes:
 
 - **Transaction and Invoicing:** SWAYPAY facilitates multiple transactions between parties, such as buyers and service providers. Each payment is confirmed and accepted through a claim, akin to a traditional invoice. Additionally, it is suitable for micropayments, reducing transaction fees and costs for payers and other payment engines built on blockchain.
 
-## Technical implementation
+## 5. Technical implementation
 ![](webapp/public/docs/system_architect.jpg)
 
 To build SWAYPAY, we followed these steps:
@@ -98,7 +98,7 @@ To build SWAYPAY, we followed these steps:
 
 - Progressively completed the planned features according to our development roadmap.
 
-## Future Development
+## 6. Future Development
 
 At this phase, SWAYPAY serves as an MVP that represents the core ideas of our project. Due to the short duration of the hackathon, there is ample room for improvement and further enhancements to be made in future iterations of SWAYPAY.
 
@@ -120,7 +120,7 @@ Here are the planned enhancements and features for SWAYPAY:
 14. Develop APIs and SDKs to enable easy integration and interaction with SWAYPAY's features.
 15. Conduct research and expand business use cases to identify new opportunities and potential areas for growth.
 
-## Conclusion
+## 7. Conclusion
 
 During the SWAY Summer Hackathon, we had an incredible experience exploring the possibilities with SWAYPAY. FUEL, as a blockchain platform, exhibits tremendous potential to become a major player in the industry. We are thrilled to have contributed, even in a small way, to the success of the FUEL ecosystem through SWAYPAY.
 
