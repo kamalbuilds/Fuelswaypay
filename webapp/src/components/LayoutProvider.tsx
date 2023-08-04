@@ -160,13 +160,13 @@ export const LayoutProvider = (props: Props) => {
                                     key: '12',
                                     icon: <FaSuperscript />,
                                     label: 'Twitter',
-                                    onClick: () => window.open("https://twitter.com/a2n_swaypay", "_blank")
+                                    onClick: () => window.open("https://twitter.com/swaypay_a2n", "_blank")
                                 },
                                 {
                                     key: '13',
                                     icon: <LiaDiscord />,
                                     label: 'Discord',
-                                    onClick: () => window.open("https://discord.com/a2n_swaypay", "_blank")
+                                    onClick: () => window.open("https://discord.com/channels/1136151377626796061", "_blank")
                                 },
                             ]
                         }
