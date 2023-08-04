@@ -2,7 +2,7 @@
 
 ## Introduction
 
-SWAYPAY, operating on the FUEL testnet, revolutionizes DAO creation, eliminating coding requirements for organizations. Seamless payments to users and other DAOs are facilitated through Payout and Funding proposals, backed by transparent voting. Our platform offers Crypto streaming and Payment channels for real-time transactions with minimal gas fees. With decentralized contract deployment for each DAO, Stream, or Channel, SWAYPAY ensures secure and efficient fund management. 
+SWAYPAY operates on the FUEL testnet and offers seamless DAO creation, removing the need for coding knowledge in organizations. The platform facilitates smooth payments to users and other DAOs through Payout and Funding proposals, supported by transparent voting mechanisms. Our product also provides Crypto streaming and Payment channels for real-time transactions with minimal gas fees. With decentralized contract deployment for each DAO, Stream, or Channel, SWAYPAY ensures secure and efficient fund management
 
 Our vision extends beyond payments; we plan to integrate SWAYPAY into remote jobs markets, empowering users with transformative features.
 
@@ -24,7 +24,7 @@ SWAYPAY aims to offer payment solutions catering to both DAOs and Individuals. O
 
 ## 2. Key Features
 ### DAO Creation without Coding:
-SWAYPAY enables organizations to effortlessly create DAOs by providing an intuitive interface for configuring DAO parameters, defining governance rules, and establishing tokenomics. This eliminates the complexities of coding, making it accessible to a broader range of users.
+SWAYPAY empowers organizations to effortlessly create DAOs through an intuitive interface, allowing for easy configuration of DAO parameters, governance rules, and voting mechanisms. By eliminating the complexities of coding, SWAYPAY becomes accessible to a broader range of users.
 ### Transparent Governance with Voting Mechanism:
 Within each DAO, SWAYPAY allows users to propose Payouts and Funding requests. The community participates in a democratic voting process to approve or reject these proposals, ensuring transparency and effective fund management.
 ### Seamless Payments and Payouts:
@@ -72,11 +72,11 @@ This is an MVP implementation for the payment channel concept. However, it still
 
 SWAYPAY can be used for the following purposes:
 
-- Managing DAO Treasury: It allows payout to individuals or funding other organizations through transparent proposals and voting, facilitating efficient financial management within DAOs.
+- **Managing DAO Treasury:** It allows payout to individuals or funding other organizations through transparent proposals and voting, facilitating efficient financial management within DAOs.
 
-- Paying Freelancer Salaries and Subscription Services: SWAYPAY supports crypto streaming for payments, enabling freelancers to receive payments in real-time for their services or subscriptions. This feature provides security and transparency, protecting users in the labor market.
+- **Paying Freelancer Salaries and Subscription Services:** SWAYPAY supports crypto streaming for payments, enabling freelancers to receive payments in real-time for their services or subscriptions. This feature provides security and transparency, protecting users in the labor market.
 
-- Transaction and Invoicing: SWAYPAY facilitates multiple transactions between parties, such as buyers and service providers. Each payment is confirmed and accepted through a claim, akin to a traditional invoice. Additionally, it is suitable for micropayments, reducing transaction fees and costs for payers and other payment engines built on blockchain.
+- **Transaction and Invoicing:** SWAYPAY facilitates multiple transactions between parties, such as buyers and service providers. Each payment is confirmed and accepted through a claim, akin to a traditional invoice. Additionally, it is suitable for micropayments, reducing transaction fees and costs for payers and other payment engines built on blockchain.
 
 ## Technical implementation
 ![](webapp/public/docs/system_architect.jpg)
