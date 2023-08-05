@@ -117,8 +117,8 @@ export const NewStream = () => {
                                     { label: "Hours", value: 3 },
                                     { label: "Days", value: 4 },
                                     { label: "Weeks", value: 5 },
-                                    { label: "Month", value: 6 },
-                                    { label: "Year", value: 7 },
+                                    { label: "Months", value: 6 },
+                                    { label: "Years", value: 7 },
                                 ]} />
                             </Form.Item>
                         </Space>
