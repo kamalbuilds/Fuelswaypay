@@ -12,19 +12,19 @@ import { useDate } from "src/hooks/useDate";
 const { Title } = Typography;
 export default function ProposalDetail() {
     const router = useRouter();
-    const { account } = useAppSelector(state => state.account);
+    const { dao_address, proposal_id } = router.query;
     const { proposalFromDB, daoFromDB, daoOnchain, proposalOnchain, isMember, voted } = useAppSelector(state => state.proposal);
     const { getShortAddress } = useAddress();
     const { vote, executeProposal } = useAppSelector(state => state.process)
     const { getLocalString } = useDate();
 
     useEffect(() => {
-        if (router.query.dao_address) {
+        if (dao_address && proposal_id !== undefined) {
             console.log("Load Proposal Detail");
-            let { dao_address, proposal_id } = router.query;
+            
             getProposalDetail(dao_address, parseInt(proposal_id.toString()));
         }
-    }, [router.query.dao_address])
+    }, [dao_address, proposal_id])
     return (
         <>
             <ProposalCreationProgress />
