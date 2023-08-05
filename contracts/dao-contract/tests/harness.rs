@@ -114,182 +114,194 @@ async fn can_initialize() {
         .call()
         .await
         .unwrap().value;
-    let is_member = instance.methods().is_member(wallet_3.address().into()).call().await.unwrap().value;
-    assert_eq!(is_member, true);
+
+  
     // make sure the returned config title is correct
     assert_eq!(_config.quorum, 20);
 
-    // // Create Proposal and check the proposal's information.
-    // let _ = instance
-    // .with_account(wallet_2.clone())
-    // .unwrap()
-    // .methods()
-    // .create_proposal(
-    //     1,
-    //     Identity::Address(wallet_3.address().into()),
-    //     1000,
-    //     1,
-    //     20,
-    //     true
-    // )
-    // .call()
-    // .await;
-
-    // let proposal = instance.methods()
-    // .get_proposal_by_id(0)
-    // .call()
-    // .await
-    // .unwrap().value;
-
-    // assert_eq!(proposal.unwrap().amount, 1000);
-
-    // // Start funding DAO
-
-    // // Setup call params
-    // let amount = 20_000;
-    // let call_params = CallParameters::default().set_amount(amount);
-    // // Call send funds
-    // let _ = instance
-    //     .with_account(wallet_2.clone())
-    //     .unwrap()
-    //     .methods()
-    //     .send_fund()
-    //     .call_params(call_params)
-    //     .unwrap()
-    //     .call()
-    //     .await;
-
-    // // Check DAO balance
-    // let balance = instance.methods()
-    // .get_balance()
-    // .call()
-    // .await
-    // .unwrap().value;
-
-    // assert_eq!(balance, 20_000);
-
-    // // Init another DAO & Funding proposal
-    // // Init instance_1
-    // let _ = _instance_1
-    //     .with_account(wallet_2.clone())
-    //     .unwrap()
-    //     .methods()
-    //     .initialize(
-    //         config.clone(),
-    //         members.clone(),
-    //         whitelist_contributors.clone()
-    //     )
-    //     .call()
-    //     .await;
-
-    // // Create a funding proposal
-
-    // let _ = instance
-    // .with_account(wallet_2.clone())
-    // .unwrap()
-    // .methods()
-    // .create_proposal(
-    //     2,
-    //     Identity::ContractId(_id_1),
-    //     2000,
-    //     1,
-    //     20,
-    //     true
-    // )
-    // .call()
-    // .await;
-
-    // let proposal_1 = instance.methods()
-    // .get_proposal_by_id(1)
-    // .call()
-    // .await
-    // .unwrap().value;
-
-    // assert_eq!(proposal_1.unwrap().amount, 2000);
-
-    // // Voting for proposal 01
-
-    // let _ = instance
-    // .with_account(wallet_1.clone())
-    // .unwrap()
-    // .methods()
-    // .vote(
-    //     0,
-    //     true
-    // )
-    // .call()
-    // .await;
-
-    // let _ = instance
-    // .with_account(wallet_2.clone())
-    // .unwrap()
-    // .methods()
-    // .vote(
-    //     0,
-    //     true
-    // )
-    // .call()
-    // .await;
-
-    // // Execute payout proposal
-    // // let wallet_3_balance_before: u64 = wallet_3.get_asset_balance(&BASE_ASSET_ID).await.unwrap();
-    // let _ = instance
-    // .with_account(wallet_1.clone())
-    // .unwrap()
-    // .methods()
-    // .execute_proposal(
-    //     0
-    // )
-    // .call()
-    // .await;
-
-    // // Check balance of recipient
-    // // let wallet_3_balance_after: u64 = wallet_3.get_asset_balance(&BASE_ASSET_ID).await.unwrap();
-    // let balance = instance.methods()
-    // .get_balance()
-    // .call()
-    // .await
-    // .unwrap().value;
-    // assert_eq!(balance, 19_000);   
-
-    // // Execute funding proposal
-
-    // let _ = instance
-    // .with_account(wallet_1.clone())
-    // .unwrap()
-    // .methods()
-    // .vote(
-    //     1,
-    //     true
-    // )
-    // .call()
-    // .await;
+    // Check is_member function
+    let is_member = instance.methods().is_member(wallet_3.address().into()).call().await.unwrap().value;
     
-    // // Execute funding proposal
-    // let balance_before: u64 = _instance_1.methods()
-    // .get_balance()
-    // .call()
-    // .await
-    // .unwrap().value;
+    assert_eq!(is_member, true);
 
-    // let _ = instance
-    // .with_account(wallet_1.clone())
-    // .unwrap()
-    // .methods()
-    // .execute_proposal(
-    //     1
-    // )
-    // .call()
-    // .await;
+    // Create Proposal and check the proposal's information.
+    let _ = instance
+    .with_account(wallet_2.clone())
+    .unwrap()
+    .methods()
+    .create_proposal(
+        1,
+        Identity::Address(wallet_3.address().into()),
+        1000,
+        1,
+        20,
+        true
+    )
+    .call()
+    .await;
 
-    // // Check balance of DAO.
+    let proposal = instance.methods()
+    .get_proposal_by_id(0)
+    .call()
+    .await
+    .unwrap().value;
 
-    // let balance_after: u64 = _instance_1.methods()
-    // .get_balance()
-    // .call()
-    // .await
-    // .unwrap().value;
+    // Check proposal amount
+    assert_eq!(proposal.unwrap().amount, 1000);
 
-    // assert_eq!(balance_after - balance_before, 2000);
+    // Start funding DAO
+
+    // Setup call params
+    let amount = 20_000;
+    let call_params = CallParameters::default().set_amount(amount);
+    // Call send funds
+    let _ = instance
+        .with_account(wallet_2.clone())
+        .unwrap()
+        .methods()
+        .send_fund()
+        .call_params(call_params)
+        .unwrap()
+        .call()
+        .await;
+
+    // Check DAO balance
+    let balance = instance.methods()
+    .get_balance()
+    .call()
+    .await
+    .unwrap().value;
+
+    assert_eq!(balance, 20_000);
+
+    // Init another DAO & Funding proposal
+    // Init instance_1
+    let _ = _instance_1
+        .with_account(wallet_2.clone())
+        .unwrap()
+        .methods()
+        .initialize(
+            config.clone(),
+            members.clone(),
+            whitelist_contributors.clone()
+        )
+        .call()
+        .await;
+
+    // Create a funding proposal
+
+    let _ = instance
+    .with_account(wallet_2.clone())
+    .unwrap()
+    .methods()
+    .create_proposal(
+        2,
+        Identity::ContractId(_id_1),
+        2000,
+        1,
+        20,
+        true
+    )
+    .call()
+    .await;
+
+    let proposal_1 = instance.methods()
+    .get_proposal_by_id(1)
+    .call()
+    .await
+    .unwrap().value;
+
+    // Check proposal_1 amount
+
+    assert_eq!(proposal_1.unwrap().amount, 2000);
+
+    // Voting for proposal 01
+
+    let _ = instance
+    .with_account(wallet_1.clone())
+    .unwrap()
+    .methods()
+    .vote(
+        0,
+        true
+    )
+    .call()
+    .await;
+
+    let _ = instance
+    .with_account(wallet_2.clone())
+    .unwrap()
+    .methods()
+    .vote(
+        0,
+        true
+    )
+    .call()
+    .await;
+
+    // Execute payout proposal
+    // let wallet_3_balance_before: u64 = wallet_3.get_asset_balance(&BASE_ASSET_ID).await.unwrap();
+    let _ = instance
+    .with_account(wallet_1.clone())
+    .unwrap()
+    .methods()
+    .execute_proposal(
+        0
+    )
+    .call()
+    .await;
+
+    // Check balance of recipient
+    // let wallet_3_balance_after: u64 = wallet_3.get_asset_balance(&BASE_ASSET_ID).await.unwrap();
+    let balance = instance.methods()
+    .get_balance()
+    .call()
+    .await
+    .unwrap().value;
+
+    // Check DAO balance after
+    // Up to SDK version, this can make error
+    assert_eq!(balance, 19_000);   
+
+    // Execute funding proposal
+
+    let _ = instance
+    .with_account(wallet_1.clone())
+    .unwrap()
+    .methods()
+    .vote(
+        1,
+        true
+    )
+    .call()
+    .await;
+    
+    // Execute funding proposal
+    let balance_before: u64 = _instance_1.methods()
+    .get_balance()
+    .call()
+    .await
+    .unwrap().value;
+
+    let _ = instance
+    .with_account(wallet_1.clone())
+    .unwrap()
+    .methods()
+    .execute_proposal(
+        1
+    )
+    .call()
+    .await;
+
+    // Check balance of DAO.
+
+    let balance_after: u64 = _instance_1.methods()
+    .get_balance()
+    .call()
+    .await
+    .unwrap().value;
+
+    // Up to SDK version, this can make error
+    assert_eq!(balance_after - balance_before, 2000);
 
 }

@@ -1,5 +1,4 @@
-use fuels::{prelude::*, types::{ContractId, Identity, Bits256}};
-
+use fuels::{prelude::*, accounts::fuel_crypto::{Signature}, types::{ContractId, Bits256, B512}};
 // Load abi from json
 abigen!(Contract(
     name = "MyContract",
@@ -65,17 +64,62 @@ async fn can_create_channel() {
     assert_eq!(payer, wallet_1.address().into());
     assert_eq!(payee, wallet_2.address().into());
 
-    // Get hash
-    let hash = instance.methods()
-    .get_hash(1000, 0, wallet_2.address().into())
+    // Send fund
+    let amount = 20_000;
+    let call_params = CallParameters::default().set_amount(amount);
+    let _ = instance
+    .with_account(wallet_1.clone())
+    .unwrap()
+    .methods()
+    .send_fund()
+    .call_params(call_params)
+    .unwrap()
     .call()
-    .await
-    .unwrap().value;
+    .await;
 
-    // sign message
 
-    // let signature = wallet_1.sign_message(hash).await;
+    let hex_str = "0101010101010101010101010101010101010101010101010101010101010101";
+
+    let bits256: Result<Bits256> = Bits256::from_hex_str(hex_str);
+    if let Result::Ok(b256) = bits256 {
+        // Error with version 0.38.1 : Expected `Result<Signature, Error>`, found `Result<Signature, WalletError>`
+        let result: Result<Signature, WalletError>  = wallet_1.sign_message(hex_str).await;
+
+        let mut sign = B512 {
+            bytes: [b256, b256],
+        };
     
+        if let Result::Ok(signature) = result {
+            sign = signature;
+        };
+    
+        let _ = instance
+            .with_account(wallet_2.clone())
+            .unwrap()
+            .methods()
+            .claim_payment(
+                b256,
+                1000, 
+                0,
+                sign
+            )
+            .call()
+            .await;
+    
+         // Check balance again
+         let new_balance = instance.methods()
+         .get_balance()
+         .call()
+         .await
+         .unwrap().value;
+    
+    
+         // Up to SDK version, this can make error
+         assert_eq!(new_balance, 19_000);
+    
+    } else {
+        assert_eq!(0, 1)
+    }
 
-
+    
 }

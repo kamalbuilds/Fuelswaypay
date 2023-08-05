@@ -107,6 +107,7 @@ async fn can_create_stream() {
         .withdraw()
         .call()
         .await;
+
     // Check balance again
     let new_balance = instance.methods()
     .get_balance()
@@ -114,6 +115,7 @@ async fn can_create_stream() {
     .await
     .unwrap().value;
 
+    // Up to SDK version, this can make error
     assert_eq!(new_balance, 19_000);
 
 }
