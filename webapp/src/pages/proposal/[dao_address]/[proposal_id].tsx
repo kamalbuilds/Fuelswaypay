@@ -20,6 +20,7 @@ export default function ProposalDetail() {
 
     useEffect(() => {
         if (router.query.dao_address) {
+            console.log("Load Proposal Detail");
             let { dao_address, proposal_id } = router.query;
             getProposalDetail(dao_address, parseInt(proposal_id.toString()));
         }
