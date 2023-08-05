@@ -72,7 +72,7 @@ export default function ProposalDetail() {
                                 isMember && <Space.Compact block>
                                     <Button disabled={voted === true || proposalOnchain.executed} type="primary" loading={vote.processing} onClick={() => voteAction(true)}>Agree</Button>
                                     <Button disabled={voted === false || proposalOnchain.executed} onClick={() => voteAction(false)} loading={vote.processing}>Disagree</Button>
-                                    <Button disabled={(proposalOnchain.agree / daoOnchain.count_member) * 100 >= daoFromDB.quorum || proposalOnchain.executed} type="primary" loading={executeProposal.processing} onClick={() => executeProposalAction()}>Execute</Button>
+                                    <Button disabled={((proposalOnchain.agree / daoOnchain.count_member) * 100 < daoFromDB.quorum) || proposalOnchain.executed} type="primary" loading={executeProposal.processing} onClick={() => executeProposalAction()}>Execute</Button>
 
                                 </Space.Compact>}
                         </Card>
