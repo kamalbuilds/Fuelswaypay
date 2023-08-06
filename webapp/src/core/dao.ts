@@ -16,61 +16,69 @@ import { ZERO_B256, provider } from './constant';
 import { AddressInput, IdentityInput } from 'src/contracts/dao/DaoContractAbi';
 
 export const saveDAO = async (formValues) => {
-    let { account } = store.getState();
-    if (account.account) {
-        try {
-            let request = await fetch("/api/dao/save", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    ...formValues,
-                    open: formValues.open === 2 ? true : false,
-                    owner: account.account,
-                    members: JSON.stringify(formValues.members),
-                    whitelist: JSON.stringify(formValues.whitelist),
-                })
-            })
-
-            let result = await request.json()
-            openNotification("Save DAO", `"${formValues.title}" was saved successful`, MESSAGE_TYPE.SUCCESS, () => { })
-            return result;
-        } catch (e) {
-            return false;
-        }
+    const { account } = store.getState().account;
+    if (!window.fuel || !account) {
+        openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+        return false;
     }
+    try {
+        let request = await fetch("/api/dao/save", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ...formValues,
+                open: formValues.open === 2 ? true : false,
+                owner: account,
+                members: JSON.stringify(formValues.members),
+                whitelist: JSON.stringify(formValues.whitelist),
+            })
+        })
+
+        let result = await request.json()
+        openNotification("Save DAO", `"${formValues.title}" was saved successful`, MESSAGE_TYPE.SUCCESS, () => { })
+        return result;
+    } catch (e) {
+        openNotification("Save DAO", e.message, MESSAGE_TYPE.ERROR, () => { });
+        return false;
+    }
+
 }
 
 export const updateDAO = async (formValues) => {
     let { account, daoForm } = store.getState();
-    if (account.account) {
-        try {
-            let request = await fetch("/api/dao/update", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    ...formValues,
-                    _id: daoForm._id,
-                    open: formValues.open === 2 ? true : false,
-                    owner: account.account,
-                    members: JSON.stringify(formValues.members),
-                    whitelist: JSON.stringify(formValues.whitelist),
-                })
-            })
-
-            let result = await request.json()
-
-            if (result.success) {
-                openNotification("Save DAO", `"${formValues.title}" was updated successful`, MESSAGE_TYPE.SUCCESS, () => { })
-                return true;
-            }
-        } catch (e) {
-            return false;
-        }
+    if (!window.fuel || !account.account) {
+        openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+        return;
     }
+    try {
+        let request = await fetch("/api/dao/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ...formValues,
+                _id: daoForm._id,
+                open: formValues.open === 2 ? true : false,
+                owner: account.account,
+                members: JSON.stringify(formValues.members),
+                whitelist: JSON.stringify(formValues.whitelist),
+            })
+        })
+
+        let result = await request.json()
+
+        if (result.success) {
+            openNotification("Update DAO", `"${formValues.title}" was updated successful`, MESSAGE_TYPE.SUCCESS, () => { })
+            return true;
+        }
+    } catch (e) {
+        openNotification("Update DAO", e.message, MESSAGE_TYPE.ERROR, () => { });
+        return false;
+    }
+
 }
 
 export const getDaoDetailFromDB = async (_id: string | string[], form: FormInstance<any>) => {
@@ -103,62 +111,67 @@ export const getDaoDetailFromDB = async (_id: string | string[], form: FormInsta
 export const deployDAO = async (name: string, form: FormInstance<any>) => {
     const { account } = store.getState().account;
     const { _id } = store.getState().daoForm;
-    if (window.fuel && account) {
-        try {
-            store.dispatch(updateProcessStatus({
-                actionName: actionNames.deployDao,
-                att: processKeys.processing,
-                value: true
-            }))
-
-            let request = await fetch("/api/contract/getFiles", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: name
-                })
-            })
-
-            let result = await request.json();
-            let wallet = await window.fuel.getWallet(account);
-            const factory = new ContractFactory(result.binFile.data, JSON.parse(result.jsonFile), wallet);
-
-            const contract = await factory.deployContract();
-
-            let contractId = contract.id.toB256();
-
-            // Update 
-
-            let updateRequest = await fetch("/api/dao/update", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    owner: account,
-                    _id: _id,
-                    address: contractId,
-                    status: 0
-                })
-            })
-            store.dispatch(setDaoFormProps({ att: "status", value: 0 }))
-            let updateRes = await updateRequest.json()
-
-
-            openNotification("Deploy DAO", `DAO was deployed successful with contract id: ${contractId}`, MESSAGE_TYPE.SUCCESS, () => { })
-
-            if (updateRes.success) {
-                updateStatistic("dao", 1);
-                await initializeDAO(contractId, form);
-            }
-
-        } catch (e) {
-            console.log(e);
-            openNotification("Deploy DAO", e.message, MESSAGE_TYPE.ERROR, () => { })
-        }
+    
+    if (!window.fuel || !account) {
+        openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+        return;
     }
+
+    try {
+        store.dispatch(updateProcessStatus({
+            actionName: actionNames.deployDao,
+            att: processKeys.processing,
+            value: true
+        }))
+
+        let request = await fetch("/api/contract/getFiles", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: name
+            })
+        })
+
+        let result = await request.json();
+        let wallet = await window.fuel.getWallet(account);
+        const factory = new ContractFactory(result.binFile.data, JSON.parse(result.jsonFile), wallet);
+
+        const contract = await factory.deployContract();
+
+        let contractId = contract.id.toB256();
+
+        // Update 
+
+        let updateRequest = await fetch("/api/dao/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                owner: account,
+                _id: _id,
+                address: contractId,
+                status: 0
+            })
+        })
+        store.dispatch(setDaoFormProps({ att: "status", value: 0 }))
+        let updateRes = await updateRequest.json()
+
+
+        openNotification("Deploy DAO", `DAO was deployed successful with contract id: ${contractId}`, MESSAGE_TYPE.SUCCESS, () => { })
+
+        if (updateRes.success) {
+            updateStatistic("dao", 1);
+            await initializeDAO(contractId, form);
+        }
+
+    } catch (e) {
+        console.log(e);
+        openNotification("Deploy DAO", e.message, MESSAGE_TYPE.ERROR, () => { })
+    }
+
     store.dispatch(updateProcessStatus({
         actionName: actionNames.deployDao,
         att: processKeys.processing,
@@ -169,75 +182,78 @@ export const deployDAO = async (name: string, form: FormInstance<any>) => {
 export const initializeDAO = async (contractId: string, form: FormInstance<any>) => {
     const { account } = store.getState().account;
     const { _id } = store.getState().daoForm;
-    if (window.fuel && account) {
-        try {
-            store.dispatch(updateProcessStatus({
-                actionName: actionNames.initializeDao,
-                att: processKeys.processing,
-                value: true
-            }))
-            let wallet = await window.fuel.getWallet(account);
-            const daoContract = DaoContractAbi__factory.connect(contractId, wallet);
-            const members = form.getFieldValue("members");
-            const whitelist = form.getFieldValue("whitelist");
-            let open = form.getFieldValue("open");
-            let quorum = form.getFieldValue("quorum");
-            let memberAddresses = members.map(m => ({ value: new Address(m.address) }));
-            if (members.length < 5) {
-                for (let i = members.length; i < 5; i++) {
-                    memberAddresses[i] =
-                        { value: Address.fromB256(ZERO_B256) }
-                }
+
+    if (!window.fuel || !account) {
+        openNotification("FUEL wallet is not currently connected.", `To utilize SWAYPAY features, please connect your wallet.`, MESSAGE_TYPE.INFO, () => { });
+        return;
+    }
+
+    try {
+        store.dispatch(updateProcessStatus({
+            actionName: actionNames.initializeDao,
+            att: processKeys.processing,
+            value: true
+        }))
+        let wallet = await window.fuel.getWallet(account);
+        const daoContract = DaoContractAbi__factory.connect(contractId, wallet);
+        const members = form.getFieldValue("members");
+        const whitelist = form.getFieldValue("whitelist");
+        let open = form.getFieldValue("open");
+        let quorum = form.getFieldValue("quorum");
+        let memberAddresses = members.map(m => ({ value: new Address(m.address) }));
+        if (members.length < 5) {
+            for (let i = members.length; i < 5; i++) {
+                memberAddresses[i] =
+                    { value: Address.fromB256(ZERO_B256) }
             }
-
-            let contributors = whitelist.map(m => {
-                if (m.type == 1) {
-                    return { Address: { value: new Address(m.address).toB256() } }
-                } else {
-                    return { ContractId: { value: m.address } }
-                }
-            });
-
-            if (contributors.length < 5) {
-                for (let i = contributors.length; i < 5; i++) {
-                    contributors[i] = { Address: { value: ZERO_B256 } }
-                }
-            }
-
-            await daoContract.functions.initialize(
-                {
-                    open: open === 2 ? true : false,
-                    quorum: quorum,
-                    dao_type: 1
-                },
-                memberAddresses,
-                contributors
-
-            ).txParams({ gasPrice: 1 }).call();
-
-            let updateRequest = await fetch("/api/dao/update", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    owner: account,
-                    _id: _id,
-                    address: contractId,
-                    status: 1
-                })
-            })
-            let updateRes = await updateRequest.json();
-            if (updateRes.success) {
-                updateStatistic("members", members.length);
-                openNotification("Initialized DAO", `DAO was initialized successful`, MESSAGE_TYPE.SUCCESS, () => { })
-                store.dispatch(setDaoFormProps({ att: "status", value: 1 }));
-            }
-        } catch (e) {
-            console.log(e);
-            openNotification("Initialized DAO", e.message, MESSAGE_TYPE.ERROR, () => { })
         }
 
+        let contributors = whitelist.map(m => {
+            if (m.type == 1) {
+                return { Address: { value: new Address(m.address).toB256() } }
+            } else {
+                return { ContractId: { value: m.address } }
+            }
+        });
+
+        if (contributors.length < 5) {
+            for (let i = contributors.length; i < 5; i++) {
+                contributors[i] = { Address: { value: ZERO_B256 } }
+            }
+        }
+
+        await daoContract.functions.initialize(
+            {
+                open: open === 2 ? true : false,
+                quorum: quorum,
+                dao_type: 1
+            },
+            memberAddresses,
+            contributors
+
+        ).txParams({ gasPrice: 1 }).call();
+
+        let updateRequest = await fetch("/api/dao/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                owner: account,
+                _id: _id,
+                address: contractId,
+                status: 1
+            })
+        })
+        let updateRes = await updateRequest.json();
+        if (updateRes.success) {
+            updateStatistic("members", members.length);
+            openNotification("Initialized DAO", `DAO was initialized successful`, MESSAGE_TYPE.SUCCESS, () => { })
+            store.dispatch(setDaoFormProps({ att: "status", value: 1 }));
+        }
+    } catch (e) {
+        console.log(e);
+        openNotification("Initialized DAO", e.message, MESSAGE_TYPE.ERROR, () => { })
     }
 
     store.dispatch(updateProcessStatus({
@@ -619,9 +635,9 @@ export const addContributorAction = async (newContributor: string) => {
 
             let wallet = await window.fuel.getWallet(account);
             const daoContract = DaoContractAbi__factory.connect(daoFromDB.address, wallet);
-            
+
             await daoContract.functions.add_contributor_to_whitelist(
-                (newContributor.indexOf(`fuel`) === -1) ? {ContractId: {value: newContributor}} : {Address: {value: Address.fromString(newContributor).toB256()}}
+                (newContributor.indexOf(`fuel`) === -1) ? { ContractId: { value: newContributor } } : { Address: { value: Address.fromString(newContributor).toB256() } }
             ).txParams({ gasPrice: 1 }).call();
 
             openNotification("Add Contributor", `Add new contributor "${newContributor}" successful`, MESSAGE_TYPE.SUCCESS, () => { })

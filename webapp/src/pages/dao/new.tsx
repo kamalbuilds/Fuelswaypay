@@ -9,7 +9,7 @@ export default function New() {
     const router = useRouter();
     const [form] = Form.useForm();
     const onFinish = (values: any) => {
-        saveDAO(values).then(data => router.push(`/dao/edit/${data._id}`));
+        saveDAO(values).then(data => data !== false ? router.push(`/dao/edit/${data._id}`) : {});
     };
     return (
         <Form
