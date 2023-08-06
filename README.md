@@ -92,7 +92,7 @@ To build SWAYPAY, we followed these steps:
 
 - Designed an offchain database initially considering indexer integration, but due to technical challenges, opted for a cloud-based MongoDB solution.
 
-- Integrated SWAYPAY with fuels-ts and wallet SDK to facilitate smooth interactions with the FUEL ecosystem.
+- Integrated SWAYPAY with fuels-ts and wallet SDK to facilitate smooth interactions with the FUEL blockchain.
 
 - Wrote the core components of SWAYPAY, laying the foundation for its various functionalities.
 
