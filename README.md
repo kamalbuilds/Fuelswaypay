@@ -112,7 +112,7 @@ Here are the planned enhancements and features for SWAYPAY:
 6. Implement a personal invoice system for users, enhancing transparency and ease of payment management.
 7. Introduce a user's address book for convenient and efficient transactions between familiar parties.
 8. Implement a user-friendly naming system to simplify SWAYPAY user addresses and improve user experience.
-9. Transition from offchain Database to an indexer-based solution for enhanced scalability and data management.
+9. Combine the cloud-based Database and an indexer-based solution for enhanced scalability and data management.
 10. Integrate Oracle services to bring real-world data onto the blockchain, expanding use cases and applications.
 11. Add support for more tokens, increasing the diversity of assets available on SWAYPAY.
 12. Introduce support for fiat currencies, bridging the gap between traditional finance and the decentralized ecosystem.
@@ -122,7 +122,7 @@ Here are the planned enhancements and features for SWAYPAY:
 
 ## 7. Conclusion
 
-During the SWAY Summer Hackathon, we had an incredible experience exploring the possibilities with SWAYPAY. FUEL, as a blockchain platform, exhibits tremendous potential to become a major player in the industry. We are thrilled to have contributed, even in a small way, to the success of the FUEL ecosystem through SWAYPAY.
+During the SWAY Summer Hackathon, we had an incredible experience exploring the possibilities with SWAYPAY. FUEL, as a blockchain platform, exhibits tremendous potential to become a major player in the industry. We take pride in contributing, even in a small way, to the success of the FUEL ecosystem through SWAYPAY.
 
 We extend a heartfelt thanks to the FUEL open-source community and the dedicated support from the FUEL community. Without their invaluable assistance, we wouldn't have been able to complete this product within the given time limitations.
 
