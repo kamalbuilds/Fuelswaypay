@@ -14,17 +14,17 @@ export default function Index() {
 
     return (
         <div style={{ maxWidth: 1440, margin: "auto", padding: 10 }}>
-            <div style={{textAlign: "center", maxWidth: 600, margin: "auto"}}>
-                <Text style={{color: "blue"}} strong>OUR BEST FEATURES &#128293;</Text >
-                <Title level={2} style={{fontWeight: 700}}>SWAYPAY: Unlocking the Potential of DAOs and Seamless Payments!</Title>
+            <div style={{ textAlign: "center", maxWidth: 600, margin: "auto" }}>
+                <Text style={{ color: "blue" }} strong>OUR BEST FEATURES &#128293;</Text >
+                <Title level={2} style={{ fontWeight: 700 }}>Unlocking the Potential of DAOs and Seamless Payments!</Title>
             </div>
-            <br/>
+            <br />
             <Row gutter={16}>
 
                 <Col span={8}>
                     <Card
                         cover={
-                            <FeatureImageSlides key={"dao-slides"} imageUrls={["/DAO.png", "/PROPOSAL.png"]}/>
+                            <FeatureImageSlides key={"dao-slides"} imageUrls={["/DAO.png", "/PROPOSAL.png"]} />
                         }
                         actions={[
                             <Button size="large" type="primary" onClick={() => router.push("/dao/list")}>VIEW MORE</Button>,
@@ -32,7 +32,8 @@ export default function Index() {
                         ]}
                     >
                         <Meta
-                            title={<Text strong style={{fontSize: 18}}>DAO Management</Text>}
+                            style={{ minHeight: 140 }}
+                            title={<Text strong style={{ fontSize: 18 }}>DAO Management</Text>}
                             description="This module grants users the ability to effectively oversee DAOs, treasuries, members, and payment proposals. It can be utilized to manage member payments or provide funding for other DAOs."
                         />
                     </Card>
@@ -40,7 +41,7 @@ export default function Index() {
                 <Col span={8}>
                     <Card
                         cover={
-                           <FeatureImageSlides key={"stream-slides"} imageUrls={["/STREAMS.png", "/STREAM.png"]} />
+                            <FeatureImageSlides key={"stream-slides"} imageUrls={["/STREAMS.png", "/STREAM.png"]} />
                         }
                         actions={[
                             <Button size="large" type="primary" onClick={() => router.push("/my-account/crypto-streaming/outgoing")}>VIEW MORE</Button>,
@@ -48,7 +49,8 @@ export default function Index() {
                         ]}
                     >
                         <Meta
-                            title={<Text strong style={{fontSize: 18}}>Crypto Streaming</Text>}
+                            style={{ minHeight: 140 }}
+                            title={<Text strong style={{ fontSize: 18 }}>Crypto Streaming</Text>}
                             description="This module offers a solution for salary or wage scheduling, providing transparency to both the sender and recipient regarding the money flow, stream balance changes."
                         />
                     </Card>
@@ -64,7 +66,8 @@ export default function Index() {
                         ]}
                     >
                         <Meta
-                              title={<Text strong style={{fontSize: 18}}>Payment Channel</Text>}
+                            style={{ minHeight: 140 }}
+                            title={<Text strong style={{ fontSize: 18 }}>Payment Channel</Text>}
                             description="This module facilitates a payment channel between a payer and payee, enabling multiple payments through individual claims, often used for customers making multiple payouts to service or product providers."
                         />
                     </Card>
