@@ -28,8 +28,8 @@ export default function New() {
 
                     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
                     <General />
-                        <Governance />
                         <VotingConfiguration />
+                        <Governance />
                         <WhitelistContributors />
                         <KYC />
                     </Space>

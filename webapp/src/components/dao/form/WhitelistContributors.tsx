@@ -6,7 +6,7 @@ import { headStyle } from 'src/theme/layout';
 export const WhitelistContributors = () => {
     return (
         <Card title="Whitelist Contributors" headStyle={headStyle}>
-            <Alert showIcon type='success' message={`The whitelist contributors consist of a list of addresses and contract IDs authorized to fund this DAO. If anyone else attempts to call the "send fund" function, that action will result in failure and will not be executed.`}/>
+            <Alert showIcon type='success' message={`The whitelist contributors consist of a list of addresses and contract IDs authorized to fund this DAO. If anyone else attempts to call the "send fund" function, that action will result in failure and will not be executed. The maximum number of contributors that can be added during this initialization phase is 5.`}/>
             <br />
             <Form.List name="whitelist" initialValue={[]}>
                 {(fields, { add, remove }) => (
@@ -50,8 +50,8 @@ export const WhitelistContributors = () => {
                             </Row>
                         ))}
                         <Form.Item>
-                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                Add member
+                            <Button type="dashed" disabled={fields.length >= 5} onClick={() => fields.length < 5 ? add() : {}} block icon={<PlusOutlined />}>
+                                Add contributor
                             </Button>
                         </Form.Item>
                     </>

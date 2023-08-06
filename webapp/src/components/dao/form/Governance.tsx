@@ -1,11 +1,13 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Form, Input, Radio, Row, Space } from 'antd';
+import { Alert, Button, Card, Col, Form, Input, Radio, Row, Space } from 'antd';
 import { AiOutlineWallet } from 'react-icons/ai';
 import { headStyle } from 'src/theme/layout';
 
 export const Governance = () => {
     return (
         <Card title="Governance configuration" headStyle={headStyle}>
+            <Alert showIcon type='success' message={"The maximum number of members that can be added during this initialization phase is 5."} />
+            <br/>
             <Form.Item name="open" initialValue={1}>
                 <Radio.Group>
                     <Radio value={1}>Invited Members Only</Radio>
@@ -35,7 +37,7 @@ export const Governance = () => {
                             </Row>
                         ))}
                         <Form.Item>
-                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                            <Button type="dashed" disabled={fields.length >= 5} onClick={() => fields.length < 5 ? add() : {}} block icon={<PlusOutlined />}>
                                 Add member
                             </Button>
                         </Form.Item>

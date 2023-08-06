@@ -38,8 +38,8 @@ export default function DaoAddress() {
 
                     <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
                         <General />
-                        <Governance />
                         <VotingConfiguration />
+                        <Governance />
                         <WhitelistContributors />
                         <KYC />
                     </Space>
